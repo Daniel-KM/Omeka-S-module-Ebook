@@ -1,0 +1,41 @@
+{
+  "name": "omeka-s-module-ebook",
+  "version": "3.0.0",
+  "description": "Ebook (module for Omeka S)",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daniel-KM/Omeka-S-module-Ebook"
+  },
+  "author": "Daniel Berthereau",
+  "license": "CECILL-2.1",
+  "bugs": {
+    "url": "https://github.com/Daniel-KM/Omeka-S-module-Ebook/issues"
+  },
+  "homepage": "https://github.com/Daniel-KM/Omeka-S-module-Ebook",
+  "keywords": [
+    "Omeka S",
+    "Omeka S module",
+    "creator",
+    "reader",
+    "viewer",
+    "ebook",
+    "epub"
+  ],
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-filter": "^5.0.1",
+    "gulp-line-ending-corrector": "^1.0.3",
+    "gulp-string-replace": "^0.4.0"
+  },
+  "dependencies": {
+    "epubjs-reader": "github:futurepress/epubjs-reader"
+  }
+}

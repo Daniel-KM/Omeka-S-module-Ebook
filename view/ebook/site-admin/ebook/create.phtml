@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Ebook\Form\EbookForm $form
+ */
+
+$translate = $this->plugin('translate');
+
+$form->prepare();
+$this->htmlElement('body')->appendAttribute('class', 'ebook create site');
+?>
+<?php echo $this->pageTitle($translate('Create an ebook for the site')); ?>
+
+<?php echo $this->form()->openTag($form); ?>
+
+<div id="page-actions">
+    <input type="submit" name="batch_process" value="<?php echo $this->escapeHtml($translate('Build')); ?>">
+</div>
+
+<?php echo $this->formCollection($form, false); ?>
+<?php echo $this->form()->closeTag(); ?>

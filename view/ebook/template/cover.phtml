@@ -1,0 +1,40 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var array $data
+ */
+
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+?>
+<h1 class="dcterms-title"><?php echo $data['dcterms:title']; ?></h1>
+<?php if ($data['dcterms:creator']): ?>
+<h2 class="dcterms-creator"><?php echo $data['dcterms:creator']; ?></h2>
+<?php endif; ?>
+
+<br />
+
+<?php if ($data['dcterms:description']): ?>
+<div class="dcterms-description"><?php echo $data['dcterms:description']; ?></div>
+<?php endif; ?>
+
+<?php if ($data['dcterms:publisher'] && $data['publisher_url']): ?>
+<p class="dcterms-publisher"><?php echo $this->hyperlink($data['dcterms:publisher'], $data['publisher_url']); ?></p>
+<?php elseif ($data['dcterms:publisher']): ?>
+<p class="dcterms-publisher"><?php echo $data['dcterms:publisher']; ?></p>
+<?php elseif ($data['publisher_url']): ?>
+<p class="dcterms-publisher"><?php echo $this->hyperlink($data['publisher_url'], $data['publisher_url']); ?></p>
+<?php endif; ?>
+
+<?php if ($data['dcterms:rights']): ?>
+<div class="dcterms-rights"><?php echo $data['dcterms:rights']; ?></div>
+<?php endif; ?>
+
+<?php if ($data['dcterms:subject']): ?>
+<div class="dcterms-subject">
+<p><?php echo $translate('Subjects'); ?></p>
+<ul>
+    <li><?php echo implode('</li>' . PHP_EOL . '    <li>', $data['dcterms:subject']); ?></li>
+</ul>
+</div>
+<?php endif; ?>

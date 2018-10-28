@@ -1,0 +1,46 @@
+{
+    "name": "daniel-km/omeka-s-module-ebook",
+    "description": "eBook creator (module for Omeka S)",
+    "type": "library",
+    "license": "CECILL-2.1",
+    "authors": [
+        {
+            "name": "Daniel Berthereau",
+            "email": "Daniel.packagist@Berthereau.net"
+        }
+    ],
+    "homepage": "https://github.com/Daniel-KM/Omeka-S-module-Ebook",
+    "support": {
+        "issues": "https://github.com/Daniel-KM/Omeka-S-module-Ebook/issues",
+        "forum": "https://forum.omeka.org/"
+    },
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "ebook",
+        "epub",
+        "pdf",
+        "publishing",
+        "report",
+        "archiving"
+    ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Daniel-KM/PHPePub"
+        }
+    ],
+    "require": {
+        "grandt/phpepub": "dev-master",
+        "vanilla/htmlawed": "~1.0",
+        "gmo/iso-639": "^1.0"
+    },
+    "require-dev": {
+        "biblibre/omeka-s-test-helper": "dev-master"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EbookTest\\": "test/EbookTest/"
+        }
+    }
+}

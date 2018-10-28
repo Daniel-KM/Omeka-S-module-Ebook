@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \Omeka\Api\Representation\SitePageRepresentation $resource
+ * @var \Omeka\Api\Representation\SitePageRepresentation $page
+ * @var string $resourceType
+ * @var array $data
+ */
+
+// $translate = $this->plugin('translate');
+
+// Don't trigger events in the ebook.
+?>
+<div class="<?php echo $resourceType; ?>" id="<?php echo $resourceType . '-' . $resource->id(); ?>">
+    <h2><?php echo $page->title(); ?></h2>
+    <?php // $this->trigger('view.show.before'); ?>
+    <div class="blocks">
+        <?php echo $this->content; ?>
+    </div>
+    <?php // $this->trigger('view.show.after'); ?>
+</div>
