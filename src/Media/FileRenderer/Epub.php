@@ -8,14 +8,11 @@ use Zend\View\Renderer\PhpRenderer;
 class Epub implements RendererInterface
 {
     /**
-     * These options are used only when the player is called outside of a site
-     * or when the site settings are not set.
-     *
      * @var array
      */
     protected $defaultOptions = [
         'attributes' => 'allowfullscreen="1"',
-        'style' => 'height: 600px; 70vh',
+        'style' => 'height: 600px; height: 70vh;',
     ];
 
     /**
@@ -30,36 +27,21 @@ class Epub implements RendererInterface
      * @param MediaRepresentation $media
      * @param array $options These options are managed for sites:
      *   - attributes: set the attributes to add
-     *   - style: set the inline style
+     *   - style: set the style
      * @return string
      */
     public function render(PhpRenderer $view, MediaRepresentation $media, array $options = [])
     {
         $this->setView($view);
 
-        $isSite = $view->params()->fromRoute('__SITE__');
-        // For admin board.
-        if (empty($isSite)) {
-            $attributes = $this->defaultOptions['attributes'];
-            $style = $view->setting('ebook_style', $this->defaultOptions['style']);
-        }
-        // For sites.
-        else {
-            $attributes = isset($options['attributes'])
-                ? $options['attributes']
-                : $view->siteSetting('ebook_attributes', $this->defaultOptions['attributes']);
-
-            $style = isset($options['style'])
-                ? $options['style']
-                : $view->siteSetting('ebook_style', $this->defaultOptions['style']);
-        }
-
-        $html = '<iframe height="100%%" width="100%%" %1$s%2$s src="%3$s">%4$s</iframe>';
+        $options += $this->defaultOptions;
+        $css = $options['style'] ? '<style>.viewer-epub {' . $options['style'] . '}</style>' . "\n" : '';
+        $html = '%1$s<iframe height="100%%" width="100%%" %2$s src="%3$s" class="viewer viewer-epub">%4$s</iframe>';
         $url = $view->assetUrl('vendor/epubjs-reader', 'Ebook') . '&bookPath=' . $media->originalUrl();
 
         return vsprintf($html, [
-            $attributes,
-            $style ? ' style="' . $style . '"' : '',
+            $css,
+            $options['attributes'],
             $url,
             $this->fallback($media),
         ]);

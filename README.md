@@ -31,6 +31,7 @@ the module to `Ebook`, go to the root module, and run:
 ```
     npm install
     gulp
+    composer install
 ```
 
 The next times:
@@ -38,6 +39,7 @@ The next times:
 ```
     npm update
     gulp
+    composer update
 ```
 
 To format an ebook as pdf, the command line tool `pdftk` must be installed on

@@ -191,17 +191,15 @@ class Module extends AbstractModule
     {
         $view = $event->getTarget();
         $resource = $view->resource;
-        $services = $this->getServiceLocator();
-        $translator = $services->get('MvcTranslator');
         $query = [];
         $query['resource_type'] = $resource->resourceName();
         $query['resource_ids'] = [$resource->id()];
         $link = $view->hyperlink(
-            $translator->translate('Create eBook'), // @translate
+            $view->translate('Create eBook'), // @translate
             $view->url('admin/ebook/default', ['action' => 'create'], ['query' => $query])
         );
         echo '<div class="meta-group">'
-            . '<h4>' . $translator->translate('EBook Creator') . '</h4>'
+            . '<h4>' . $view->translate('EBook Creator') . '</h4>'
             . '<div class="value">' . $link . '</div>'
             . '</div>';
     }

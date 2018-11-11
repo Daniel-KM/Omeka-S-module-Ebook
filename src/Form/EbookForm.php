@@ -3,18 +3,21 @@ namespace Ebook\Form;
 
 use Omeka\Form\Element\Asset;
 use Omeka\Form\Element\CkeditorInline;
-use Omeka\Form\Element\LocaleSelect;
 use Omeka\Form\Element\ResourceSelect;
 use Zend\Form\Element;
 use Zend\Form\Form;
+use Zend\View\Helper\Url;
 
 class EbookForm extends Form
 {
+    /**
+     * @var Url
+     */
+    protected $urlHelper;
+
     public function init()
     {
-        $services = $this->getServiceLocator();
-        $viewHelpers = $services->get('ViewHelperManager');
-        $urlHelper = $viewHelpers->get('url');
+        $urlHelper = $this->urlHelper();
 
         $this->add([
             'name' => 'batch_action',
@@ -119,7 +122,7 @@ class EbookForm extends Form
         // TODO The Omeka param is a locale, not the language needed for ebook.
         $this->add([
             'name' => 'dcterms:language',
-            'type' => LocaleSelect::class,
+            'type' => 'LocaleSelect',
             'options' => [
                 'label' => 'Language', // @translate
             ],
@@ -268,13 +271,19 @@ class EbookForm extends Form
         ]);
     }
 
-    public function setServiceLocator($serviceLocator)
+    /**
+     * @param Url $urlHelper
+     */
+    public function setUrlHelper(Url $urlHelper)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->urlHelper = $urlHelper;
     }
 
-    public function getServiceLocator()
+    /**
+     * @return \Zend\View\Helper\Url
+     */
+    public function getUrlHelper()
     {
-        return $this->serviceLocator;
+        return $this->urlHelper;
     }
 }
