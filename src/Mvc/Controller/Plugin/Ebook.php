@@ -861,6 +861,7 @@ CSS;
             }
         } while (++$i);
 
+        // TODO Use true config base_url if set.
         // TODO The url is build manually for temp files: use url().
         $url = $this->getController()->viewHelpers()->get('url');
         $url = $url('top', [], ['force_canonical' => true]) . $baseUrl . $filename;
@@ -887,7 +888,6 @@ CSS;
                     $dirPath));
                 return;
             }
-
             @mkdir($dirPath, 0755, true);
         } elseif (!is_dir($dirPath) || !is_writeable($dirPath)) {
             $this->logger->err(new Message('The destination folder "%s" is not writeable.', // @translate

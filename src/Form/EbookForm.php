@@ -17,7 +17,7 @@ class EbookForm extends Form
 
     public function init()
     {
-        $urlHelper = $this->urlHelper();
+        $urlHelper = $this->getUrlHelper();
 
         $this->add([
             'name' => 'batch_action',
