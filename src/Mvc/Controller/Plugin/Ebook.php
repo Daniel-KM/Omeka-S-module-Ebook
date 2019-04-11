@@ -250,7 +250,7 @@ XHTML5;
         $translate = $this->translate;
         $url = $this->url;
 
-        $bookVersion =  $data['dcterms:format'] === 'application/epub+zip; version=2.0'
+        $bookVersion = $data['dcterms:format'] === 'application/epub+zip; version=2.0'
             ? EPub::BOOK_VERSION_EPUB2
             : EPub::BOOK_VERSION_EPUB3;
         // The default for EPub is "en".
@@ -344,8 +344,11 @@ REGEX;
 
         // Initialize the content.
         $this->contentStart = str_replace('__TITLE__', $data['dcterms:title'], $this->contentStart);
-        $this->contentStart = str_replace('__VIEWPORT_META_LINE__',
-            $ebook->getViewportMetaLine(), $this->contentStart);
+        $this->contentStart = str_replace(
+            '__VIEWPORT_META_LINE__',
+            $ebook->getViewportMetaLine(),
+            $this->contentStart
+        );
 
         // Default presentation.
         $cssData = <<<'CSS'
@@ -402,8 +405,11 @@ CSS;
                     && isset($managedImages[$asset->mediaType()])
                 ) {
                     $filepath = $this->basePath . DIRECTORY_SEPARATOR . 'asset/' . $asset->filename();
-                    $ebook->setCoverImage('cover.' . $managedImages[$asset->mediaType()],
-                        file_get_contents($filepath), $asset->mediaType());
+                    $ebook->setCoverImage(
+                        'cover.' . $managedImages[$asset->mediaType()],
+                        file_get_contents($filepath),
+                        $asset->mediaType()
+                    );
                 } else {
                     $this->logger->warn(new Message('The cover is not a managed image.'));
                 }
@@ -413,8 +419,11 @@ CSS;
         $output = $this->viewRenderer->render('ebook/template/cover', [
             'data' => $data,
         ]);
-        $ebook->addChapter($translate('Notices'), 'cover.xhtml',
-            $this->contentStart . $output . $this->contentEnd);
+        $ebook->addChapter(
+            $translate('Notices'),
+            'cover.xhtml',
+            $this->contentStart . $output . $this->contentEnd
+        );
 
         $ebook->addChapter($translate('Table of Contents'), 'toc.xhtml');
     }
@@ -429,8 +438,11 @@ CSS;
         // Only used in case we need to debug EPub.
         if ($ebook->isLogging) {
             $epuplog = $ebook->getLog();
-            $ebook->addChapter('ePubLog', 'ePubLog.xhtml',
-                $this->contentStart . $epuplog . PHP_EOL . $this->contentEnd);
+            $ebook->addChapter(
+                'ePubLog',
+                'ePubLog.xhtml',
+                $this->contentStart . $epuplog . PHP_EOL . $this->contentEnd
+            );
         }
 
         $ebook->finalize();
@@ -615,8 +627,12 @@ CSS;
 
         $title = $siteNavigationLink->getLabel($flatPage['data'], $site) ?: $translate('[Untitled]'); // @translate
         $filename = sprintf('site_page_%d.xhtml', ++$automaticId);
-        $ebook->addChapter($title, $filename,
-            $this->contentStart . $output . $this->contentEnd, false);
+        $ebook->addChapter(
+            $title,
+            $filename,
+            $this->contentStart . $output . $this->contentEnd,
+            false
+        );
     }
 
     /**
@@ -641,8 +657,12 @@ CSS;
         ]);
         $title = sprintf($translate('Item set #%d: %s'), $itemSet->id(), $itemSet->displayTitle());
         $filename = sprintf('item_set_%d_%d.xhtml', ++$automaticId, $itemSet->id());
-        $ebook->addChapter($title, $filename,
-            $this->contentStart . $output . $this->contentEnd, false);
+        $ebook->addChapter(
+            $title,
+            $filename,
+            $this->contentStart . $output . $this->contentEnd,
+            false
+        );
     }
 
     /**
@@ -667,8 +687,13 @@ CSS;
         ]);
         $title = sprintf($translate('Item #%d: %s'), $item->id(), $item->displayTitle());
         $filename = sprintf('item_%d_%d.xhtml', ++$automaticId, $item->id());
-        $ebook->addChapter($title, $filename,
-            $this->contentStart . $output . $this->contentEnd, false, EPub::EXTERNAL_REF_ADD);
+        $ebook->addChapter(
+            $title,
+            $filename,
+            $this->contentStart . $output . $this->contentEnd,
+            false,
+            EPub::EXTERNAL_REF_ADD
+        );
         // TODO Modify the urls to save the images locally.
     }
 
@@ -765,9 +790,9 @@ CSS;
                         case'dcterms:publisher':
                             $value = $data[$term] . ($data['publisher_url'] ? ' (' . $data['publisher_url'] . ')' : '');
                             break;
-                        default;
-                        $value = $data[$term];
-                        break;
+                        default:
+                            $value = $data[$term];
+                            break;
                     }
                     $itemData[$term] = [
                         [
@@ -966,18 +991,18 @@ CSS;
      * @param array $tree The key "links" contains the sub-levels.
      * @param array $flat The key "level " indicates the level, and the key
      * "content" contains the original content.
-     * @param integer $level
+     * @param int $level
      * @param array $types Allowed types of pages.
      * @return array Flat array, without key "links" but a  key "level".
      */
     protected function convertNestedToFlat(array $tree, array $flat = [], $level = 0, array $types = [])
     {
-        foreach ($tree as $value){
+        foreach ($tree as $value) {
             $links = empty($value['links']) ? [] : $value['links'];
             unset($value['links']);
             // Skip the page.
             if ($types && (!isset($value['type']) || !in_array($value['type'], $types))) {
-                $baseLevel = $level -1;
+                $baseLevel = $level - 1;
             }
             // Append the page.
             else {

@@ -43,8 +43,11 @@ class EbookController extends AbstractActionController
                         $url = $result->assetUrl();
                     } elseif (is_object($result)) {
                         $url = $result->primaryMedia()->originalUrl();
-                        $messageResource = new Message('See it as %sitem #%d%s.',
-                            '<a href="' . htmlspecialchars($result->url()) . '">', $result->id(), '</a>'
+                        $messageResource = new Message(
+                            'See it as %sitem #%d%s.',
+                            '<a href="' . htmlspecialchars($result->url()) . '">',
+                            $result->id(),
+                            '</a>'
                         );
                         $messageResource->setEscapeHtml(false);
                     } else {
@@ -54,8 +57,10 @@ class EbookController extends AbstractActionController
                     $urlRead = $assetUrl('vendor/epubjs-reader', 'Ebook') . '&bookPath=' . $url;
                     $message = new Message(
                         'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
-                        '<a href="' . htmlspecialchars($url) . '">', '</a>',
-                        '<a href="' . htmlspecialchars($urlRead) . '">', '</a>',
+                        '<a href="' . htmlspecialchars($url) . '">',
+                        '</a>',
+                        '<a href="' . htmlspecialchars($urlRead) . '">',
+                        '</a>',
                         $messageResource
                     );
                     $message->setEscapeHtml(false);
@@ -141,7 +146,7 @@ class EbookController extends AbstractActionController
         // Export of item sets is managed like a query for all their items.
         $itemSets = [];
         $itemSetCount = 0;
-        $itemSetQuery= null;
+        $itemSetQuery = null;
         $itemQuery = $query;
 
         if ($selectAll || $resource === 'item_sets') {
@@ -208,8 +213,11 @@ class EbookController extends AbstractActionController
                         $url = $result->assetUrl();
                     } elseif (is_object($result)) {
                         $url = $result->primaryMedia()->originalUrl();
-                        $messageResource = new Message('See it as %sitem #%d%s.',
-                            '<a href="' . htmlspecialchars($result->url()) . '">', $result->id(), '</a>'
+                        $messageResource = new Message(
+                            'See it as %sitem #%d%s.',
+                            '<a href="' . htmlspecialchars($result->url()) . '">',
+                            $result->id(),
+                            '</a>'
                         );
                         $messageResource->setEscapeHtml(false);
                     } else {
@@ -219,8 +227,10 @@ class EbookController extends AbstractActionController
                     $urlRead = $assetUrl('vendor/epubjs-reader', 'Ebook') . '&bookPath=' . $url;
                     $message = new Message(
                         'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
-                        '<a href="' . htmlspecialchars($url) . '">', '</a>',
-                        '<a href="' . htmlspecialchars($urlRead) . '">', '</a>',
+                        '<a href="' . htmlspecialchars($url) . '">',
+                        '</a>',
+                        '<a href="' . htmlspecialchars($urlRead) . '">',
+                        '</a>',
                         $messageResource
                     );
                     $message->setEscapeHtml(false);

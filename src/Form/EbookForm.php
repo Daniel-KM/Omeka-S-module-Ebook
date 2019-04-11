@@ -90,7 +90,7 @@ class EbookForm extends Form
             'type' => CkeditorInline::class,
             'options' => [
                 'label' => 'Description', // @translate
-                'info' => 'The abstract or an extract of the content.'
+                'info' => 'The abstract or an extract of the content.',
             ],
             'attributes' => [
                 'id' => 'dcterms-description',
@@ -149,7 +149,7 @@ class EbookForm extends Form
             'type' => Element\Text::class,
             'options' => [
                 'label' => 'Identifier', // @translate
-                'info' => 'This required metadata may be a unique url, isbn. If empty, a random uuid will be used.'
+                'info' => 'This required metadata may be a unique url, isbn. If empty, a random uuid will be used.',
             ],
             'attributes' => [
                 'id' => 'dcterms-identifier',
@@ -206,7 +206,7 @@ class EbookForm extends Form
             'name' => 'dcterms:format',
             'type' => Element\Radio::class,
             'options' => [
-                'label' =>  'Output format',  // @translate
+                'label' => 'Output format', // @translate
                 'value_options' => [
                     'application/epub+zip; version=2.0' => 'ePub (v2)', // @translate
                     'application/epub+zip' => 'ePub (v3)', // @translate
@@ -226,7 +226,7 @@ class EbookForm extends Form
             'name' => 'htmlFormat',
             'type' => Element\Radio::class,
             'options' => [
-                'label' =>  'HTML format',  // @translate
+                'label' => 'HTML format', // @translate
                 'value_options' => [
                     'xhtml' => 'XHTML (standard)', // @translate
                     'html5' => 'HTML 5 (recent viewers and readers)', // @translate
@@ -243,7 +243,7 @@ class EbookForm extends Form
             'name' => 'output',
             'type' => Element\Select::class,
             'options' => [
-                'label' =>  'Output',  // @translate
+                'label' => 'Output', // @translate
                 'value_options' => [
                     'download' => 'Temporary file to download', // @translate
                     'item' => 'New item with attached file', // @translate

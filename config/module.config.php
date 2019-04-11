@@ -3,7 +3,7 @@ namespace Ebook;
 
 return [
     'view_manager' => [
-        'template_path_stack'      => [
+        'template_path_stack' => [
             dirname(__DIR__) . '/view',
         ],
     ],
