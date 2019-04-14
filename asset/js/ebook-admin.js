@@ -1,4 +1,4 @@
-// Kept for compatibility with Omeka < 1.2.
+// Kept as long as pull request #1260 is not passed.
 Omeka.ebookManageSelectedActions = function() {
     var selectedOptions = $('[value="update-selected"], [value="delete-selected"], #batch-form .batch-inputs .batch-selected');
     if ($('.batch-edit td input[type="checkbox"]:checked').length > 0) {
@@ -33,7 +33,7 @@ Omeka.ebookManageSelectedActions = function() {
             $('<input type="hidden" name="resource_type">').val(resourceType)
         );
 
-        // Kept for compatibility with Omeka < 1.2.
+        // Kept as long as pull request #1260 is not passed.
         $('.select-all').change(function() {
             Omeka.ebookManageSelectedActions();
         });

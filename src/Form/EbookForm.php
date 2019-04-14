@@ -122,7 +122,7 @@ class EbookForm extends Form
         // TODO The Omeka param is a locale, not the language needed for ebook.
         $this->add([
             'name' => 'dcterms:language',
-            'type' => 'LocaleSelect',
+            'type' => 'Omeka\Form\Element\LocaleSelect',
             'options' => [
                 'label' => 'Language', // @translate
             ],

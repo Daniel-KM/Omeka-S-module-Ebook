@@ -102,7 +102,7 @@ class EbookController extends AbstractActionController
         }
 
         // Set default values to simplify checks.
-        $params += array_fill_keys(['resource_type', 'resource_ids', 'query', 'batch_action', 'ebook_all'], null);
+        $params += array_fill_keys(['resource_type', 'resource_ids', 'query', 'batch_action'], null);
 
         $resourceType = $params['resource_type'];
         $resourceTypeMap = [
@@ -124,7 +124,9 @@ class EbookController extends AbstractActionController
             ? (is_array($params['resource_ids']) ? $params['resource_ids'] : explode(',', $params['resource_ids']))
             : [];
         $params['resource_ids'] = $resourceIds;
-        $selectAll = $params['batch_action'] ? $params['batch_action'] === 'ebook-all' : (bool) $params['ebook_all'];
+        // Manage Omeka with or without pull request #1260 (with or without
+        // param batch_action), so check $resourceIds.
+        $selectAll = $params['batch_action'] ? $params['batch_action'] === 'ebook-all' : empty($resourceIds);
         $params['batch_action'] = $selectAll ? 'ebook-all' : 'ebook-selected';
 
         $controllers = [
