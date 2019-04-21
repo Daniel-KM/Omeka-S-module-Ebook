@@ -125,8 +125,8 @@ class EbookController extends AbstractActionController
             : [];
         $params['resource_ids'] = $resourceIds;
         // Manage Omeka with or without pull request #1260 (with or without
-        // param batch_action), so check $resourceIds.
-        $selectAll = $params['batch_action'] ? $params['batch_action'] === 'ebook-all' : empty($resourceIds);
+        // param batch_action), so check $resourceIds in all cases.
+        $selectAll = $params['batch_action'] ? $params['batch_action'] === 'ebook-all' : (empty($resourceIds) || (bool) $params['ebook_all']);
         $params['batch_action'] = $selectAll ? 'ebook-all' : 'ebook-selected';
 
         $controllers = [
