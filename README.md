@@ -122,23 +122,15 @@ This module uses the following components:
 * epubjs-reader: BSD-2-Clause
 
 
-Contact
--------
-
-Current maintainers:
-
-* Daniel Berthereau (see [Daniel-KM] on GitHub)
-
-This module was built first for the French [Université Paris-Diderot].
-
-
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2017-2018
+* Copyright Daniel Berthereau, 2017-2019 (see [Daniel-KM] on GitHub)
 * Stixfonts: see above
 * Copyright [Martin Fenner] 2011 (epub css)
 * Copyright [Fred Chasen] 2017-2018 ([epubjs-reader])
+
+This module was built first for the French [Université Paris-Diderot].
 
 
 [eBook]: https://github.com/Daniel-KM/Omeka-S-module-Ebook
