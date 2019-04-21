@@ -54,7 +54,7 @@ class EbookController extends AbstractActionController
                         $url = $result;
                     }
                     $assetUrl = $this->viewHelpers()->get('assetUrl');
-                    $urlRead = $assetUrl('vendor/epubjs-reader', 'Ebook') . '&bookPath=' . $url;
+                    $urlRead = $assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=' . $url;
                     $message = new Message(
                         'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
                         '<a href="' . htmlspecialchars($url) . '">',
