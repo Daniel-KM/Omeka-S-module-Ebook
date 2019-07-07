@@ -2,6 +2,8 @@
 
 namespace Ebook;
 
+use Omeka\View\Helper\Thumbnail;
+
 return [
     'view_manager' => [
         'template_path_stack' => [
@@ -17,6 +19,9 @@ return [
         ],
     ],
     'view_helpers' => [
+        'invokables' => [
+            Thumbnail::class => View\Helper\Thumbnail::class,
+        ],
         'factories' => [
             'defaultSiteSlug' => Service\ViewHelper\DefaultSiteSlugFactory::class,
         ],
