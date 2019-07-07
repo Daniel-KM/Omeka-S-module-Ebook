@@ -2,6 +2,7 @@
 
 namespace Ebook\Controller\Admin;
 
+use Doctrine\DBAL\Connection;
 use Ebook\Form\EbookForm;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Stdlib\Message;
@@ -11,34 +12,16 @@ use Zend\View\Model\ViewModel;
 class EbookController extends AbstractActionController
 {
     /**
-     * @var ApiManager
-     */
-    protected $api;
-
-    /**
-     * @param ServiceLocator serviceLocator
-     */
-    protected $services;
-
-    /**
-     * @var Connection
+     * @var \Doctrine\DBAL\Connection
      */
     protected $connection;
 
     /**
-     * @var Settings
+     * @param Connection $connection
      */
-    protected $settings;
-
-    public function __construct($serviceLocator)
+    public function __construct(Connection $connection)
     {
-        $this->services = $serviceLocator;
-
-        $this->api = $this->services->get('Omeka\ApiManager');
-
-        $this->connection = $this->services->get('Omeka\Connection');
-
-        $this->settings = $serviceLocator->get('Omeka\Settings');
+        $this->connection = $connection;
     }
 
     /**

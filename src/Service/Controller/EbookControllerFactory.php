@@ -9,8 +9,8 @@ class EbookControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        $ebookController = new EbookController($serviceLocator);
-
-        return $ebookController;
+        return new EbookController(
+            $serviceLocator->get('Omeka\Connection')
+        );
     }
 }

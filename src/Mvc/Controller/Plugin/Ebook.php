@@ -515,7 +515,6 @@ CSS;
 
     protected function finalizeEbook()
     {
-        $data = $this->data;
         $ebook = $this->ebook;
 
         $ebook->rootLevel();
@@ -537,7 +536,6 @@ CSS;
     {
         $data = $this->data;
         $ebook = $this->ebook;
-        $translate = $this->translate;
 
         /** @var \Omeka\Api\Representation\SiteRepresentation $site */
         $site = $data['site'];
@@ -589,7 +587,7 @@ CSS;
         static $automaticId = 0;
 
         // TODO use a view model?
-        $data = $this->data;
+        // $data = $this->data;
         $ebook = $this->ebook;
         $translate = $this->translate;
 
@@ -640,6 +638,7 @@ CSS;
         $contentView = clone $view;
         $contentView->setTemplate('omeka/site/page/content');
         $contentView->setVariable('pageViewModel', $view);
+
         $view->addChild($contentView, 'content');
         $output = $this->viewRenderer->render($view);
 
