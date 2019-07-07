@@ -125,6 +125,32 @@ class EbookController extends AbstractActionController
     /**
      * Create an ebook from the selected ressources.
      */
+    public function pastCreateAction()
+    {
+        $conn = $this->connection;
+
+        $assetUrl = $this->viewHelpers()->get('assetUrl');
+        $urlRead = $assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=';
+
+        $qb = $conn->createQueryBuilder()
+            ->select('eb.job_id', 'eb.resource_data', 'j.status', 'j.started', 'j.ended')
+            ->from('ebook_creation', 'eb')
+            ->leftJoin('eb', 'job', 'j', 'eb.job_id = j.id');
+
+        $stmt = $conn->executeQuery($qb, $qb->getParameters());
+        $list_ebook = $stmt->fetchAll();
+
+        $view = new ViewModel;
+        $view->setTemplate('ebook/site-admin/ebook/past-create');
+        $view->setVariable('list_ebook', $list_ebook);
+        $view->setVariable('url_read', $urlRead);
+
+        return $view;
+    }
+
+    /**
+     * Create an ebook from the selected ressources.
+     */
     public function createAction()
     {
         if ($this->getRequest()->isGet()) {

@@ -1,0 +1,52 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var array $list_ebook
+ */
+
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$hyperlink = $this->plugin('hyperlink');
+
+$this->htmlElement('body')->appendAttribute('class', 'ebook past-create');
+?>
+
+<?php echo $this->pageTitle($translate('Ebook'), 1, $translate('Ebook Past Created')); ?>
+
+<label>
+    <?php echo $escape($translate('List of all created Ebook')); ?>
+</label>
+
+<table class="tablesaw" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th><?php echo $escape($translate('Job')); ?></th>
+            <th><?php echo $escape($translate('Status')); ?></th>
+            <th><?php echo $escape($translate('Started')); ?></th>
+            <th><?php echo $escape($translate('Ended')); ?></th>
+            <th><?php echo $escape($translate('Ebook link')); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+
+    <?php foreach ($this->list_ebook as $ebook): ?>
+        <tr>
+            <td>
+                <?php echo '#' . $ebook['job_id']; ?>
+                <?php echo $hyperlink($translate('details'), $this->url('admin/id', ['controller' => 'job', 'action' => 'show', 'id' => $ebook['job_id']])); ?>
+            </td>
+            <td><?php echo $ebook['status']; ?></td>
+            <td><?php echo $ebook['started']; ?></td>
+            <td><?php echo $ebook['ended']; ?></td>
+            <td>
+                <?php if ($ebook['resource_data'] !== ''): ?>
+                    <a href="<?php echo htmlspecialchars($ebook['resource_data']); ?>"> <?php echo $escape($translate('Download')); ?></a>
+                /
+                    <a target="_blank" href="<?php echo $this->url_read;?><?php echo htmlspecialchars($ebook['resource_data']); ?>"><?php echo $escape($translate('Read it')); ?></a>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+
+    </tbody>
+</table>

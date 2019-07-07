@@ -86,7 +86,34 @@ return [
                                     ],
                                 ],
                             ],
+                            'past-create' => [
+                                'type' => 'Literal',
+                                'options' => [
+                                    'route' => '/past-create',
+                                    'defaults' => [
+                                        'controller' => Controller\Admin\EbookController::class,
+                                        'action' => 'pastcreate',
+                                    ],
+                                ],
+                            ],
                         ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'navigation' => [
+        'AdminModule' => [
+            [
+                'label' => 'Ebook',
+                'route' => 'admin/ebook/past-create',
+                'resource' => Controller\Admin\EbookController::class,
+                'pages' => [
+                    [
+                        'label' => 'Past Create', // @translate
+                        'route' => 'admin/ebook/past-create',
+                        'action' => 'past-create',
+                        'resource' => Controller\Admin\EbookController::class,
                     ],
                 ],
             ],
