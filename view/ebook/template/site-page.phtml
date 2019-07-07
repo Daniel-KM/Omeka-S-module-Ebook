@@ -9,17 +9,21 @@
  * @var \Zend\View\Model\ViewModel $pageViewModel
  */
 
-// The catch is requried to avoid issue with some blocks that require some settings.
+// The catch is required to avoid issue with some blocks that require some settings.
 // See application/view/omeka/site/page/content.phtml.
 $layouts = [];
+
 foreach ($page->blocks() as $block) {
     if (!array_key_exists($block->layout(), $layouts)) {
         // Prepare render only once per layout type.
         $layouts[$block->layout()] = null;
         $this->blockLayout()->prepareRender($block->layout());
     }
+
     try {
-        echo $this->blockLayout()->render($block);
+        $content = $this->blockLayout()->render($block);
+        $content = html_entity_decode($content, ENT_COMPAT | ENT_HTML5, 'utf-8');
+        echo $content;
     } catch (\Exception $e) {
     }
 }
