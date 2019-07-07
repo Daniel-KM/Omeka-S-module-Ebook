@@ -86,13 +86,13 @@ return [
                                     ],
                                 ],
                             ],
-                            'past-create' => [
-                                'type' => 'Literal',
+                            'created-ebooks' => [
+                                'type' => \Zend\Router\Http\Literal::class,
                                 'options' => [
-                                    'route' => '/past-create',
+                                    'route' => '/created-ebooks',
                                     'defaults' => [
                                         'controller' => Controller\Admin\EbookController::class,
-                                        'action' => 'pastcreate',
+                                        'action' => 'created-ebooks',
                                     ],
                                 ],
                             ],
@@ -105,17 +105,10 @@ return [
     'navigation' => [
         'AdminModule' => [
             [
-                'label' => 'Ebook',
-                'route' => 'admin/ebook/past-create',
+                'label' => 'Ebooks',
+                'route' => 'admin/ebook/created-ebooks',
                 'resource' => Controller\Admin\EbookController::class,
-                'pages' => [
-                    [
-                        'label' => 'Past Create', // @translate
-                        'route' => 'admin/ebook/past-create',
-                        'action' => 'past-create',
-                        'resource' => Controller\Admin\EbookController::class,
-                    ],
-                ],
+                'action' => 'created-ebooks',
             ],
         ],
     ],

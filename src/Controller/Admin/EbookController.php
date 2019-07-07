@@ -123,9 +123,9 @@ class EbookController extends AbstractActionController
     }
 
     /**
-     * Create an ebook from the selected ressources.
+     * Get the list of created ebooks.
      */
-    public function pastCreateAction()
+    public function createdEbooksAction()
     {
         $conn = $this->connection;
 
@@ -141,7 +141,6 @@ class EbookController extends AbstractActionController
         $list_ebook = $stmt->fetchAll();
 
         $view = new ViewModel;
-        $view->setTemplate('ebook/site-admin/ebook/past-create');
         $view->setVariable('list_ebook', $list_ebook);
         $view->setVariable('url_read', $urlRead);
 
@@ -290,7 +289,7 @@ class EbookController extends AbstractActionController
 
                 $this->connection->exec($sql);
 
-                return $this->redirect()->toRoute('admin/default', ['controller' => 'ebook', 'action' => 'past-create'], true);
+                return $this->redirect()->toRoute('admin/default', ['controller' => 'ebook', 'action' => 'created-ebooks'], true);
             }
 
             $this->messenger()->addFormErrors($form);

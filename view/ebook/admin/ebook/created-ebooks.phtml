@@ -8,13 +8,13 @@ $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $hyperlink = $this->plugin('hyperlink');
 
-$this->htmlElement('body')->appendAttribute('class', 'ebook past-create');
+$this->htmlElement('body')->appendAttribute('class', 'ebook created-ebooks');
 ?>
 
-<?php echo $this->pageTitle($translate('Ebook'), 1, $translate('Ebook Past Created')); ?>
+<?php echo $this->pageTitle($translate('Ebooks'), 1, $translate('Created ebooks')); ?>
 
 <label>
-    <?php echo $escape($translate('List of all created Ebook')); ?>
+    <?php echo $escape($translate('List of all past created ebooks')); ?>
 </label>
 
 <table class="tablesaw" data-tablesaw-mode="stack">
