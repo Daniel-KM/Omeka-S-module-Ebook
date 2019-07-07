@@ -22,7 +22,46 @@ foreach ($page->blocks() as $block) {
 
     try {
         $content = $this->blockLayout()->render($block);
-        $content = html_entity_decode($content, ENT_COMPAT | ENT_HTML5, 'utf-8');
+
+        // Because loadHTML() is html 4 with default ISO-8859-1, a hack is used.
+        // Various solutions exist (utf8_decode, mb_convert_encoding, $dom->createDocument$
+        // but only this prepended string and saved node work.
+        // The param in the constructor is useless, because overridden at load.
+        // @link https://www.php.net/manual/en/domdocument.loadhtml.php#95251
+        // @link https://stackoverflow.com/questions/8218230/php-domdocument-loadhtml-not-encoding-utf-8-correctly
+
+        // $doc = new \DOMDocument('1.0', 'UTF-8');
+        // $doc->loadHTML($content);
+        // $content = $doc->saveXML('inner body');
+
+        // Fix weird copy-paste from Windows and Apple for html blocks.
+        $content = str_replace(["\r\n", "\n\r", "\r"], ["\n", "\n", "\n"], $content);
+        $content = html_entity_decode($content, ENT_COMPAT | ENT_HTML5, 'UTF-8');
+        $content = trim($content);
+
+        if (!mb_strlen($content)) {
+            return;
+        }
+
+        // Access errors via libxml_get_errors() instead of including them inside.
+        // Another possibility is to prefix loading with "@" to avoids to output errors.
+        libxml_use_internal_errors(true);
+
+        $doc = new \DOMDocument('1.0', 'UTF-8');
+        $doc->loadHTML('<?xml encoding="UTF-8" ?>' . $content);
+        $doc->encoding = 'UTF-8';
+        $doc->formatOutput = true;
+        $doc->preserveWhiteSpace = false;
+        $content = $doc->saveXML($doc->documentElement);
+
+        libxml_clear_errors();
+
+        $start = strpos($content, '<body>');
+        if ($start !== false) {
+            $start += 6;
+            $content = substr($content, $start, strrpos($content, '</body>') - $start);
+        }
+
         echo $content;
     } catch (\Exception $e) {
     }
