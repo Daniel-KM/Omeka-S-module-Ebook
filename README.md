@@ -11,6 +11,8 @@ The ePubs are formatted with version 2.0 or 3.1 and pdf files with version 1.7
 or as pdf/a, so it can be read on any device, from the smartphone to the
 desktop, and of course by any e-reader that respects the standards.
 
+Conversion into Pdf is not available currently.
+
 
 Installation
 ------------
@@ -42,9 +44,6 @@ The next times:
     composer update
 ```
 
-To format an ebook as pdf, the command line tool `pdftk` must be installed on
-the server.
-
 
 Usage
 -----
@@ -69,6 +68,7 @@ TODO
 - Use a full standard Omeka theme instead of specific templates.
 - Manage other types of pages (this will be the case if a full theme is used).
 - Include composer in gulpfile.js.
+- Pdf management via mpdf.
 
 
 Warning
@@ -136,7 +136,7 @@ This module was built first for the French [Université Paris-Diderot].
 [eBook]: https://github.com/Daniel-KM/Omeka-S-module-Ebook
 [Omeka S]: https://omeka.org/s
 [ePub]: http://idpf.org/epub
-[pdf]: https://www.w3.org
+[pdf]: https://www.adobe.com/devnet/pdf/pdf_reference.html
 [`Ebook.zip`]: https://github.com/Daniel-KM/Omeka-S-module-Ebook/releases
 [module issues]: https://github.com/Daniel-KM/Omeka-S-module-Ebook/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html

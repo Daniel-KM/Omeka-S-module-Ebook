@@ -27,9 +27,6 @@ return [
         ],
     ],
     'form_elements' => [
-        'invokables' => [
-            Form\ConfigForm::class => Form\ConfigForm::class,
-        ],
         'factories' => [
             Form\EbookForm::class => Service\Form\EbookFormFactory::class,
         ],
@@ -134,8 +131,5 @@ return [
         'Go', // @translate
     ],
     'ebook' => [
-        'config' => [
-            'ebook_pdftk' => '',
-        ],
     ],
 ];

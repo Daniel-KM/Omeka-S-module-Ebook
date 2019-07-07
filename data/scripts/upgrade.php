@@ -31,3 +31,7 @@ CREATE TABLE ebook_creation (
 SQL;
     $connection->exec($sql);
 }
+
+if (version_compare($oldVersion, '3.0.3', '<')) {
+    $settings->delete('ebook_pdftk');
+}
