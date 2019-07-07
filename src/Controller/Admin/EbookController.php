@@ -11,6 +11,37 @@ use Zend\View\Model\ViewModel;
 class EbookController extends AbstractActionController
 {
     /**
+     * @var ApiManager
+     */
+    protected $api;
+
+    /**
+     * @param ServiceLocator serviceLocator
+     */
+    protected $services;
+
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
+     * @var Settings
+     */
+    protected $settings;
+
+    public function __construct($serviceLocator)
+    {
+        $this->services = $serviceLocator;
+
+        $this->api = $this->services->get('Omeka\ApiManager');
+
+        $this->connection = $this->services->get('Omeka\Connection');
+
+        $this->settings = $serviceLocator->get('Omeka\Settings');
+    }
+
+    /**
      * Create an ebook for a site.
      */
     public function createSiteAction()
@@ -37,7 +68,9 @@ class EbookController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $data['site'] = $site;
+
                 $result = $this->ebook($data);
+
                 if ($result) {
                     $messageResource = '';
                     if (is_object($result) && $result instanceof \Omeka\Api\Representation\AssetRepresentation) {
@@ -60,7 +93,7 @@ class EbookController extends AbstractActionController
                         'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
                         '<a href="' . htmlspecialchars($url) . '">',
                         '</a>',
-                        '<a href="' . htmlspecialchars($urlRead) . '">',
+                        '<a target="_blank" href="' . htmlspecialchars($urlRead) . '">',
                         '</a>',
                         $messageResource
                     );
@@ -124,6 +157,7 @@ class EbookController extends AbstractActionController
         $resourceIds = $params['resource_ids']
             ? (is_array($params['resource_ids']) ? $params['resource_ids'] : explode(',', $params['resource_ids']))
             : [];
+
         $params['resource_ids'] = $resourceIds;
         // Manage Omeka with or without pull request #1260 (with or without
         // param batch_action), so check $resourceIds in all cases.
@@ -178,7 +212,6 @@ class EbookController extends AbstractActionController
                 return $this->redirect()->toRoute('admin/default', ['controller' => $controllers[$resource], 'action' => 'browse'], true);
             }
         }
-
         // Use of selected resources.
         else {
             if (empty($resourceIds)) {
@@ -204,46 +237,34 @@ class EbookController extends AbstractActionController
                 $data = $form->getData();
 
                 // Normalize params.
+                unset($data['csrf']);
                 $data['batch_action'] = $selectAll ? 'all' : 'selected';
                 $data['resource_type'] = $resource;
                 $data['resource_ids'] = $resourceIds;
                 $data['query'] = $query;
 
-                $result = $this->ebook($data);
-                if ($result) {
-                    $messageResource = '';
-                    if (is_object($result) && $result instanceof \Omeka\Api\Representation\AssetRepresentation) {
-                        $url = $result->assetUrl();
-                    } elseif (is_object($result)) {
-                        $url = $result->primaryMedia()->originalUrl();
-                        $messageResource = new Message(
-                            'See it as %sitem #%d%s.',
-                            '<a href="' . htmlspecialchars($result->url()) . '">',
-                            $result->id(),
-                            '</a>'
-                        );
-                        $messageResource->setEscapeHtml(false);
-                    } else {
-                        $url = $result;
-                    }
-                    $assetUrl = $this->viewHelpers()->get('assetUrl');
-                    $urlRead = $assetUrl('vendor/epubjs-reader', 'Ebook') . '&bookPath=' . $url;
-                    $message = new Message(
-                        'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
-                        '<a href="' . htmlspecialchars($url) . '">',
-                        '</a>',
-                        '<a href="' . htmlspecialchars($urlRead) . '">',
-                        '</a>',
-                        $messageResource
-                    );
-                    $message->setEscapeHtml(false);
-                    $this->messenger()->addSuccess($message);
-                }
-                return $this->redirect()->toRoute(
-                    'admin/default',
-                    ['controller' => $controllers[$resource], 'action' => 'browse'],
-                    true
+                $dispatcher = $this->jobDispatcher();
+
+                $job = $dispatcher->dispatch('Ebook\Job\Create', $data);
+
+                // Unlike site, the ebook record is created via a job.
+
+                $message = new Message(
+                    'Creating ebook in background (%sjob #%d%s).', // @translate
+                    sprintf('<a href="%s">',
+                        htmlspecialchars($this->url()->fromRoute('admin/id', ['controller' => 'job', 'id' => $job->getId()]))
+                    ),
+                    $job->getId(),
+                    '</a>'
                 );
+                $message->setEscapeHtml(false);
+                $this->messenger()->addSuccess($message);
+
+                $sql = 'INSERT INTO `ebook_creation` (`job_id`) VALUES (' . $job->getId() . ');';
+
+                $this->connection->exec($sql);
+
+                return $this->redirect()->toRoute('admin/default', ['controller' => 'ebook', 'action' => 'past-create'], true);
             }
 
             $this->messenger()->addFormErrors($form);

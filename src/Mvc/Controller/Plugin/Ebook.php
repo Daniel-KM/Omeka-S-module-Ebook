@@ -1,6 +1,35 @@
 <?php
+
+/*
+ * Copyright 2017-2019 Daniel Berthereau
+ *
+ * This software is governed by the CeCILL license under French law and abiding
+ * by the rules of distribution of free software. You can use, modify and/or
+ * redistribute the software under the terms of the CeCILL license as circulated
+ * by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and rights to copy, modify
+ * and redistribute granted by the license, users are provided only with a
+ * limited warranty and the software’s author, the holder of the economic
+ * rights, and the successive licensors have only limited liability.
+ *
+ * In this respect, the user’s attention is drawn to the risks associated with
+ * loading, using, modifying and/or developing or reproducing the software by
+ * the user in light of its specific status of free software, that may mean that
+ * it is complicated to manipulate, and that also therefore means that it is
+ * reserved for developers and experienced professionals having in-depth
+ * computer knowledge. Users are therefore encouraged to load and test the
+ * software’s suitability as regards their requirements in conditions enabling
+ * the security of their systems and/or data to be ensured and, more generally,
+ * to use and operate it in the same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL license and that you accept its terms.
+ */
+
 namespace Ebook\Mvc\Controller\Plugin;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Omeka\Api\Exception\NotFoundException;
 use Omeka\Api\Representation\ItemSetRepresentation;
@@ -8,15 +37,17 @@ use Omeka\Api\Representation\ItemRepresentation;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\File\TempFileFactory;
 use Omeka\Mvc\Controller\Plugin\Api;
-use Omeka\Mvc\Controller\Plugin\Logger;
-use Omeka\Mvc\Controller\Plugin\Translate;
+use Omeka\Settings\Settings;
 use Omeka\Site\Navigation\Link\Manager as NavigationLinkManager;
 use Omeka\Stdlib\Message;
+use Omeka\View\Helper\NavigationLink;
 use PHPePub\Core\EPub;
 use PHPePub\Helpers\CalibreHelper;
 use PHPePub\Helpers\IBooksHelper;
 use PHPePub\Helpers\Rendition\RenditionHelper;
 use UUID;
+use Zend\I18n\View\Helper\Translate;
+use Zend\Log\Logger;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\View\Helper\Url;
 use Zend\View\Renderer\PhpRenderer;
@@ -54,26 +85,6 @@ class Ebook extends AbstractPlugin
     protected $data;
 
     /**
-     * @var Api
-     */
-    protected $api;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @var Translate
-     */
-    protected $translate;
-
-    /**
-     * @var Url
-     */
-    protected $url;
-
-    /**
      * @var EntityManager
      */
     protected $entityManager;
@@ -94,11 +105,46 @@ class Ebook extends AbstractPlugin
     protected $viewRenderer;
 
     /**
+     * @var Api
+     */
+    protected $api;
+
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
      * Absolute base path of the files (generally "/files").
      *
      * @var string
      */
     protected $basePath;
+
+    /**
+     * @var string
+     */
+    protected $tempDir;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var Settings
+     */
+    protected $settings;
+
+    /**
+     * @var Translate
+     */
+    protected $translate;
+
+    /**
+     * @var Url
+     */
+    protected $url;
 
     /**
      * @var string
@@ -130,23 +176,44 @@ XHTML5;
      * @param TempFileFactory $tempFileFactory
      * @param NavigationLinkManager $navigationLinkManager
      * @param PhpRenderer $viewRenderer
+     * @param Api $api
+     * @param Connection $connection
      * @param string $basePath
      * @param string $tempDir
+     * @param Logger $logger
+     * @param Translate $translate
+     * @param Url $url
+     * @param Settings $settings
+     * @param NavigationLink $navigationLink
      */
     public function __construct(
         EntityManager $entityManager,
         TempFileFactory $tempFileFactory,
         NavigationLinkManager $navigationLinkManager,
         PhpRenderer $viewRenderer,
+        Api $api,
+        Connection $connection,
         $basePath,
-        $tempDir
+        $tempDir,
+        Logger $logger,
+        Translate $translate,
+        Url $url,
+        Settings $settings,
+        NavigationLink $navigationLink
     ) {
         $this->entityManager = $entityManager;
         $this->tempFileFactory = $tempFileFactory;
         $this->navigationLinkManager = $navigationLinkManager;
         $this->viewRenderer = $viewRenderer;
+        $this->api = $api;
+        $this->connection = $connection;
         $this->basePath = $basePath;
         $this->tempDir = $tempDir;
+        $this->logger = $logger;
+        $this->url = $url;
+        $this->translate = $translate;
+        $this->settings = $settings;
+        $this->navigationLink = $navigationLink;
     }
 
     /**
@@ -157,13 +224,32 @@ XHTML5;
      */
     public function __invoke(array $data)
     {
-        $controller = $this->getController();
-        $this->api = $controller->api();
-        $this->logger = $controller->logger();
-        $viewHelpers = $controller->viewHelpers();
-        $this->translate = $viewHelpers->get('translate');
-        $this->url = $viewHelpers->get('url');
+        return $this->create($data);
+    }
 
+    public function task(array $data, $job_id)
+    {
+        $result = $this->create($data);
+
+        $url = '';
+
+        if ($result) {
+            if (is_object($result) && $result instanceof \Omeka\Api\Representation\AssetRepresentation) {
+                $url = $result->assetUrl();
+            } elseif (is_object($result)) {
+                $url = $result->primaryMedia()->originalUrl();
+            } else {
+                $url = $result;
+            }
+        }
+
+        $this->connection->query('UPDATE ebook_creation SET resource_data = "' . $url . '" WHERE `job_id` = "' . $job_id . '";');
+
+        return $result;
+    }
+
+    protected function create(array $data)
+    {
         $data = $this->prepareData($data);
         $this->data = $data;
 
@@ -172,7 +258,6 @@ XHTML5;
         $isSite = !empty($data['site']);
         $isItemSet = $data['resource_type'] === 'item_sets';
         if ($isSite) {
-            $this->navigationLink = $viewHelpers->get('navigationLink');
             $this->processSite();
         } elseif ($isItemSet) {
             $this->processItemSets();
@@ -246,7 +331,7 @@ XHTML5;
     protected function initializeEbook()
     {
         $data = $this->data;
-        $settings = $this->getController()->settings();
+        $settings = $this->settings;
         $translate = $this->translate;
         $url = $this->url;
 
@@ -493,73 +578,6 @@ CSS;
         // Append items of the site  if wanted.
     }
 
-    protected function processItemSets()
-    {
-        $data = $this->data;
-        $ebook = $this->ebook;
-        $translate = $this->translate;
-
-        // TODO Manage possible memory overload.
-        $selectAll = $data['batch_action'] === 'all';
-        $resources = $this->fetchResources($data['resource_type'], $data['resource_ids'], $data['query'], $selectAll);
-
-        // Manage the case where there is a single item set, to avoid duplicate
-        // ebook description, etc.
-        $singleItemSet = count($resources) == 1;
-        $itemSetIds = [];
-        if ($singleItemSet) {
-            $itemSet = reset($resources);
-            $itemSetIds[] = $itemSet->id();
-        } else {
-            $ebook->setCurrentLevel(1);
-            $content = $this->contentStart
-                . sprintf('<h1>%s</h1>', $translate('Item sets')) . PHP_EOL
-                . $this->contentEnd;
-            $ebook->addChapter($translate('Item sets'), 'item_sets.xhtml', $content);
-            $ebook->subLevel();
-
-            foreach ($resources as $itemSet) {
-                $this->processItemSet($itemSet);
-                $itemSetIds[] = $itemSet->id();
-            }
-
-            $ebook->setCurrentLevel(1);
-            $content = $this->contentStart
-                . sprintf('<h1>%s</h1>', $translate('Items')) . PHP_EOL
-                . $this->contentEnd;
-            $ebook->addChapter($translate('Items'), 'items.xhtml', $content);
-            $ebook->subLevel();
-        }
-
-        $items = $this->api->search('items', ['item_set_id' => $itemSetIds])->getContent();
-        foreach ($items as $item) {
-            $this->processItem($item);
-        }
-    }
-
-    protected function processItems()
-    {
-        $data = $this->data;
-        $ebook = $this->ebook;
-        $translate = $this->translate;
-
-        // TODO Manage possible memory overload.
-        $selectAll = $data['batch_action'] === 'all';
-        /** @var \Omeka\Api\Representation\ItemRepresentation[] $resources */
-        $resources = $this->fetchResources($data['resource_type'], $data['resource_ids'], $data['query'], $selectAll);
-
-        $ebook->setCurrentLevel(1);
-        $content = $this->contentStart
-            . sprintf('<h1>%s</h1>', $translate('Items')) . PHP_EOL
-            . $this->contentEnd;
-        $ebook->addChapter($translate('Items'), 'items.xhtml', $content);
-        $ebook->subLevel();
-
-        foreach ($resources as $item) {
-            $this->processItem($item);
-        }
-    }
-
     /**
      * Create an ebook chapter from a site page.
      *
@@ -635,6 +653,50 @@ CSS;
         );
     }
 
+    protected function processItemSets()
+    {
+        $data = $this->data;
+        $ebook = $this->ebook;
+        $translate = $this->translate;
+
+        // TODO Manage possible memory overload.
+        $selectAll = $data['batch_action'] === 'all';
+        $resources = $this->fetchResources($data['resource_type'], $data['resource_ids'], $data['query'], $selectAll);
+
+        // Manage the case where there is a single item set, to avoid duplicate
+        // ebook description, etc.
+        $singleItemSet = count($resources) == 1;
+        $itemSetIds = [];
+        if ($singleItemSet) {
+            $itemSet = reset($resources);
+            $itemSetIds[] = $itemSet->id();
+        } else {
+            $ebook->setCurrentLevel(1);
+            $content = $this->contentStart
+                . sprintf('<h1>%s</h1>', $translate('Item sets')) . PHP_EOL
+                . $this->contentEnd;
+            $ebook->addChapter($translate('Item sets'), 'item_sets.xhtml', $content);
+            $ebook->subLevel();
+
+            foreach ($resources as $itemSet) {
+                $this->processItemSet($itemSet);
+                $itemSetIds[] = $itemSet->id();
+            }
+
+            $ebook->setCurrentLevel(1);
+            $content = $this->contentStart
+                . sprintf('<h1>%s</h1>', $translate('Items')) . PHP_EOL
+                . $this->contentEnd;
+            $ebook->addChapter($translate('Items'), 'items.xhtml', $content);
+            $ebook->subLevel();
+        }
+
+        $items = $this->api->search('items', ['item_set_id' => $itemSetIds])->getContent();
+        foreach ($items as $item) {
+            $this->processItem($item);
+        }
+    }
+
     /**
      * Create an ebook chapter from an item set.
      *
@@ -663,6 +725,29 @@ CSS;
             $this->contentStart . $output . $this->contentEnd,
             false
         );
+    }
+
+    protected function processItems()
+    {
+        $data = $this->data;
+        $ebook = $this->ebook;
+        $translate = $this->translate;
+
+        // TODO Manage possible memory overload.
+        $selectAll = $data['batch_action'] === 'all';
+        /** @var \Omeka\Api\Representation\ItemRepresentation[] $resources */
+        $resources = $this->fetchResources($data['resource_type'], $data['resource_ids'], $data['query'], $selectAll);
+
+        $ebook->setCurrentLevel(1);
+        $content = $this->contentStart
+            . sprintf('<h1>%s</h1>', $translate('Items')) . PHP_EOL
+            . $this->contentEnd;
+        $ebook->addChapter($translate('Items'), 'items.xhtml', $content);
+        $ebook->subLevel();
+
+        foreach ($resources as $item) {
+            $this->processItem($item);
+        }
     }
 
     /**
@@ -805,7 +890,7 @@ CSS;
                 }
 
                 // TODO Add epub in global settings.
-                $settings = $this->getController()->settings();
+                $settings = $this->settings;
                 $disableFileValidation = $settings->get('disable_file_validation');
                 $settings->set('disable_file_validation', '1');
 
@@ -888,7 +973,7 @@ CSS;
 
         // TODO Use true config base_url if set.
         // TODO The url is build manually for temp files: use url().
-        $url = $this->getController()->viewHelpers()->get('url');
+        $url = $this->url;
         $url = $url('top', [], ['force_canonical' => true]) . $baseUrl . $filename;
 
         return [

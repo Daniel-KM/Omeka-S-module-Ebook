@@ -30,8 +30,8 @@ return [
         ],
     ],
     'controllers' => [
-        'invokables' => [
-            Controller\Admin\EbookController::class => Controller\Admin\EbookController::class ,
+        'factories' => [
+            Controller\Admin\EbookController::class => Service\Controller\EbookControllerFactory::class,
         ],
     ],
     'controller_plugins' => [
