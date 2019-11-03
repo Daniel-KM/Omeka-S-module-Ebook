@@ -121,11 +121,11 @@ class EbookController extends AbstractActionController
             ->leftJoin('eb', 'job', 'j', 'eb.job_id = j.id');
 
         $stmt = $conn->executeQuery($qb, $qb->getParameters());
-        $list_ebook = $stmt->fetchAll();
+        $ebooks = $stmt->fetchAll();
 
         $view = new ViewModel;
-        $view->setVariable('list_ebook', $list_ebook);
-        $view->setVariable('url_read', $urlRead);
+        $view->setVariable('ebooks', $ebooks);
+        $view->setVariable('urlRead', $urlRead);
 
         return $view;
     }
@@ -144,7 +144,7 @@ class EbookController extends AbstractActionController
         }
 
         // Set default values to simplify checks.
-        $params += array_fill_keys(['resource_type', 'resource_ids', 'query', 'batch_action'], null);
+        $params += array_fill_keys(['resource_type', 'resource_ids', 'query', 'batch_action', 'ebook_all'], null);
 
         $resourceType = $params['resource_type'];
         $resourceTypeMap = [

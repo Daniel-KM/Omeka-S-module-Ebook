@@ -2,7 +2,8 @@
 /**
  * @var \Zend\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\ItemRepresentation $resource
- * @var \Omeka\Api\Representation\ItemRepresentation $itemSet
+ * @var \Omeka\Api\Representation\ItemRepresentation $item
+ * @var \Omeka\Api\Representation\ItemSetRepresentation $itemSet
  * @var string $resourceType
  * @var array $data
  */
@@ -14,8 +15,8 @@ $embedMedia = !empty($data['item_media_embed']);
 $medias = $item->media();
 ?>
 
-<div class="<?php echo $resourceType; ?>" id="<?php echo $resourceType . '-' . $resource->id(); ?>">
-    <h2><?php echo sprintf($translate('Item #%d'), $resource->id()); ?></h2>
+<div class="<?= $resourceType ?>" id="<?= $resourceType . '-' . $resource->id() ?>">
+    <h2><?= sprintf($translate('Item #%d'), $resource->id()) ?></h2>
     <?php if ($embedMedia && $medias): ?>
     <div class="media-embeds">
         <?php
@@ -31,15 +32,15 @@ $medias = $item->media();
     </div>
     <?php endif; ?>
 
-    <?php echo $resource->displayValues(['viewName' => 'ebook/template/resource-values']); ?>
+    <?= $resource->displayValues(['viewName' => 'ebook/template/resource-values']) ?>
 
     <div class="property">
         <?php $itemSets = $item->itemSets(); ?>
         <?php if (count($itemSets)): ?>
-        <h4><?php echo $translate('Item sets'); ?></h4>
+        <h4><?= $translate('Item sets') ?></h4>
         <?php foreach ($item->itemSets() as $itemSet): ?>
         <div class="value">
-            <?php echo $itemSet->displayTitle(); ?>
+            <?= $itemSet->displayTitle() ?>
         </div>
         <?php endforeach; ?>
         <?php endif; ?>
@@ -47,14 +48,14 @@ $medias = $item->media();
 
     <?php if (!$embedMedia && $medias): ?>
     <div class="media-list">
-        <h4><?php echo $translate('Medias'); ?></h4>
+        <h4><?= $translate('Medias') ?></h4>
         <?php foreach ($medias as $media): ?>
         <div class="value">
-            <a class="resource-link" href="<?php echo $media->siteUrl($this->defaultSiteSlug(), true); ?>">
+            <a class="resource-link" href="<?= $media->siteUrl($this->defaultSiteSlug(), true) ?>">
                 <?php $title = $media->value('dcterms:title', ['type' => 'literal']); ?>
-                <?php $title = $title ? $title->value() : sprintf($translate('Media #%d'), $media->id()); ?>
-                <img src="<?php echo $media->thumbnailUrl('medium'); ?>" alt="<?php echo $title; ?>" />
-                <span class="resource-name"><?php echo $title; ?></span>
+                <?php $title = $title ? $title->value() : sprintf($translate('Media #%d'), $media->id()) ?>
+                <img src="<?= $media->thumbnailUrl('medium') ?>" alt="<?= $title ?>" />
+                <span class="resource-name"><?= $title ?></span>
             </a>
         </div>
         <?php endforeach; ?>
@@ -65,8 +66,8 @@ $medias = $item->media();
     $subjectValues = $resource->displaySubjectValues();
     if ($subjectValues): ?>
     <div id="item-linked">
-        <h3><?php echo $translate('Linked resources'); ?></h3>
-        <?php echo $subjectValues; ?>
+        <h3><?= $translate('Linked resources') ?></h3>
+        <?= $subjectValues ?>
     </div>
     <?php endif; ?>
 </div>

@@ -1,3 +1,16 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SitePageBlockRepresentation $block
+ * @var \Omeka\Api\Representation\SiteBlockAttachmentRepresentation[] $attachments
+ * @var string $alignmentClass
+ * @var string $thumbnailType
+ * @var string $showTitleOption
+ * @var string $link
+ * @var string $heading
+ */
+?>
+
 <div class="<?= $alignmentClass . ' ' . $thumbnailType ?> file">
     <div class="attachments">
 <?php foreach($attachments as $attachment): ?>

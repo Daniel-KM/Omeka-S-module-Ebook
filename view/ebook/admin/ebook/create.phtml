@@ -21,55 +21,55 @@ $escape = $this->plugin('escapeHtml');
 $form->prepare();
 $this->htmlElement('body')->appendAttribute('class', 'ebook create items');
 ?>
-<?php echo $this->pageTitle($translate('Create an ebook')); ?>
+<?= $this->pageTitle($translate('Create an ebook')) ?>
 
 <?php $this->trigger('view.batch_edit.before'); ?>
 
-<?php echo $this->form()->openTag($form); ?>
+<?= $this->form()->openTag($form) ?>
 
 <div id="page-actions">
-    <input type="submit" name="batch_process" value="<?php echo $escape($translate('Build')); ?>">
+    <input type="submit" name="batch_process" value="<?= $escape($translate('Build')) ?>">
 </div>
 
-<?php echo $this->formCollection($form, false); ?>
-<?php echo $this->form()->closeTag(); ?>
+<?= $this->formCollection($form, false) ?>
+<?= $this->form()->closeTag() ?>
 
 <div class="sidebar always-open">
-    <h3><?php echo $translate('Affected items'); ?></h3>
+    <h3><?= $translate('Affected items') ?></h3>
     <?php if ($resources): ?>
-    <p><?php echo sprintf($translate('You are creating an ebook with the following %d items:'), count($resources)); ?></p>
+    <p><?= sprintf($translate('You are creating an ebook with the following %d items:'), count($resources)) ?></p>
     <ul class="batch-selected">
         <?php foreach ($resources as $resource): ?>
-        <li><?php echo $resource->linkPretty('square', null, null, ['target' => '_blank']); ?></li>
+        <li><?= $resource->linkPretty('square', null, null, ['target' => '_blank']) ?></li>
         <?php endforeach; ?>
     </ul>
     <?php elseif ($itemSetCount): ?>
     <?php if ($itemSets): ?>
-    <p><?php echo sprintf($translate('You are creating an ebook with %1$s items that belong to the following %2$d item sets:'),
+    <p><?= sprintf($translate('You are creating an ebook with %1$s items that belong to the following %2$d item sets:'),
         $this->hyperlink(number_format($count), $this->url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => $itemQuery], true), ['target' => '_blank']),
-        count($itemSets));
+        count($itemSets))
     ?></p>
     <ul class="batch-selected">
         <?php foreach ($itemSets as $resource): ?>
-        <li><?php echo $resource->link($resource->displayTitle(), null, ['target' => '_blank']); ?></li>
+        <li><?= $resource->link($resource->displayTitle(), null, ['target' => '_blank']) ?></li>
         <?php endforeach; ?>
     </ul>
     <?php else: ?>
-    <p><?php echo sprintf($translate('You are creating an ebook with %1$s items that belong to %2$s item sets.'),
+    <p><?= sprintf($translate('You are creating an ebook with %1$s items that belong to %2$s item sets.'),
         $this->hyperlink(number_format($count), $this->url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => $itemQuery], true), ['target' => '_blank']),
-        $this->hyperlink(number_format($itemSetCount), $this->url('admin/default', ['controller' => 'item-set', 'action' => 'browse'], ['query' => $itemSetQuery], true), ['target' => '_blank']));
+        $this->hyperlink(number_format($itemSetCount), $this->url('admin/default', ['controller' => 'item-set', 'action' => 'browse'], ['query' => $itemSetQuery], true), ['target' => '_blank']))
     ?></p>
     <?php endif; ?>
     <?php else: ?>
-    <p><?php echo sprintf($translate('You are creating an ebook with %s items.'),
-        $this->hyperlink(number_format($count), $this->url(null, ['action' => 'browse'], ['query' => $query], true), ['target' => '_blank']));
+    <p><?= sprintf($translate('You are creating an ebook with %s items.'),
+        $this->hyperlink(number_format($count), $this->url(null, ['action' => 'browse'], ['query' => $query], true), ['target' => '_blank']))
     ?></p>
     <?php endif; ?>
 
     <br />
-    <strong><?php echo $translate('Info:'); ?></strong>
+    <strong><?= $translate('Info:') ?></strong>
     <ul>
-    <li><?php echo $translate('Fill the form.'); ?></li>
+    <li><?= $translate('Fill the form.') ?></li>
     </ul>
 </div>
 

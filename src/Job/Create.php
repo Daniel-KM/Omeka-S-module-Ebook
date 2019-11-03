@@ -18,25 +18,24 @@ class Create extends AbstractJob
 
     public function perform()
     {
-        $this->args = $this->job->getArgs();
-
         $services = $this->getServiceLocator();
-
         $this->connection = $services->get('Omeka\Connection');
 
-        $job_id = $this->job->getId();
+        $this->args = $this->job->getArgs();
+        $jobId = $this->job->getId();
 
         $services->get('ControllerPluginManager')->get('ebook')
-            ->task($this->args, $job_id);
+            ->task($this->args, $jobId);
 
+        // Wait until the task is finished.
         do {
-            $resource_data = $this->getResourceData($job_id);
-        } while ($resource_data == null);
+            $resourceData = $this->getResourceData($jobId);
+        } while ($resourceData == null);
     }
 
-    protected function getResourceData($job_id)
+    protected function getResourceData($jobId)
     {
-        $sql = 'SELECT * FROM `ebook_creation` WHERE `job_id` = "' . $job_id . '";';
+        $sql = 'SELECT * FROM `ebook_creation` WHERE `job_id` = "' . $jobId . '";';
 
         $setting = $this->connection->fetchAssoc($sql);
 

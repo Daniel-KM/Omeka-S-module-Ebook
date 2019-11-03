@@ -233,14 +233,14 @@ XHTML5;
 
         $url = '';
 
-        if ($result) {
-            if (is_object($result) && $result instanceof \Omeka\Api\Representation\AssetRepresentation) {
-                $url = $result->assetUrl();
-            } elseif (is_object($result)) {
-                $url = $result->primaryMedia()->originalUrl();
-            } else {
-                $url = $result;
-            }
+        if (!$result) {
+            $url = '';
+        } elseif (is_object($result) && $result instanceof \Omeka\Api\Representation\AssetRepresentation) {
+            $url = $result->assetUrl();
+        } elseif (is_object($result)) {
+            $url = $result->primaryMedia()->originalUrl();
+        } else {
+            $url = $result;
         }
 
         $this->connection->query('UPDATE ebook_creation SET resource_data = "' . $url . '" WHERE `job_id` = "' . $job_id . '";');
@@ -267,8 +267,7 @@ XHTML5;
 
         $this->finalizeEbook();
 
-        $result = $this->saveEbook();
-        return $result;
+        return $this->saveEbook();
     }
 
     /**
@@ -525,7 +524,7 @@ CSS;
             $ebook->addChapter(
                 'ePubLog',
                 'ePubLog.xhtml',
-                $this->contentStart . $epuplog . PHP_EOL . $this->contentEnd
+                $this->contentStart . $epuplog . "\n" . $this->contentEnd
             );
         }
 

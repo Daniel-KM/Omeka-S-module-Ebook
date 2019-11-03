@@ -8,36 +8,60 @@
  * @var string $heading
  */
 
-// This template is compatible with module BlockPlus.
+// This template is the one of module BlockPlus.
 
-$thumbnail = $this->plugin('thumbnail');
+$plugins = $this->getHelperPluginManager();
+$thumbnail = $plugins->get('thumbnail');
+$hyperlink = $plugins->get('hyperlink');
+$siteSetting = $plugins->get('siteSetting');
+
+$linkType = $siteSetting('attachment_link_type', 'item');
 ?>
+
 <div class="item-showcase">
     <?php if (!empty($heading)): ?>
     <h2><?= $heading ?></h2>
     <?php endif; ?>
 
-<?php foreach ($attachments as $attachment): ?>
-    <div class="item resource">
-    <?php $item = $attachment->item(); ?>
-    <?php if ($item): ?>
-        <?php
-        $media = $attachment->media() ?: $item->primaryMedia();
-        if ($media):
-            echo $item->linkRaw($thumbnail($media, $thumbnailType));
-        endif;
-        ?>
-        <?php if ($showTitleOption === 'item_title'): ?>
-        <h3><?= $item->link($item->displayTitle()) ?></h3>
-        <?php elseif ($showTitleOption === 'file_name'): ?>
-        <h3><?= $media->displayTitle() ?></h3>
-        <?php endif; ?>
-    <?php endif; ?>
+    <?php
+    foreach ($attachments as $attachment):
+        $render = null;
+        $title = null;
+        $link = null;
+        $item = $attachment->item();
+        if ($item):
+            $media = $attachment->media() ?: $item->primaryMedia();
+            if ($media):
+                $render = $item->linkRaw($thumbnail($media, $thumbnailType));
+            endif;
 
-    <?php $caption = $attachment->caption(); ?>
-    <?php if ($caption): ?>
-        <div class="caption"><?= $caption ?></div>
-    <?php endif; ?>
+            if ($showTitleOption == 'item_title'):
+                $title = $item->displayTitle();
+            elseif ($media && $showTitleOption == 'file_name'):
+                $title = $media->displayTitle();
+            endif;
+
+            if ($title):
+                if ($media && $linkType === 'media'):
+                    $link = $media->link($title);
+                elseif ($media && $linkType === 'original' && $media->hasOriginal()):
+                    $link = $hyperlink($title, $media->originalUrl());
+                else:
+                    $link = $item->link($title);
+                endif;
+            endif;
+        endif;
+
+        $caption = $attachment->caption();
+    ?>
+    <div class="item resource">
+        <?= $render ?>
+        <?= $link ?>
+        <?php if ($caption): ?>
+        <div class="caption">
+            <?= $caption ?>
+        </div>
+        <?php endif; ?>
     </div>
 <?php endforeach; ?>
 </div>
