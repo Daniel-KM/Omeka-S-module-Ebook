@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-08 00:00+0200\n"
+"POT-Creation-Date: 2019-11-04 00:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:198
+#: Module.php:128
 msgid "Create eBook"
 msgstr ""
 
-#: Module.php:202
+#: Module.php:132
 msgid "EBook Creator"
+msgstr ""
+
+#: src/Generic/AbstractModule.php:518
+#, php-format
+msgid "This module requires the module \"%s\"."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:538
+#, php-format
+msgid "This module requires modules \"%s\"."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:606
+#, php-format
+msgid ""
+"The module \"%s\" was automatically deactivated because the dependencies are "
+"unavailable."
 msgstr ""
 
 #: src/Media/FileRenderer/Epub.php:53
@@ -35,29 +52,29 @@ msgstr ""
 msgid "You may %sdownload it%s to view it offline."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:206
+#: src/Mvc/Controller/Plugin/Ebook.php:277
 msgid "[No title]"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:319
+#: src/Mvc/Controller/Plugin/Ebook.php:390
 #, php-format
 msgid "Generated from digital library: %s"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:416
+#: src/Mvc/Controller/Plugin/Ebook.php:494
 msgid "Notices"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:419
+#: src/Mvc/Controller/Plugin/Ebook.php:499
 msgid "Table of Contents"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:642
+#: src/Mvc/Controller/Plugin/Ebook.php:705
 #, php-format
 msgid "Item set #%d: %s"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:668
+#: src/Mvc/Controller/Plugin/Ebook.php:758
 #, php-format
 msgid "Item #%d: %s"
 msgstr ""
@@ -67,7 +84,7 @@ msgid "Create an ebook"
 msgstr ""
 
 #: view/ebook/admin/ebook/create.phtml:31
-#: view/ebook/site-admin/ebook/create.phtml:17
+#: view/ebook/site-admin/ebook/create.phtml:18
 msgid "Build"
 msgstr ""
 
@@ -102,7 +119,39 @@ msgstr ""
 msgid "Fill the form."
 msgstr ""
 
-#: view/ebook/site-admin/ebook/create.phtml:12
+#: view/ebook/admin/ebook/created-ebooks.phtml:15
+msgid "Ebooks"
+msgstr ""
+
+#: view/ebook/admin/ebook/created-ebooks.phtml:15
+msgid "Created ebooks"
+msgstr ""
+
+#: view/ebook/admin/ebook/created-ebooks.phtml:18
+msgid "List of all past created ebooks"
+msgstr ""
+
+#: view/ebook/admin/ebook/created-ebooks.phtml:24
+msgid "Job"
+msgstr ""
+
+#: view/ebook/admin/ebook/created-ebooks.phtml:28
+msgid "Ebook link"
+msgstr ""
+
+#: view/ebook/admin/ebook/created-ebooks.phtml:37
+msgid "details"
+msgstr ""
+
+#: view/ebook/admin/ebook/created-ebooks.phtml:44
+msgid "Download"
+msgstr ""
+
+#: view/ebook/admin/ebook/created-ebooks.phtml:46
+msgid "Read it"
+msgstr ""
+
+#: view/ebook/site-admin/ebook/create.phtml:13
 msgid "Create an ebook for the site"
 msgstr ""
 
@@ -110,31 +159,23 @@ msgstr ""
 msgid "Subjects"
 msgstr ""
 
-#: view/ebook/template/item-set.phtml:13
+#: view/ebook/template/item-set.phtml:14
 #, php-format
 msgid "Item set #%d"
 msgstr ""
 
-#: view/ebook/template/item.phtml:18
+#: view/ebook/template/item.phtml:19
 #, php-format
 msgid "Item #%d"
 msgstr ""
 
-#: view/ebook/template/item.phtml:50
+#: view/ebook/template/item.phtml:51
 msgid "Medias"
 msgstr ""
 
-#: view/ebook/template/item.phtml:55
+#: view/ebook/template/item.phtml:56
 #, php-format
 msgid "Media #%d"
-msgstr ""
-
-#: src/Form/ConfigForm.php:15
-msgid "Path to pdftk"
-msgstr ""
-
-#: src/Form/ConfigForm.php:16
-msgid "Only needed to create a pdf file."
 msgstr ""
 
 #: src/Form/EbookForm.php:67
@@ -207,71 +248,75 @@ msgstr ""
 msgid "Asset to download"
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:56
-#: src/Controller/Admin/EbookController.php:221
+#: src/Controller/Admin/EbookController.php:77
 #, php-format
 msgid "Ebook successfully created. %sDownload it%s or %sread it%s. %s"
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:113
+#: src/Controller/Admin/EbookController.php:161
 msgid "You can create an ebook only from items, item sets and media."
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:159
+#: src/Controller/Admin/EbookController.php:210
 msgid "You must select at least one item set with items to create an Ebook."
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:169
+#: src/Controller/Admin/EbookController.php:220
 msgid "You must select at least one item to create an ebook."
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:177
+#: src/Controller/Admin/EbookController.php:227
 msgid "You must select at least one resource to create an ebook."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:570
+#: src/Controller/Admin/EbookController.php:264
+#, php-format
+msgid "Creating ebook in background (%sjob #%d%s)."
+msgstr ""
+
+#: src/Mvc/Controller/Plugin/Ebook.php:584
 #, php-format
 msgid "The ebook has an unavailable page type: \"%s\"."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:577
+#: src/Mvc/Controller/Plugin/Ebook.php:591
 #, php-format
 msgid "The ebook has an unavailable page: \"%s\"."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:589
+#: src/Mvc/Controller/Plugin/Ebook.php:603
 #, php-format
 msgid "The module cannot manage type \"%s\" currently."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:696
+#: src/Mvc/Controller/Plugin/Ebook.php:791
 #, php-format
 msgid "Ebook cannot be built: \"%s\""
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:794
+#: src/Mvc/Controller/Plugin/Ebook.php:901
 msgid "Ebook cannot be created."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:855
+#: src/Mvc/Controller/Plugin/Ebook.php:969
 #, php-format
 msgid "Ebook cannot be saved in \"%s\" (temp file: \"%s\")"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:887
-#: src/Mvc/Controller/Plugin/Ebook.php:893
+#: src/Mvc/Controller/Plugin/Ebook.php:998
+#: src/Mvc/Controller/Plugin/Ebook.php:1004
 #, php-format
 msgid "The destination folder \"%s\" is not writeable."
 msgstr ""
 
-#: config/module.config.php:105
+#: config/module.config.php:128
 msgid "Create ebook"
 msgstr ""
 
-#: config/module.config.php:106
+#: config/module.config.php:129
 msgid "Create ebook with all"
 msgstr ""
 
-#: config/module.config.php:107
+#: config/module.config.php:130
 msgid "Create ebook with selected"
 msgstr ""
