@@ -877,14 +877,22 @@ CSS;
                             $value = $data[$term];
                             break;
                     }
-                    $itemData[$term] = [
-                        [
-                            'property_id' => $termId,
-                            'type' => 'literal',
-                            '@language' => null,
-                            '@value' => $value,
-                        ],
-                    ];
+                    if (!is_array($value)) {
+                        $value = [$value];
+                    }
+                    foreach ($value as $val) {
+                        if (strlen($val) === 0) {
+                            continue;
+                        }
+                        $itemData[$term] = [
+                            [
+                                'property_id' => $termId,
+                                'type' => 'literal',
+                                '@language' => null,
+                                '@value' => $val,
+                            ],
+                        ];
+                    }
                 }
 
                 // TODO Add epub in global settings.
