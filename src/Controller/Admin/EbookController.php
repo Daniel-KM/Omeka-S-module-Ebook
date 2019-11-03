@@ -49,27 +49,28 @@ class EbookController extends AbstractActionController
         if ($isPost) {
             $form->setData($params);
             if ($form->isValid()) {
+                $url = $this->viewHelpers()->get('url');
                 $data = $form->getData();
                 $data['site'] = $site;
+                $data['url_top'] = rtrim($url('top', [], ['force_canonical' => true]), '/') . '/';
 
                 $result = $this->ebook($data);
 
                 if ($result) {
                     $messageResource = '';
-                    if (is_object($result) && $result instanceof \Omeka\Api\Representation\AssetRepresentation) {
-                        $url = $result->assetUrl();
-                    } elseif (is_object($result)) {
-                        $url = $result->primaryMedia()->originalUrl();
-                        $messageResource = new Message(
-                            'See it as %sitem #%d%s.',
-                            '<a href="' . htmlspecialchars($result->url()) . '">',
-                            $result->id(),
-                            '</a>'
-                        );
-                        $messageResource->setEscapeHtml(false);
-                    } else {
-                        $url = $result;
+                    if (isset($result['resource']) && is_object($result['resource'])) {
+                        if ($result instanceof \Omeka\Api\Representation\AssetRepresentation) {
+                        } else {
+                            $messageResource = new Message(
+                                'See it as %sitem #%d%s.',
+                                '<a href="' . htmlspecialchars($result['resource']->url()) . '">',
+                                $result->id(),
+                                '</a>'
+                            );
+                            $messageResource->setEscapeHtml(false);
+                        }
                     }
+                    $url = $result['url'];
                     $assetUrl = $this->viewHelpers()->get('assetUrl');
                     $urlRead = $assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=' . $url;
                     $message = new Message(
@@ -250,6 +251,8 @@ class EbookController extends AbstractActionController
                 $data['resource_type'] = $resource;
                 $data['resource_ids'] = $resourceIds;
                 $data['query'] = $query;
+                $url = $this->viewHelpers()->get('url');
+                $data['url_top'] = rtrim($url('top', [], ['force_canonical' => true]), '/') . '/';
 
                 $dispatcher = $this->jobDispatcher();
 

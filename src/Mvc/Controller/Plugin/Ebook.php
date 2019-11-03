@@ -115,7 +115,7 @@ class Ebook extends AbstractPlugin
     protected $connection;
 
     /**
-     * Absolute base path of the files (generally "/files").
+     * Relative base path of the files (generally "/files").
      *
      * @var string
      */
@@ -220,7 +220,7 @@ XHTML5;
      * Create an ebook from a list of resources, some metadata, and a template.
      *
      * @param array $data
-     * @return string|null The asset, or the path to the file, or null if error.
+     * @return array|null An array containing the asset and the url.
      */
     public function __invoke(array $data)
     {
@@ -230,21 +230,8 @@ XHTML5;
     public function task(array $data, $job_id)
     {
         $result = $this->create($data);
-
-        $url = '';
-
-        if (!$result) {
-            $url = '';
-        } elseif (is_object($result) && $result instanceof \Omeka\Api\Representation\AssetRepresentation) {
-            $url = $result->assetUrl();
-        } elseif (is_object($result)) {
-            $url = $result->primaryMedia()->originalUrl();
-        } else {
-            $url = $result;
-        }
-
+        $url = isset($result['url']) ? $result['url'] : '';
         $this->connection->query('UPDATE ebook_creation SET resource_data = "' . $url . '" WHERE `job_id` = "' . $job_id . '";');
-
         return $result;
     }
 
@@ -803,7 +790,7 @@ CSS;
         if (empty($result)) {
             $this->logger->err(new Message('Ebook cannot be built: "%s"', // @translate
                 $data['dcterms:title']));
-            return;
+            return null;
         }
 
         switch ($data['output']) {
@@ -816,7 +803,7 @@ CSS;
                 $dirPath = $this->basePath . '/asset/ebook';
                 $storedFile = $this->saveFile($filepath, $dirPath, 'ebook/', 'files/asset/ebook/');
                 if (empty($storedFile)) {
-                    return;
+                    return null;
                 }
 
                 $asset = new \Omeka\Entity\Asset;
@@ -829,6 +816,10 @@ CSS;
 
                 /** @var \Omeka\Api\Representation\AssetRepresentation $asset */
                 $asset = $this->api->read('assets', $asset->getId())->getContent();
+                $result = [
+                    'resource' => $asset,
+                    'url' => $storedFile['url'],
+                ];
                 break;
 
             case 'item':
@@ -838,7 +829,7 @@ CSS;
                 $dirPath = $this->basePath . '/temp';
                 $storedFile = $this->saveFile($filepath, $dirPath, '', 'files/temp/');
                 if (empty($storedFile)) {
-                    return;
+                    return null;
                 }
                 $tempPath = $dirPath . DIRECTORY_SEPARATOR . $storedFile['filename'];
 
@@ -849,7 +840,7 @@ CSS;
                 $itemData['o:item_set'] = [];
                 $itemData['o:media'][] = [
                     'o:is_public' => 1,
-                    'ingest_url' => $storedFile['url'],
+                    'ingest_url' => $data['url_top'] . $storedFile['url'],
                     'o:ingester' => 'url',
                 ];
                 foreach ([
@@ -908,11 +899,15 @@ CSS;
 
                 if (!$response) {
                     $this->logger->err(new Message('Ebook cannot be created.')); // @translate
-                    return;
+                    return null;
                 }
                 $item = $response->getContent();
+                $media = $item->primaryMedia();
 
-                $result = $item->primaryMedia();
+                $result = [
+                    'resource' => $media,
+                    'url' => $media->originalUrl(),
+                ];
                 break;
 
             case 'download':
@@ -923,7 +918,10 @@ CSS;
                     return;
                 }
 
-                $result = $storedFile['url'];
+                $result = [
+                    'resource' => null,
+                    'url' => $storedFile['url'],
+                ];
                 break;
         }
 
@@ -977,10 +975,7 @@ CSS;
             }
         } while (++$i);
 
-        // TODO Use true config base_url if set.
-        // TODO The url is build manually for temp files: use url().
-        $url = $this->url;
-        $url = $url('top', [], ['force_canonical' => true]) . $baseUrl . $filename;
+        $url = $baseUrl . $filename;
 
         return [
             'filename' => $filename,
