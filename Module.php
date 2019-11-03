@@ -53,6 +53,8 @@ class Module extends AbstractModule
      */
     public function init(ModuleManager $moduleManager)
     {
+        // TODO Init view with view helper "doctype" to set xhtml.
+
         require_once __DIR__ . '/vendor/autoload.php';
     }
 

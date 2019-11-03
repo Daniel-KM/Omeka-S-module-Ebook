@@ -14,6 +14,7 @@ class Thumbnail extends AbstractHtmlElement
      *
      * Same as core view helper, but as xhtml (ending with "/>").
      * @see \Omeka\View\Helper\Thumbnail
+     * @todo use view helper "doctype" to set xhtml.
      *
      * @param AbstractRepresentation $representation
      * @param string $type
