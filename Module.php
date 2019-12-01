@@ -108,13 +108,15 @@ class Module extends AbstractModule
         }
 
         $view = $event->getTarget();
-        $view->headScript()->appendFile($view->assetUrl('js/ebook-admin.js', __NAMESPACE__));
+        $view->headScript()
+            ->appendFile($view->assetUrl('js/ebook-admin.js', 'Ebook'), 'text/javascript', ['defer' => 'defer']);
     }
 
     public function handleAdminViewBrowseResource(Event $event)
     {
         $view = $event->getTarget();
-        $view->headScript()->appendFile($view->assetUrl('js/ebook-admin.js', __NAMESPACE__));
+        $view->headScript()
+            ->appendFile($view->assetUrl('js/ebook-admin.js', 'Ebook'), 'text/javascript', ['defer' => 'defer']);
     }
 
     public function handleAdminViewShowSidebar(Event $event)
