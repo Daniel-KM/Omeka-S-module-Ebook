@@ -31,17 +31,20 @@ If the module was installed from the source, rename the name of the folder of
 the module to `Ebook`, go to the root module, and run:
 
 ```
-    npm install
-    gulp
     composer install
 ```
 
 The next times:
 
 ```
-    npm update
-    gulp
     composer update
+```
+
+Note: epubjs-reader is available as npm too for development:
+
+```
+    npm install
+    gulp
 ```
 
 

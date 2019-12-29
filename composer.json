@@ -28,19 +28,50 @@
         {
             "type": "git",
             "url": "https://github.com/Daniel-KM/PHPePub"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "futurepress/epubjs-reader",
+                "version": "0.3",
+                "dist": {
+                     "url": "https://codeload.github.com/futurepress/epubjs-reader/zip/master",
+                     "type": "zip"
+                }
+            }
         }
     ],
     "require": {
         "grandt/phpepub": "dev-master",
         "vanilla/htmlawed": "~1.0",
-        "gmo/iso-639": "^1.0"
+        "gmo/iso-639": "^1.0",
+        "futurepress/epubjs-reader": "*",
+        "slowprog/composer-copy-file": "^0.3.1"
     },
     "require-dev": {
         "biblibre/omeka-s-test-helper": "dev-master"
     },
+    "autoload": {
+        "psr-4": {
+            "Ebook\\": "src/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
             "EbookTest\\": "test/EbookTest/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "SlowProg\\CopyFile\\ScriptHandler::copy"
+        ],
+        "post-update-cmd": [
+            "SlowProg\\CopyFile\\ScriptHandler::copy"
+        ]
+    },
+    "extra": {
+        "copy-file": {
+            "vendor/futurepress/epubjs-reader/reader/": "asset/vendor/epubjs-reader"
         }
     }
 }
