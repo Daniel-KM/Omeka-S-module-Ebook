@@ -43,35 +43,46 @@ class EbookController extends AbstractActionController
         }
 
         $params['site'] = $site;
+        $viewHelpers = $this->viewHelpers();
 
         $form = $this->getForm(EbookForm::class);
         $form->setAttribute('id', 'ebook-create');
         if ($isPost) {
             $form->setData($params);
             if ($form->isValid()) {
-                $url = $this->viewHelpers()->get('url');
+                $urlHelper = $viewHelpers->get('url');
                 $data = $form->getData();
                 $data['site'] = $site;
-                $data['url_top'] = rtrim($url('top', [], ['force_canonical' => true]), '/') . '/';
+                $data['url_top'] = rtrim($urlHelper('top', [], ['force_canonical' => true]), '/') . '/';
 
                 $result = $this->ebook($data);
 
                 if ($result) {
                     $messageResource = '';
                     if (isset($result['resource']) && is_object($result['resource'])) {
-                        if ($result instanceof \Omeka\Api\Representation\AssetRepresentation) {
+                        if ($result['resource'] instanceof \Omeka\Api\Representation\AssetRepresentation) {
                         } else {
                             $messageResource = new Message(
                                 'See it as %sitem #%d%s.',
                                 '<a href="' . htmlspecialchars($result['resource']->url()) . '">',
-                                $result->id(),
+                                $result['resource']->id(),
                                 '</a>'
                             );
                             $messageResource->setEscapeHtml(false);
                         }
                     }
+
+                    // Get the absolute url if it's a relative one.
                     $url = $result['url'];
-                    $assetUrl = $this->viewHelpers()->get('assetUrl');
+                    if (strpos($url, 'http') !== 0) {
+                        $serverUrl = $viewHelpers->get('ServerUrl');
+                        $webPath = $serverUrl('/');
+                        $basePath = $viewHelpers->get('BasePath');
+                        $basePath = trim($basePath(), '/') . '/';
+                        $url = $webPath . $basePath . $url;
+                    }
+
+                    $assetUrl = $viewHelpers->get('assetUrl');
                     $urlRead = $assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=' . $url;
                     $message = new Message(
                         'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
@@ -96,13 +107,14 @@ class EbookController extends AbstractActionController
             $form->setData($params);
         }
 
-        $ckEditor = $this->viewHelpers()->get('ckEditor');
+        $ckEditor = $viewHelpers->get('ckEditor');
         $ckEditor();
 
         $view = new ViewModel;
-        $view->setTemplate('ebook/site-admin/ebook/create');
-        $view->setVariable('form', $form);
-        $view->setVariable('siteSlug', $siteSlug);
+        $view
+            ->setTemplate('ebook/site-admin/ebook/create')
+            ->setVariable('form', $form)
+            ->setVariable('siteSlug', $siteSlug);
         return $view;
     }
 
