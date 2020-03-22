@@ -941,9 +941,8 @@ CSS;
     {
         $data = $this->data;
 
-        $destinationDir = $this->checkDestinationDir($destinationDir);
-        if (empty($destinationDir)) {
-            return;
+        if (!$this->checkDestinationDir($destinationDir)) {
+            return null;
         }
 
         $mapMediaTypesToExtensions = [
@@ -966,22 +965,20 @@ CSS;
             if (!file_exists($destination)) {
                 $result = @rename($source, $destination);
                 if (!$result) {
-                    $this->logger->err(new Message('Ebook cannot be saved in "%s" (temp file: "%s")', // @translate
+                    $this->logger->err(new Message('Ebook cannot be saved in "%1$s" (temp file: "%2$s")', // @translate
                         $destination, $source));
-                    return;
+                    return null;
                 }
                 $storageId = $base . $name . ($i ? '-' . $i : '');
                 break;
             }
         } while (++$i);
 
-        $url = $baseUrl . $filename;
-
         return [
             'filename' => $filename,
             'storageId' => $storageId,
             'extension' => $extension,
-            'url' => $url,
+            'url' => $baseUrl . $filename,
         ];
     }
 
@@ -989,7 +986,7 @@ CSS;
      * Check or create the destination folder.
      *
      * @param string $dirPath
-     * @return string|null
+     * @return bool
      */
     protected function checkDestinationDir($dirPath)
     {
@@ -997,15 +994,15 @@ CSS;
             if (!is_writeable($this->basePath)) {
                 $this->logger->err(new Message('The destination folder "%s" is not writeable.', // @translate
                     $dirPath));
-                return;
+                return false;
             }
             @mkdir($dirPath, 0755, true);
         } elseif (!is_dir($dirPath) || !is_writeable($dirPath)) {
             $this->logger->err(new Message('The destination folder "%s" is not writeable.', // @translate
                 $dirPath));
-            return;
+            return false;
         }
-        return $dirPath;
+        return bool;
     }
 
     /**
