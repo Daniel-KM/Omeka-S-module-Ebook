@@ -50,7 +50,7 @@ return [
                             'slug' => [
                                 'child_routes' => [
                                     'ebook' => [
-                                        'type' => \Zend\Router\Http\Literal::class,
+                                        'type' => \Laminas\Router\Http\Literal::class,
                                         'options' => [
                                             'route' => '/ebook',
                                             'defaults' => [
@@ -65,7 +65,7 @@ return [
                         ],
                     ],
                     'ebook' => [
-                        'type' => \Zend\Router\Http\Literal::class,
+                        'type' => \Laminas\Router\Http\Literal::class,
                         'options' => [
                             'route' => '/ebook',
                             'defaults' => [
@@ -77,7 +77,7 @@ return [
                         'may_terminate' => true,
                         'child_routes' => [
                             'default' => [
-                                'type' => \Zend\Router\Http\Segment::class,
+                                'type' => \Laminas\Router\Http\Segment::class,
                                 'options' => [
                                     'route' => '/:action',
                                     'constraints' => [
@@ -89,7 +89,7 @@ return [
                                 ],
                             ],
                             'created-ebooks' => [
-                                'type' => \Zend\Router\Http\Literal::class,
+                                'type' => \Laminas\Router\Http\Literal::class,
                                 'options' => [
                                     'route' => '/created-ebooks',
                                     'defaults' => [

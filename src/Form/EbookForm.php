@@ -4,9 +4,9 @@ namespace Ebook\Form;
 use Omeka\Form\Element\Asset;
 use Omeka\Form\Element\CkeditorInline;
 use Omeka\Form\Element\ResourceSelect;
-use Zend\Form\Element;
-use Zend\Form\Form;
-use Zend\View\Helper\Url;
+use Laminas\Form\Element;
+use Laminas\Form\Form;
+use Laminas\View\Helper\Url;
 
 class EbookForm extends Form
 {
@@ -280,7 +280,7 @@ class EbookForm extends Form
     }
 
     /**
-     * @return \Zend\View\Helper\Url
+     * @return \Laminas\View\Helper\Url
      */
     public function getUrlHelper()
     {

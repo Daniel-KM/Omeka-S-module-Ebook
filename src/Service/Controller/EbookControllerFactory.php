@@ -3,7 +3,7 @@ namespace Ebook\Service\Controller;
 
 use Ebook\Controller\Admin\EbookController;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class EbookControllerFactory implements FactoryInterface
 {

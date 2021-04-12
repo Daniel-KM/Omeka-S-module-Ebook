@@ -6,8 +6,8 @@ use Doctrine\DBAL\Connection;
 use Ebook\Form\EbookForm;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Stdlib\Message;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class EbookController extends AbstractActionController
 {

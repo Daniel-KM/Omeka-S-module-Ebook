@@ -46,11 +46,11 @@ use PHPePub\Helpers\CalibreHelper;
 use PHPePub\Helpers\IBooksHelper;
 use PHPePub\Helpers\Rendition\RenditionHelper;
 use UUID;
-use Zend\I18n\View\Helper\Translate;
-use Zend\Log\Logger;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\View\Helper\Url;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\I18n\View\Helper\Translate;
+use Laminas\Log\Logger;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\View\Helper\Url;
+use Laminas\View\Renderer\PhpRenderer;
 
 /**
  * @todo Build a generic export interface (for online view too). Why not a pseudo-theme?
@@ -616,7 +616,7 @@ CSS;
         //     'page' => $page,
         //     'data' => $data,
         // ]);
-        $view = new \Zend\View\Model\ViewModel;
+        $view = new \Laminas\View\Model\ViewModel;
         $view->setVariable('site', $site);
         $view->setVariable('page', $page);
         $view->setVariable('displayNavigation', false);
