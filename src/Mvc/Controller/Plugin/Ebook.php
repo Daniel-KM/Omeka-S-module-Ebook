@@ -337,9 +337,9 @@ XHTML5;
         $ebook->isLogging = !empty($data['debug']);
 
         // Title and Identifier are mandatory!
-        $ebook->setTitle($data['dcterms:title']);
+        $ebook->setTitle((string) $data['dcterms:title']);
 
-        $identifier = trim($data['dcterms:identifier']);
+        $identifier = trim((string) $data['dcterms:identifier']);
         $identifierType = null;
         // @see https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9781449327453/ch04s13.html
         $regexIsbn = <<<'REGEX'
@@ -522,6 +522,10 @@ CSS;
     {
         $data = $this->data;
         $ebook = $this->ebook;
+
+        // Need to set the site for site settings, that may be used indirectly.
+        $siteSettings = $services->get('Omeka\Settings\Site');
+        $siteSettings->setTargetId($site->id());
 
         /** @var \Omeka\Api\Representation\SiteRepresentation $site */
         $site = $data['site'];
@@ -941,7 +945,7 @@ CSS;
     {
         $data = $this->data;
 
-        if (!$this->checkDestinationDir($destinationDir)) {
+        if (!$this->checkDir($destinationDir)) {
             return null;
         }
 
@@ -988,7 +992,7 @@ CSS;
      * @param string $dirPath
      * @return bool
      */
-    protected function checkDestinationDir($dirPath)
+    protected function checkDir($dirPath)
     {
         if (!file_exists($dirPath)) {
             if (!is_writeable($this->basePath)) {
@@ -1059,7 +1063,7 @@ CSS;
         } else {
             $slug = $input;
         }
-        $slug = mb_strtolower($slug, 'UTF-8');
+        $slug = mb_strtolower((string) $slug, 'UTF-8');
         $slug = preg_replace('/[^a-z0-9-]+/u', '-', $slug);
         $slug = preg_replace('/-{2,}/', '-', $slug);
         $slug = preg_replace('/-*$/', '', $slug);

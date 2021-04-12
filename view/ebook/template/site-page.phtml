@@ -13,6 +13,10 @@
 // See application/view/omeka/site/page/content.phtml.
 $layouts = [];
 
+// Need to set the site for site settings, that may be used indirectly.
+$siteSettings = $services->get('Omeka\Settings\Site');
+$siteSettings->setTargetId($site->id());
+
 foreach ($page->blocks() as $block) {
     if (!array_key_exists($block->layout(), $layouts)) {
         // Prepare render only once per layout type.

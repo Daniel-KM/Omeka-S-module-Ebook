@@ -227,6 +227,10 @@ class EbookController extends AbstractActionController
             }
 
             // TODO Allows item set alone, without item.
+            // Don't load entities if the only information needed is total results.
+            if (empty($query['limit'])) {
+                $query['limit'] = 0;
+            }
             $count = $this->api()->search('items', $itemQuery)->getTotalResults();
             if (!$count) {
                 $this->messenger()->addError('You must select at least one item to create an ebook.'); // @translate
@@ -373,7 +377,7 @@ class EbookController extends AbstractActionController
         $params['dcterms:description'] = $itemSet->displayDescription();
         $params['dcterms:subject'] = implode(', ', array_map(function ($v) {
             return $v->value();
-        }, $itemSet->value('dcterms:subject', ['type' => 'literal', 'all' => true, 'default' => []])));
+        }, $itemSet->value('dcterms:subject', ['type' => 'literal', 'all' => true])));
         $url = $this->viewHelpers()->get('url');
         $params['publisher_url'] = $url('top', [], ['force_canonical' => true]);
         $toFill = [
