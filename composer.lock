@@ -49,6 +49,10 @@
                 "iso-639",
                 "language"
             ],
+            "support": {
+                "issues": "https://github.com/gmo/iso-639/issues",
+                "source": "https://github.com/gmo/iso-639/tree/v1.0.0"
+            },
             "time": "2015-07-17T00:18:37+00:00"
         },
         {
@@ -92,6 +96,10 @@
                 "binary strings",
                 "mbstring"
             ],
+            "support": {
+                "issues": "https://github.com/Grandt/PHPBinString/issues",
+                "source": "https://github.com/Grandt/PHPBinString/tree/master"
+            },
             "time": "2015-08-13T06:14:41+00:00"
         },
         {
@@ -109,6 +117,7 @@
                 "php": ">=5.3.0",
                 "phpzip/phpzip": "~2.0.7"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -195,6 +204,10 @@
                 "gif",
                 "resize"
             ],
+            "support": {
+                "issues": "https://github.com/Grandt/PHPResizeGif/issues",
+                "source": "https://github.com/Grandt/PHPResizeGif/tree/master"
+            },
             "time": "2015-05-10T10:52:24+00:00"
         },
         {
@@ -251,6 +264,10 @@
                 "stream",
                 "zip"
             ],
+            "support": {
+                "issues": "https://github.com/Grandt/PHPZipMerge/issues",
+                "source": "https://github.com/Grandt/PHPZipMerge/tree/master"
+            },
             "time": "2015-08-18T13:49:33+00:00"
         },
         {
@@ -292,20 +309,24 @@
             "keywords": [
                 "file path"
             ],
+            "support": {
+                "issues": "https://github.com/Grandt/PHPRelativePath/issues",
+                "source": "https://github.com/Grandt/PHPRelativePath/tree/master"
+            },
             "time": "2015-05-14T08:18:23+00:00"
         },
         {
             "name": "masterminds/html5",
-            "version": "2.7.0",
+            "version": "2.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "104443ad663d15981225f99532ba73c2f1d6b6f2"
+                "reference": "9227822783c75406cfe400984b2f095cdf03d417"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/104443ad663d15981225f99532ba73c2f1d6b6f2",
-                "reference": "104443ad663d15981225f99532ba73c2f1d6b6f2",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/9227822783c75406cfe400984b2f095cdf03d417",
+                "reference": "9227822783c75406cfe400984b2f095cdf03d417",
                 "shasum": ""
             },
             "require": {
@@ -315,9 +336,7 @@
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35",
-                "sami/sami": "~2.0",
-                "satooshi/php-coveralls": "1.0.*"
+                "phpunit/phpunit": "^4.8.35"
             },
             "type": "library",
             "extra": {
@@ -359,7 +378,11 @@
                 "serializer",
                 "xml"
             ],
-            "time": "2019-07-25T07:03:26+00:00"
+            "support": {
+                "issues": "https://github.com/Masterminds/html5-php/issues",
+                "source": "https://github.com/Masterminds/html5-php/tree/2.7.4"
+            },
+            "time": "2020-10-01T13:52:52+00:00"
         },
         {
             "name": "phpzip/phpzip",
@@ -420,20 +443,24 @@
                 "stream",
                 "zip"
             ],
+            "support": {
+                "issues": "https://github.com/Grandt/PHPZip/issues",
+                "source": "https://github.com/Grandt/PHPZip/tree/master"
+            },
             "time": "2015-11-16T16:30:51+00:00"
         },
         {
             "name": "slowprog/composer-copy-file",
-            "version": "0.3.1",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slowprog/CopyFile.git",
-                "reference": "5a82ba4613948f70b2d4b041c13c1c9259fc6477"
+                "reference": "b02d55f7587577f29d355f0ce7b697f66dffc0af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slowprog/CopyFile/zipball/5a82ba4613948f70b2d4b041c13c1c9259fc6477",
-                "reference": "5a82ba4613948f70b2d4b041c13c1c9259fc6477",
+                "url": "https://api.github.com/repos/slowprog/CopyFile/zipball/b02d55f7587577f29d355f0ce7b697f66dffc0af",
+                "reference": "b02d55f7587577f29d355f0ce7b697f66dffc0af",
                 "shasum": ""
             },
             "require": {
@@ -468,7 +495,11 @@
             "keywords": [
                 "copy file"
             ],
-            "time": "2019-01-10T05:06:10+00:00"
+            "support": {
+                "issues": "https://github.com/slowprog/CopyFile/issues",
+                "source": "https://github.com/slowprog/CopyFile/tree/0.3.3"
+            },
+            "time": "2020-07-02T14:44:41+00:00"
         },
         {
             "name": "vanilla/htmlawed",
@@ -507,6 +538,10 @@
                 }
             ],
             "description": "A composer wrapper for the htmLawed library to purify & filter HTML. Tested with PHPUnit and PhantomJS!",
+            "support": {
+                "issues": "https://github.com/vanilla/htmlawed/issues",
+                "source": "https://github.com/vanilla/htmlawed/tree/master"
+            },
             "time": "2016-01-18T19:42:40+00:00"
         }
     ],
@@ -528,6 +563,7 @@
             "require": {
                 "php": ">=5.5.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -544,6 +580,10 @@
                 "omeka",
                 "test"
             ],
+            "support": {
+                "issues": "https://github.com/biblibre/omeka-s-test-helper/issues",
+                "source": "https://github.com/biblibre/omeka-s-test-helper/tree/master"
+            },
             "time": "2016-09-22T16:40:26+00:00"
         }
     ],
@@ -556,5 +596,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
