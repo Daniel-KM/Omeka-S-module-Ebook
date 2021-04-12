@@ -26,7 +26,7 @@ install the module, or use and init the source.
 
 * From the zip
 
-Download the last release [`Ebook.zip`] from the list of releases (the master
+Download the last release [Ebook.zip] from the list of releases (the master
 does not contain the dependency), and uncompress it in the `modules` directory.
 
 * From the source and for development
@@ -34,21 +34,8 @@ does not contain the dependency), and uncompress it in the `modules` directory.
 If the module was installed from the source, rename the name of the folder of
 the module to `Ebook`, go to the root module, and run:
 
-```
+```sh
 composer install --no-dev
-```
-
-The next times:
-
-```
-    composer update
-```
-
-Note: epubjs-reader is available as npm too for development:
-
-```
-    npm install
-    gulp
 ```
 
 
@@ -132,7 +119,7 @@ This module uses the following components:
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2017-2019 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2017-2021 (see [Daniel-KM] on GitLab)
 * Stixfonts: see above
 * Copyright [Martin Fenner] 2011 (epub css)
 * Copyright [Fred Chasen] 2017-2018 ([epubjs-reader])
@@ -144,7 +131,7 @@ This module was built first for the French [Université Paris-Diderot].
 [Omeka S]: https://omeka.org/s
 [ePub]: http://idpf.org/epub
 [pdf]: https://www.adobe.com/devnet/pdf/pdf_reference.html
-[`Ebook.zip`]: https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/releases
+[Ebook.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/releases
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
