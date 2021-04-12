@@ -1,6 +1,10 @@
 eBook (module for Omeka S)
 ==========================
 
+> __New versions of this module and support for Omeka S version 3.0 and above
+> are available on [GitLab], which seems to respect users and privacy better
+> than the previous repository.__
+
 [eBook] is a module for [Omeka S] that allows to merge selected resources into
 an [ePub] or a [pdf] file for publishing or archiving purpose. An ebook can be
 created with the pages of a site too. The aim of such a feature is to have a
@@ -92,7 +96,7 @@ See online issues on the [module issues] page on GitHub.
 License
 -------
 
-This module is published under the [CeCILL v2.1] licence, compatible with
+This module is published under the [CeCILL v2.1] license, compatible with
 [GNU/GPL] and approved by [FSF] and [OSI].
 
 This software is governed by the CeCILL license under French law and abiding by
@@ -152,4 +156,5 @@ This module was built first for the French [Université Paris-Diderot].
 [Fred Chasen]: https://github.com/fchasen
 [epubjs-reader]: https://github.com/futurepress/epubjs-reader
 [Université Paris-Diderot]: http://univ-paris8.fr
+[GitLab]: https://gitlab.com/Daniel-KM
 [Daniel-KM]: https://github.com/Daniel-KM "Daniel Berthereau"
