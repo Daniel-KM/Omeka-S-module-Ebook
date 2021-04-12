@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 namespace Ebook\Form;
 
-use Omeka\Form\Element\Asset;
-use Omeka\Form\Element\CkeditorInline;
-use Omeka\Form\Element\ResourceSelect;
 use Laminas\Form\Element;
 use Laminas\Form\Form;
 use Laminas\View\Helper\Url;
+use Omeka\Form\Element\Asset;
+use Omeka\Form\Element\CkeditorInline;
+use Omeka\Form\Element\ResourceSelect;
 
 class EbookForm extends Form
 {
@@ -15,7 +15,7 @@ class EbookForm extends Form
      */
     protected $urlHelper;
 
-    public function init()
+    public function init(): void
     {
         $urlHelper = $this->getUrlHelper();
 
@@ -274,7 +274,7 @@ class EbookForm extends Form
     /**
      * @param Url $urlHelper
      */
-    public function setUrlHelper(Url $urlHelper)
+    public function setUrlHelper(Url $urlHelper): void
     {
         $this->urlHelper = $urlHelper;
     }

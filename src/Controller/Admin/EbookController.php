@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ebook\Controller\Admin;
 
 use Doctrine\DBAL\Connection;
 use Ebook\Form\EbookForm;
-use Omeka\Api\Representation\SiteRepresentation;
-use Omeka\Stdlib\Message;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Omeka\Api\Representation\SiteRepresentation;
+use Omeka\Stdlib\Message;
 
 class EbookController extends AbstractActionController
 {

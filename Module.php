@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * eBook Creator
  *
@@ -51,14 +51,14 @@ class Module extends AbstractModule
     /**
      * @param ModuleManager $moduleManager
      */
-    public function init(ModuleManager $moduleManager)
+    public function init(ModuleManager $moduleManager): void
     {
         // TODO Init view with view helper "doctype" to set xhtml.
 
         require_once __DIR__ . '/vendor/autoload.php';
     }
 
-    public function attachListeners(SharedEventManagerInterface $sharedEventManager)
+    public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\ItemSet',
@@ -97,7 +97,7 @@ class Module extends AbstractModule
         );
     }
 
-    public function handleAdminViewLayoutAdminSiteNavigation(Event $event)
+    public function handleAdminViewLayoutAdminSiteNavigation(Event $event): void
     {
         // There is no specific event "view.before" for admin/site/navigation,
         // so use the generic event "view.layout", but filter it here.
@@ -112,14 +112,14 @@ class Module extends AbstractModule
             ->appendFile($view->assetUrl('js/ebook-admin.js', 'Ebook'), 'text/javascript', ['defer' => 'defer']);
     }
 
-    public function handleAdminViewBrowseResource(Event $event)
+    public function handleAdminViewBrowseResource(Event $event): void
     {
         $view = $event->getTarget();
         $view->headScript()
             ->appendFile($view->assetUrl('js/ebook-admin.js', 'Ebook'), 'text/javascript', ['defer' => 'defer']);
     }
 
-    public function handleAdminViewShowSidebar(Event $event)
+    public function handleAdminViewShowSidebar(Event $event): void
     {
         $view = $event->getTarget();
         $resource = $view->resource;

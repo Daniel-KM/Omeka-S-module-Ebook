@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Ebook\Service\ControllerPlugin;
 
 use Ebook\Mvc\Controller\Plugin\Ebook;

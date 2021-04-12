@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Ebook\Media\FileRenderer;
 
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\MediaRepresentation;
 use Omeka\Media\FileRenderer\RendererInterface;
-use Laminas\View\Renderer\PhpRenderer;
 
 class Epub implements RendererInterface
 {
@@ -62,7 +62,7 @@ class Epub implements RendererInterface
     /**
      * @param PhpRenderer $view
      */
-    protected function setView(PhpRenderer $view)
+    protected function setView(PhpRenderer $view): void
     {
         $this->view = $view;
     }

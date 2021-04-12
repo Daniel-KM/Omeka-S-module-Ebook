@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ebook\Job;
 
@@ -16,7 +16,7 @@ class Create extends AbstractJob
      */
     protected $connection;
 
-    public function perform()
+    public function perform(): void
     {
         $services = $this->getServiceLocator();
         $this->connection = $services->get('Omeka\Connection');

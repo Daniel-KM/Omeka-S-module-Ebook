@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * Copyright 2017-2019 Daniel Berthereau
@@ -31,9 +31,14 @@ namespace Ebook\Mvc\Controller\Plugin;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
+use Laminas\I18n\View\Helper\Translate;
+use Laminas\Log\Logger;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\View\Helper\Url;
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Exception\NotFoundException;
-use Omeka\Api\Representation\ItemSetRepresentation;
 use Omeka\Api\Representation\ItemRepresentation;
+use Omeka\Api\Representation\ItemSetRepresentation;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\File\TempFileFactory;
 use Omeka\Mvc\Controller\Plugin\Api;
@@ -46,11 +51,6 @@ use PHPePub\Helpers\CalibreHelper;
 use PHPePub\Helpers\IBooksHelper;
 use PHPePub\Helpers\Rendition\RenditionHelper;
 use UUID;
-use Laminas\I18n\View\Helper\Translate;
-use Laminas\Log\Logger;
-use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
-use Laminas\View\Helper\Url;
-use Laminas\View\Renderer\PhpRenderer;
 
 /**
  * @todo Build a generic export interface (for online view too). Why not a pseudo-theme?
@@ -230,7 +230,7 @@ XHTML5;
     public function task(array $data, $job_id)
     {
         $result = $this->create($data);
-        $url = isset($result['url']) ? $result['url'] : '';
+        $url = $result['url'] ?? '';
         $this->connection->query('UPDATE ebook_creation SET resource_data = "' . $url . '" WHERE `job_id` = "' . $job_id . '";');
         return $result;
     }
@@ -314,7 +314,7 @@ XHTML5;
      *
      * @see EPub.Example3.php
      */
-    protected function initializeEbook()
+    protected function initializeEbook(): void
     {
         $data = $this->data;
         $settings = $this->settings;
@@ -499,7 +499,7 @@ CSS;
         $ebook->addChapter($translate('Table of Contents'), 'toc.xhtml');
     }
 
-    protected function finalizeEbook()
+    protected function finalizeEbook(): void
     {
         $ebook = $this->ebook;
 
@@ -518,7 +518,7 @@ CSS;
         $ebook->finalize();
     }
 
-    protected function processSite()
+    protected function processSite(): void
     {
         $data = $this->data;
         $ebook = $this->ebook;
@@ -568,7 +568,7 @@ CSS;
      * @param SiteRepresentation $site
      * @param array $flatPage Navigation data of the page.
      */
-    protected function processSitePage(SiteRepresentation $site, $flatPage)
+    protected function processSitePage(SiteRepresentation $site, $flatPage): void
     {
         static $automaticId = 0;
 
@@ -638,7 +638,7 @@ CSS;
         );
     }
 
-    protected function processItemSets()
+    protected function processItemSets(): void
     {
         $data = $this->data;
         $ebook = $this->ebook;
@@ -687,7 +687,7 @@ CSS;
      *
      * @param ItemSet Representation $itemSet
      */
-    protected function processItemSet(ItemSetRepresentation $itemSet)
+    protected function processItemSet(ItemSetRepresentation $itemSet): void
     {
         static $automaticId = 0;
 
@@ -712,7 +712,7 @@ CSS;
         );
     }
 
-    protected function processItems()
+    protected function processItems(): void
     {
         $data = $this->data;
         $ebook = $this->ebook;
@@ -740,7 +740,7 @@ CSS;
      *
      * @param ItemRepresentation $item
      */
-    protected function processItem(ItemRepresentation $item)
+    protected function processItem(ItemRepresentation $item): void
     {
         static $automaticId = 0;
 
