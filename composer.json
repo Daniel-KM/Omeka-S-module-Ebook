@@ -9,9 +9,9 @@
             "email": "Daniel.packagist@Berthereau.net"
         }
     ],
-    "homepage": "https://github.com/Daniel-KM/Omeka-S-module-Ebook",
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook",
     "support": {
-        "issues": "https://github.com/Daniel-KM/Omeka-S-module-Ebook/issues",
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/issues",
         "forum": "https://forum.omeka.org/"
     },
     "keywords": [
@@ -27,7 +27,7 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/Daniel-KM/PHPePub"
+            "url": "https://gitlab.com/Daniel-KM/PHPePub"
         },
         {
             "type": "package",

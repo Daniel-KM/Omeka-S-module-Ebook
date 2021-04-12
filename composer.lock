@@ -107,7 +107,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Daniel-KM/PHPePub",
+                "url": "https://gitlab.com/Daniel-KM/PHPePub",
                 "reference": "78546d9a49d59ad9a32b13f3d95cc2f548add1c3"
             },
             "require": {

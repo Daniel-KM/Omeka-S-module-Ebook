@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Daniel-KM/Omeka-S-module-Ebook"
+    "url": "git+https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook"
   },
   "author": "Daniel Berthereau",
   "license": "CECILL-2.1",
   "bugs": {
-    "url": "https://github.com/Daniel-KM/Omeka-S-module-Ebook/issues"
+    "url": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/issues"
   },
-  "homepage": "https://github.com/Daniel-KM/Omeka-S-module-Ebook",
+  "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook",
   "keywords": [
     "Omeka S",
     "Omeka S module",
