@@ -24,6 +24,11 @@
         "report",
         "archiving"
     ],
+    "autoload": {
+        "psr-4": {
+            "Ebook\\": "src/"
+        }
+    },
     "repositories": [
         {
             "type": "git",
@@ -34,44 +39,37 @@
             "package": {
                 "name": "futurepress/epubjs-reader",
                 "version": "0.3",
+                "type": "omeka-module-asset",
                 "dist": {
-                     "url": "https://codeload.github.com/futurepress/epubjs-reader/zip/master",
-                     "type": "zip"
+                     "type": "zip",
+                     "url": "https://github.com/futurepress/epubjs-reader/archive/refs/heads/master.zip"
                 }
             }
         }
     ],
     "require": {
-        "grandt/phpepub": "dev-master",
-        "vanilla/htmlawed": "~1.0",
+        "futurepress/epubjs-reader": "0.3",
         "gmo/iso-639": "^1.0",
-        "futurepress/epubjs-reader": "*",
-        "slowprog/composer-copy-file": "^0.3.1"
-    },
-    "require-dev": {
-        "biblibre/omeka-s-test-helper": "dev-master"
-    },
-    "autoload": {
-        "psr-4": {
-            "Ebook\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "EbookTest\\": "test/EbookTest/"
-        }
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "SlowProg\\CopyFile\\ScriptHandler::copy"
-        ],
-        "post-update-cmd": [
-            "SlowProg\\CopyFile\\ScriptHandler::copy"
-        ]
+        "grandt/phpepub": "dev-master",
+        "oomphinc/composer-installers-extender": "^2.0",
+        "vanilla/htmlawed": "~1.0"
     },
     "extra": {
-        "copy-file": {
-            "vendor/futurepress/epubjs-reader/reader/": "asset/vendor/epubjs-reader"
+        "installer-types": ["omeka-module-asset"],
+        "installer-paths": {
+            "asset/vendor/{$name}/": [
+                "type:omeka-module-asset",
+                "futurepress/epubjs-reader"
+            ]
         }
+    },
+   "scripts": {
+        "post-install-cmd": "@build",
+        "post-update-cmd": "@build",
+        "build": [
+            "mv asset/vendor/epubjs-reader/reader asset/vendor/reader",
+            "rm -rf asset/vendor/epubjs-reader",
+            "mv asset/vendor/reader asset/vendor/epubjs-reader"
+        ]
     }
 }
