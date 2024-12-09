@@ -24,6 +24,10 @@ Installation
 The module uses external libraries to create files, so use the release zip to
 install the module, or use and init the source.
 
+See general end user documentation for [installing a module].
+
+This module requires the module [Common], that should be installed first.
+
 * From the zip
 
 Download the last release [Ebook.zip] from the list of releases (the master
@@ -37,6 +41,8 @@ the module to `Ebook`, go to the root module, and run:
 ```sh
 composer install --no-dev
 ```
+
+Then install it like any other Omeka module and follow the config instructions.
 
 
 Usage
@@ -59,10 +65,10 @@ Ebooks are displayed automatically by Omeka.
 TODO
 ----
 
-- Use a full standard Omeka theme instead of specific templates.
-- Manage other types of pages (this will be the case if a full theme is used).
-- Include composer in gulpfile.js.
-- Pdf management via mpdf.
+- [ ] Use a full standard Omeka theme instead of specific templates.
+- [ ]  Manage other types of pages (this will be the case if a full theme is used).
+- [ ]  Include composer in gulpfile.js.
+- [ ]  Pdf management via mpdf.
 
 
 Warning
@@ -119,7 +125,7 @@ This module uses the following components:
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2017-2021 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2017-2024 (see [Daniel-KM] on GitLab)
 * Stixfonts: see above
 * Copyright [Martin Fenner] 2011 (epub css)
 * Copyright [Fred Chasen] 2017-2018 ([epubjs-reader])
