@@ -88,7 +88,7 @@ class EbookController extends AbstractActionController
                         'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
                         '<a href="' . htmlspecialchars($url) . '">',
                         '</a>',
-                        '<a target="_blank" href="' . htmlspecialchars($urlRead) . '">',
+                        '<a target="_blank" rel="noopener" href="' . htmlspecialchars($urlRead) . '">',
                         '</a>',
                         $messageResource
                     );
