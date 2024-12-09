@@ -56,7 +56,7 @@ $medias = $item->media();
             <a class="resource-link" href="<?= $media->siteUrl($defaultSite('slug'), true) ?>">
                 <?php $title = $media->value('dcterms:title', ['type' => 'literal']); ?>
                 <?php $title = $title ? $title->value() : sprintf($translate('Media #%d'), $media->id()) ?>
-                <img src="<?= $media->thumbnailUrl('medium') ?>" alt="<?= $title ?>" />
+                <img loading="lazy" src="<?= $media->thumbnailUrl('medium') ?>" alt="<?= $title ?>" />
                 <span class="resource-name"><?= $title ?></span>
             </a>
         </div>

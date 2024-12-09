@@ -36,7 +36,7 @@ class Epub implements RendererInterface
 
         $options += $this->defaultOptions;
         $css = $options['style'] ? '<style>.viewer-epub {' . $options['style'] . '}</style>' . "\n" : '';
-        $html = '%1$s<iframe height="100%%" width="100%%" %2$s src="%3$s" class="viewer viewer-epub">%4$s</iframe>';
+        $html = '%1$s<iframe loading="lazy" height="100%%" width="100%%" %2$s src="%3$s" class="viewer viewer-epub">%4$s</iframe>';
         $url = $view->assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=' . $media->originalUrl();
 
         return vsprintf($html, [
@@ -55,7 +55,7 @@ class Epub implements RendererInterface
         $text .= ' ' . sprintf($view->translate('You may %sdownload it%s to view it offline.'), // @translate
             '<a href="' . $media->originalUrl() . '">', '</a>');
         $html = '<p>' . $text . '</p>'
-            . '<img src="' . $media->thumbnailUrl('large') . '" height="600px" />';
+            . '<img loading="lazy" src="' . $media->thumbnailUrl('large') . '" height="600px" />';
         return $html;
     }
 
