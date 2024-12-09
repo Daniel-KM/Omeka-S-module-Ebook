@@ -231,7 +231,7 @@ XHTML5;
     {
         $result = $this->create($data);
         $url = $result['url'] ?? '';
-        $this->connection->query('UPDATE ebook_creation SET resource_data = "' . $url . '" WHERE `job_id` = "' . $job_id . '";');
+        $this->connection->executeQuery('UPDATE ebook_creation SET resource_data = "' . $url . '" WHERE `job_id` = "' . $job_id . '";');
         return $result;
     }
 
