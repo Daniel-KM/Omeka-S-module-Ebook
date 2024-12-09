@@ -44,7 +44,6 @@ use Omeka\File\TempFileFactory;
 use Omeka\Mvc\Controller\Plugin\Api;
 use Omeka\Settings\Settings;
 use Omeka\Site\Navigation\Link\Manager as NavigationLinkManager;
-use Omeka\Stdlib\Message;
 use Omeka\View\Helper\NavigationLink;
 use PHPePub\Core\EPub;
 use PHPePub\Helpers\CalibreHelper;
@@ -482,7 +481,9 @@ CSS;
                         $asset->mediaType()
                     );
                 } else {
-                    $this->logger->warn(new Message('The cover is not a managed image.'));
+                    $this->logger->warn(
+                        'The cover is not a managed image.' // @translate
+                    );
                 }
             }
         }
@@ -585,15 +586,19 @@ CSS;
 
         // Warn if the page doesn't exits, and use the fallback.
         if (!$this->navigationLinkManager->has($type)) {
-            $this->logger->err(new Message('The ebook has an unavailable page type: "%s".', // @translate
-                $type));
+            $this->logger->err(
+                'The ebook has an unavailable page type: "{type}".', // @translate
+                ['type' => $type]
+            );
         } elseif ($type === 'page') {
             try {
                 /** @var \Omeka\Api\Representation\SitePageRepresentation $page */
                 $page = $this->api->read('site_pages', $flatPage['data']['id'])->getContent();
             } catch (NotFoundException $e) {
-                $this->logger->err(new Message('The ebook has an unavailable page: "%s".', // @translate
-                    $flatPage['id']));
+                $this->logger->err(
+                    'The ebook has an unavailable page: "{page}".', // @translate
+                    ['page' => $flatPage['id']]
+                );
                 return;
             }
         }
@@ -604,8 +609,10 @@ CSS;
         // Currently, only pages are supported.
         // TODO Manage other types than site pages (use a full theme instead).
         if ($type !== 'page') {
-            $this->logger->err(new Message('The module cannot manage type "%s" currently.', // @translate
-                $type));
+            $this->logger->err(
+                'The module cannot manage type "{type}" currently.', // @translate
+                ['type' => $type]
+            );
             return;
         }
 
@@ -792,8 +799,10 @@ CSS;
         }
 
         if (empty($result)) {
-            $this->logger->err(new Message('Ebook cannot be built: "%s"', // @translate
-                $data['dcterms:title']));
+            $this->logger->err(
+                'Ebook cannot be built: "{title}"', // @translate
+                ['titel' => $data['dcterms:title']]
+            );
             return null;
         }
 
@@ -902,7 +911,9 @@ CSS;
                 @unlink($tempPath);
 
                 if (!$response) {
-                    $this->logger->err(new Message('Ebook cannot be created.')); // @translate
+                    $this->logger->err(
+                        'Ebook cannot be created.' // @translate
+                    );
                     return null;
                 }
                 $item = $response->getContent();
@@ -969,8 +980,10 @@ CSS;
             if (!file_exists($destination)) {
                 $result = @rename($source, $destination);
                 if (!$result) {
-                    $this->logger->err(new Message('Ebook cannot be saved in "%1$s" (temp file: "%2$s")', // @translate
-                        $destination, $source));
+                    $this->logger->err(
+                        'Ebook cannot be saved in "{destination}" (temp file: "{file}")', // @translate
+                        ['destination' => $destination, 'file' => $source]
+                    );
                     return null;
                 }
                 $storageId = $base . $name . ($i ? '-' . $i : '');
@@ -996,14 +1009,18 @@ CSS;
     {
         if (!file_exists($dirPath)) {
             if (!is_writeable($this->basePath)) {
-                $this->logger->err(new Message('The destination folder "%s" is not writeable.', // @translate
-                    $dirPath));
+                $this->logger->err(
+                    'The destination folder "{dir}" is not writeable.', // @translate
+                    ['dir' => $dirPath]
+                );
                 return false;
             }
             @mkdir($dirPath, 0755, true);
         } elseif (!is_dir($dirPath) || !is_writeable($dirPath)) {
-            $this->logger->err(new Message('The destination folder "%s" is not writeable.', // @translate
-                $dirPath));
+            $this->logger->err(
+                'The destination folder "{dir}" is not writeable.', // @translate
+                ['dir' => $dirPath]
+            );
             return false;
         }
         return bool;

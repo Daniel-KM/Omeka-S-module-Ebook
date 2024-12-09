@@ -2,12 +2,12 @@
 
 namespace Ebook\Controller\Admin;
 
+use Common\Stdlib\PsrMessage;
 use Doctrine\DBAL\Connection;
 use Ebook\Form\EbookForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\Api\Representation\SiteRepresentation;
-use Omeka\Stdlib\Message;
 
 class EbookController extends AbstractActionController
 {
@@ -62,11 +62,13 @@ class EbookController extends AbstractActionController
                     if (isset($result['resource']) && is_object($result['resource'])) {
                         if ($result['resource'] instanceof \Omeka\Api\Representation\AssetRepresentation) {
                         } else {
-                            $messageResource = new Message(
-                                'See it as %sitem #%d%s.',
-                                '<a href="' . htmlspecialchars($result['resource']->url()) . '">',
-                                $result['resource']->id(),
-                                '</a>'
+                            $messageResource = new PsrMessage(
+                                'See it as {link}item #{item_id}{link_end}.',
+                                [
+                                    'link' => '<a href="' . htmlspecialchars($result['resource']->url()) . '">',
+                                    'item_id' => $result['resource']->id(),
+                                    'link_end' => '</a>',
+                                ]
                             );
                             $messageResource->setEscapeHtml(false);
                         }
@@ -84,13 +86,14 @@ class EbookController extends AbstractActionController
 
                     $assetUrl = $viewHelpers->get('assetUrl');
                     $urlRead = $assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=' . $url;
-                    $message = new Message(
-                        'Ebook successfully created. %sDownload it%s or %sread it%s. %s', // @translate
-                        '<a href="' . htmlspecialchars($url) . '">',
-                        '</a>',
-                        '<a target="_blank" rel="noopener" href="' . htmlspecialchars($urlRead) . '">',
-                        '</a>',
-                        $messageResource
+                    $message = new PsrMessage(
+                        'Ebook successfully created. {link}Download it{link_end} or {link_2}read it{link_end}. {message}', // @translate
+                        [
+                            'link' => '<a href="' . htmlspecialchars($url) . '">',
+                            'link_end' => '</a>',
+                            'link_2' => '<a target="_blank" rel="noopener" href="' . htmlspecialchars($urlRead) . '">',
+                            'message' => $messageResource,
+                        ]
                     );
                     $message->setEscapeHtml(false);
                     $this->messenger()->addSuccess($message);
@@ -276,13 +279,18 @@ class EbookController extends AbstractActionController
 
                 // Unlike site, the ebook record is created via a job.
 
-                $message = new Message(
-                    'Creating ebook in background (%sjob #%d%s).', // @translate
-                    sprintf('<a href="%s">',
-                        htmlspecialchars($this->url()->fromRoute('admin/id', ['controller' => 'job', 'id' => $job->getId()]))
-                    ),
-                    $job->getId(),
-                    '</a>'
+                $message = new PsrMessage(
+                    'Creating ebook in background ({link}job #{job_id}{link_end}, {link_log}logs{link_end})', // @translate
+                    [
+                        'link' => sprintf('<a href="%s">',
+                            htmlspecialchars($this->url()->fromRoute('admin/id', ['controller' => 'job', 'id' => $job->getId()]))
+                        ),
+                        'job_id' => $job->getId(),
+                        'link_end' => '</a>',
+                        'link_log' => class_exists('Log\Module', false)
+                            ? sprintf('<a href="%1$s">', $this->url()->fromRoute('admin/default', ['controller' => 'log'], ['query' => ['job_id' => $job->getId()]]))
+                            : sprintf('<a href="%1$s">', $this->url()->fromRoute('admin/id', ['controller' => 'job', 'action' => 'log', 'id' => $job->getId()])),
+                    ]
                 );
                 $message->setEscapeHtml(false);
                 $this->messenger()->addSuccess($message);
