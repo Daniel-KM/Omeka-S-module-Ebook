@@ -71,5 +71,11 @@
             "rm -rf asset/vendor/epubjs-reader",
             "mv asset/vendor/reader asset/vendor/epubjs-reader"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true
+        }
     }
 }
