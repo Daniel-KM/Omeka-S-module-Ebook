@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Ebook\Service\Controller;
 
 use Ebook\Controller\Admin\EbookController;

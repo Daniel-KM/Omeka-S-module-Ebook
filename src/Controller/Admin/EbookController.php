@@ -50,10 +50,9 @@ class EbookController extends AbstractActionController
         if ($isPost) {
             $form->setData($params);
             if ($form->isValid()) {
-                $urlHelper = $viewHelpers->get('url');
                 $data = $form->getData();
                 $data['site'] = $site;
-                $data['url_top'] = rtrim($urlHelper('top', [], ['force_canonical' => true]), '/') . '/';
+                $data['url_top'] = rtrim($this->url()->fromRoute('top', [], ['force_canonical' => true]), '/') . '/';
 
                 $result = $this->ebook($data);
 
@@ -113,12 +112,12 @@ class EbookController extends AbstractActionController
         $ckEditor = $viewHelpers->get('ckEditor');
         $ckEditor();
 
-        $view = new ViewModel;
-        $view
-            ->setTemplate('ebook/site-admin/ebook/create')
-            ->setVariable('form', $form)
-            ->setVariable('siteSlug', $siteSlug);
-        return $view;
+        $view = new ViewModel([
+            'form' => $form,
+            'siteSlug' => $siteSlug,
+        ]);
+        return $view
+            ->setTemplate('ebook/site-admin/ebook/create');
     }
 
     /**
@@ -139,11 +138,10 @@ class EbookController extends AbstractActionController
         $stmt = $conn->executeQuery($qb, $qb->getParameters());
         $ebooks = $stmt->fetchAll();
 
-        $view = new ViewModel;
-        $view->setVariable('ebooks', $ebooks);
-        $view->setVariable('urlRead', $urlRead);
-
-        return $view;
+        return new ViewModel([
+            'ebooks' => $ebooks,
+            'urlRead' => $urlRead,
+        ]);
     }
 
     /**
@@ -270,8 +268,7 @@ class EbookController extends AbstractActionController
                 $data['resource_type'] = $resource;
                 $data['resource_ids'] = $resourceIds;
                 $data['query'] = $query;
-                $url = $this->viewHelpers()->get('url');
-                $data['url_top'] = rtrim($url('top', [], ['force_canonical' => true]), '/') . '/';
+                $data['url_top'] = rtrim($this->url()->fromRoute('top', [], ['force_canonical' => true]), '/') . '/';
 
                 $dispatcher = $this->jobDispatcher();
 
@@ -318,21 +315,21 @@ class EbookController extends AbstractActionController
         $ckEditor = $this->viewHelpers()->get('ckEditor');
         $ckEditor();
 
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
-        // Keep current request.
-        $view->setVariable('selectAll', $selectAll);
-        $view->setVariable('resourceType', $resourceType);
-        $view->setVariable('resourceIds', $resourceIds);
-        $view->setVariable('query', $query);
-        // Complete to display info about the resources to export.
-        $view->setVariable('resources', $resources);
-        $view->setVariable('count', $count);
-        $view->setVariable('itemQuery', $itemQuery);
-        $view->setVariable('itemSetQuery', $itemSetQuery);
-        $view->setVariable('itemSets', $itemSets);
-        $view->setVariable('itemSetCount', $itemSetCount);
-        return $view;
+        return new ViewModel([
+            'form' => $form,
+            // Keep current request.
+            'selectAll' => $selectAll,
+            'resourceType' => $resourceType,
+            'resourceIds' => $resourceIds,
+            'query' => $query,
+            // Complete to display info about the resources to export.
+            'resources' => $resources,
+            'count' => $count,
+            'itemQuery' => $itemQuery,
+            'itemSetQuery' => $itemSetQuery,
+            'itemSets' => $itemSets,
+            'itemSetCount' => $itemSetCount,
+        ]);
     }
 
     /**
@@ -346,8 +343,7 @@ class EbookController extends AbstractActionController
         $params['dcterms:title'] = 'eBook';
         $params['dcterms:creator'] = $this->identity()->getName();
         $params['dcterms:language'] = $this->settings()->get('locale');
-        $url = $this->viewHelpers()->get('url');
-        $params['publisher_url'] = $url('top', [], ['force_canonical' => true]);
+        $params['publisher_url'] = $this->url()->fromRoute('top', [], ['force_canonical' => true]);
         return $params;
     }
 
@@ -365,8 +361,7 @@ class EbookController extends AbstractActionController
         $siteSettings = $this->siteSettings();
         $siteSettings->setTargetId($site->id());
         $params['dcterms:language'] = $siteSettings->get('locale') ?: $this->settings()->get('locale');
-        $url = $this->viewHelpers()->get('url');
-        $params['publisher_url'] = $url('top', [], ['force_canonical' => true]);
+        $params['publisher_url'] = $this->url()->fromRoute('top', [], ['force_canonical' => true]);
         return $params;
     }
 
@@ -386,8 +381,7 @@ class EbookController extends AbstractActionController
         $params['dcterms:subject'] = implode(', ', array_map(function ($v) {
             return $v->value();
         }, $itemSet->value('dcterms:subject', ['type' => 'literal', 'all' => true])));
-        $url = $this->viewHelpers()->get('url');
-        $params['publisher_url'] = $url('top', [], ['force_canonical' => true]);
+        $params['publisher_url'] = $this->url()->fromRoute('top', [], ['force_canonical' => true]);
         $toFill = [
             'dcterms:creator',
             'dcterms:publisher',

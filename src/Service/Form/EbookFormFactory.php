@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Ebook\Service\Form;
 
 use Ebook\Form\EbookForm;
@@ -9,10 +10,10 @@ class EbookFormFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $form = new EbookForm(null, $options);
         $viewHelpers = $services->get('ViewHelperManager');
-        $urlHelper = $viewHelpers->get('url');
-        $form->setUrlHelper($urlHelper);
-        return $form;
+
+        $form = new EbookForm(null, $options ?? []);
+        return $form
+            ->setUrlHelper($viewHelpers->get('url'));
     }
 }

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Ebook\Form;
 
 use Laminas\Form\Element;
@@ -271,18 +272,13 @@ class EbookForm extends Form
         ]);
     }
 
-    /**
-     * @param Url $urlHelper
-     */
-    public function setUrlHelper(Url $urlHelper): void
+    public function setUrlHelper(Url $urlHelper): self
     {
         $this->urlHelper = $urlHelper;
+        return $this;
     }
 
-    /**
-     * @return \Laminas\View\Helper\Url
-     */
-    public function getUrlHelper()
+    public function getUrlHelper(): Url
     {
         return $this->urlHelper;
     }

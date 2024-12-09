@@ -5,7 +5,7 @@
  * Merge selected resources into an ePub or a pdf file for publishing, report,
  * or archiving purpose.
  *
- * @copyright Daniel Berthereau, 2018-2019
+ * @copyright Daniel Berthereau, 2018-2024
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  *
  * This software is governed by the CeCILL license under French law and abiding

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Ebook\Service\ControllerPlugin;
 
 use Ebook\Mvc\Controller\Plugin\Ebook;
@@ -11,38 +12,24 @@ class EbookFactory implements FactoryInterface
     {
         // TODO Factory to be simplified (just send services).
 
-        $entityManager = $services->get('Omeka\EntityManager');
-        $tempFileFactory = $services->get('Omeka\File\TempFileFactory');
-        $navigationLinkManager = $services->get('Omeka\Site\NavigationLinkManager');
-        $viewRenderer = $services->get('ViewRenderer');
-        $config = $services->get('Config');
         $plugins = $services->get('ControllerPluginManager');
-        $api = $plugins->get('api');
-        $connection = $services->get('Omeka\Connection');
-        $logger = $services->get('Omeka\Logger');
-
         $helpers = $services->get('ViewHelperManager');
-        $translate = $helpers->get('translate');
-        $url = $helpers->get('url');
-        $settings = $services->get('Omeka\Settings');
-        $navigationLink = $helpers->get('navigationLink');
+        $config = $services->get('Config');
 
-        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
-        $tempDir = $config['temp_dir'];
         return new Ebook(
-            $entityManager,
-            $tempFileFactory,
-            $navigationLinkManager,
-            $viewRenderer,
-            $api,
-            $connection,
-            $basePath,
-            $tempDir,
-            $logger,
-            $translate,
-            $url,
-            $settings,
-            $navigationLink
+            $plugins->get('api'),
+            $services->get('Omeka\Connection'),
+            $services->get('Omeka\EntityManager'),
+            $services->get('Omeka\Logger'),
+            $services->get('Omeka\Site\NavigationLinkManager'),
+            $services->get('Omeka\Settings'),
+            $services->get('Omeka\Settings\Site'),
+            $services->get('Omeka\File\TempFileFactory'),
+            $helpers->get('translate'),
+            $helpers->get('url'),
+            $services->get('ViewRenderer'),
+            $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files'),
+            $config['temp_dir']
         );
     }
 }

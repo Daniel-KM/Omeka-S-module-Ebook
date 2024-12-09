@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /*
- * Copyright 2017-2019 Daniel Berthereau
+ * Copyright 2017-2024 Daniel Berthereau
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software. You can use, modify and/or
@@ -43,8 +43,8 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\File\TempFileFactory;
 use Omeka\Mvc\Controller\Plugin\Api;
 use Omeka\Settings\Settings;
+use Omeka\Settings\SiteSettings;
 use Omeka\Site\Navigation\Link\Manager as NavigationLinkManager;
-use Omeka\View\Helper\NavigationLink;
 use PHPePub\Core\EPub;
 use PHPePub\Helpers\CalibreHelper;
 use PHPePub\Helpers\IBooksHelper;
@@ -70,40 +70,6 @@ use UUID;
 class Ebook extends AbstractPlugin
 {
     /**
-     * Ebook generated.
-     *
-     * @var EPub
-     */
-    protected $ebook;
-
-    /**
-     * Parameters for the process.
-     *
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var TempFileFactory
-     */
-    protected $tempFileFactory;
-
-    /**
-     * @var NavigationLinkManager
-     */
-    protected $navigationLinkManager;
-
-    /**
-     * @var PhpRenderer
-     */
-    protected $viewRenderer;
-
-    /**
      * @var Api
      */
     protected $api;
@@ -112,6 +78,51 @@ class Ebook extends AbstractPlugin
      * @var Connection
      */
     protected $connection;
+
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var NavigationLinkManager
+     */
+    protected $navigationLinkManager;
+
+    /**
+     * @var Settings
+     */
+    protected $settings;
+
+    /**
+     * @var SiteSettings
+     */
+    protected $siteSettings;
+
+    /**
+     * @var TempFileFactory
+     */
+    protected $tempFileFactory;
+
+    /**
+     * @var Translate
+     */
+    protected $translate;
+
+    /**
+     * @var Url
+     */
+    protected $url;
+
+    /**
+     * @var PhpRenderer
+     */
+    protected $viewRenderer;
 
     /**
      * Relative base path of the files (generally "/files").
@@ -124,26 +135,6 @@ class Ebook extends AbstractPlugin
      * @var string
      */
     protected $tempDir;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @var Settings
-     */
-    protected $settings;
-
-    /**
-     * @var Translate
-     */
-    protected $translate;
-
-    /**
-     * @var Url
-     */
-    protected $url;
 
     /**
      * @var string
@@ -171,48 +162,47 @@ XHTML5;
 XHTML5;
 
     /**
-     * @param EntityManager $entityManager
-     * @param TempFileFactory $tempFileFactory
-     * @param NavigationLinkManager $navigationLinkManager
-     * @param PhpRenderer $viewRenderer
-     * @param Api $api
-     * @param Connection $connection
-     * @param string $basePath
-     * @param string $tempDir
-     * @param Logger $logger
-     * @param Translate $translate
-     * @param Url $url
-     * @param Settings $settings
-     * @param NavigationLink $navigationLink
+     * Parameters for the process.
+     *
+     * @var array
      */
+    protected $data;
+
+    /**
+     * Ebook generated.
+     *
+     * @var EPub
+     */
+    protected $ebook;
+
     public function __construct(
-        EntityManager $entityManager,
-        TempFileFactory $tempFileFactory,
-        NavigationLinkManager $navigationLinkManager,
-        PhpRenderer $viewRenderer,
         Api $api,
         Connection $connection,
-        $basePath,
-        $tempDir,
+        EntityManager $entityManager,
         Logger $logger,
+        NavigationLinkManager $navigationLinkManager,
+        Settings $settings,
+        SiteSettings $siteSettings,
+        TempFileFactory $tempFileFactory,
         Translate $translate,
         Url $url,
-        Settings $settings,
-        NavigationLink $navigationLink
+        PhpRenderer $viewRenderer,
+        $basePath,
+        $tempDir
     ) {
-        $this->entityManager = $entityManager;
-        $this->tempFileFactory = $tempFileFactory;
-        $this->navigationLinkManager = $navigationLinkManager;
-        $this->viewRenderer = $viewRenderer;
         $this->api = $api;
         $this->connection = $connection;
+        $this->entityManager = $entityManager;
+        $this->logger = $logger;
+        $this->navigationLinkManager = $navigationLinkManager;
+        $this->settings = $settings;
+        $this->siteSettings = $siteSettings;
+        $this->tempFileFactory = $tempFileFactory;
+        $this->translate = $translate;
+        $this->url = $url;
+        $this->viewRenderer = $viewRenderer;
         $this->basePath = $basePath;
         $this->tempDir = $tempDir;
-        $this->logger = $logger;
-        $this->url = $url;
-        $this->translate = $translate;
-        $this->settings = $settings;
-        $this->navigationLink = $navigationLink;
     }
 
     /**
@@ -229,8 +219,8 @@ XHTML5;
     public function task(array $data, $job_id)
     {
         $result = $this->create($data);
-        $url = $result['url'] ?? '';
-        $this->connection->executeQuery('UPDATE ebook_creation SET resource_data = "' . $url . '" WHERE `job_id` = "' . $job_id . '";');
+        $resultUrl = $result['url'] ?? '';
+        $this->connection->executeQuery('UPDATE ebook_creation SET resource_data = "' . $resultUrl . '" WHERE `job_id` = "' . $job_id . '";');
         return $result;
     }
 
@@ -316,15 +306,12 @@ XHTML5;
     protected function initializeEbook(): void
     {
         $data = $this->data;
-        $settings = $this->settings;
-        $translate = $this->translate;
-        $url = $this->url;
 
         $bookVersion = $data['dcterms:format'] === 'application/epub+zip; version=2.0'
             ? EPub::BOOK_VERSION_EPUB2
             : EPub::BOOK_VERSION_EPUB3;
         // The default for EPub is "en".
-        $language = $data['dcterms:language'] ?: ($settings->get('locale') ?: 'en');
+        $language = $data['dcterms:language'] ?: ($this->settings->get('locale') ?: 'en');
         $direction = empty($data['direction']) ? EPub::DIRECTION_LEFT_TO_RIGHT : $data['direction'];
         $htmlFormat = (!empty($data['htmlFormat']) && in_array($data['htmlFormat'], [EPub::FORMAT_XHTML, EPub::FORMAT_HTML5]))
             ? $data['htmlFormat']
@@ -375,7 +362,7 @@ REGEX;
         // TODO Check if the rights are specific to the user.
         $ebook->setRights($data['dcterms:rights']);
 
-        $value = $url('top', [], ['force_canonical' => true]);
+        $value = $this->url->__invoke('top', [], ['force_canonical' => true]);
         $ebook->setSourceURL($value);
 
         // Add the generator of the epub?
@@ -386,8 +373,8 @@ REGEX;
         }
 
         // Custom metadata: Calibre series index information.
-        $seriesTitle = sprintf($translate('Generated from digital library: %s'), // @translate
-            $settings->get('installation_title'));
+        $seriesTitle = sprintf($this->translate->__invoke('Generated from digital library: %s'), // @translate
+            $this->settings->get('installation_title'));
         CalibreHelper::setCalibreMetadata($ebook, $seriesTitle, '3');
 
         // Fixed-layout metadata (only available in ePub3).
@@ -492,44 +479,41 @@ CSS;
             'data' => $data,
         ]);
         $ebook->addChapter(
-            $translate('Notices'),
+            $this->translate->__invoke('Notices'),
             'cover.xhtml',
             $this->contentStart . $output . $this->contentEnd
         );
 
-        $ebook->addChapter($translate('Table of Contents'), 'toc.xhtml');
+        $ebook->addChapter($this->translate->__invoke('Table of Contents'), 'toc.xhtml');
     }
 
     protected function finalizeEbook(): void
     {
-        $ebook = $this->ebook;
-
-        $ebook->rootLevel();
-        $ebook->buildTOC();
+        $this->ebook->rootLevel();
+        $this->ebook->buildTOC();
         // Only used in case we need to debug EPub.
-        if ($ebook->isLogging) {
-            $epuplog = $ebook->getLog();
-            $ebook->addChapter(
+        if ($this->ebook->isLogging) {
+            $epuplog = $this->ebook->getLog();
+            $this->ebook->addChapter(
                 'ePubLog',
                 'ePubLog.xhtml',
                 $this->contentStart . $epuplog . "\n" . $this->contentEnd
             );
         }
 
-        $ebook->finalize();
+        $this->ebook->finalize();
     }
 
     protected function processSite(): void
     {
         $data = $this->data;
-        $ebook = $this->ebook;
-
-        // Need to set the site for site settings, that may be used indirectly.
-        $siteSettings = $services->get('Omeka\Settings\Site');
-        $siteSettings->setTargetId($site->id());
 
         /** @var \Omeka\Api\Representation\SiteRepresentation $site */
         $site = $data['site'];
+
+        // Need to set the site for site settings, that may be used indirectly.
+        $this->siteSettings->setTargetId($site->id());
+
         // The table of contents will be automatically created from pages, but
         // the structure and the order are needed.
         // TODO Use Zend navigation via $site->publicNav() instead of navigation data?
@@ -543,7 +527,7 @@ CSS;
         $flatNavigation = $this->convertNestedToFlat($navigation, [], 0, $types);
 
         // Initialize the ebook to avoid possible issues.
-        $ebook->setCurrentLevel(1);
+        $this->ebook->setCurrentLevel(1);
 
         foreach ($flatNavigation as $flatPage) {
             // In the ebook standard, the root level is level 1.
@@ -551,16 +535,16 @@ CSS;
             // There is no method to set the current level: setCurrentLevel()
             // is a shortcut to go back level (one of the upper level), so if
             // subLevel() is not used, it cannot be used.
-            $previousLevel = $ebook->getCurrentLevel();
+            $previousLevel = $this->ebook->getCurrentLevel();
             if ($level > $previousLevel) {
-                $ebook->subLevel();
+                $this->ebook->subLevel();
             } elseif ($level < $previousLevel) {
-                $ebook->setCurrentLevel($level);
+                $this->ebook->setCurrentLevel($level);
             }
             $this->processSitePage($site, $flatPage);
         }
 
-        $ebook->rootLevel();
+        $this->ebook->rootLevel();
 
         // Append item sets of the site if wanted.
 
@@ -579,8 +563,6 @@ CSS;
 
         // TODO use a view model?
         // $data = $this->data;
-        $ebook = $this->ebook;
-        $translate = $this->translate;
 
         $type = $flatPage['type'];
 
@@ -627,10 +609,11 @@ CSS;
         //     'page' => $page,
         //     'data' => $data,
         // ]);
-        $view = new \Laminas\View\Model\ViewModel;
-        $view->setVariable('site', $site);
-        $view->setVariable('page', $page);
-        $view->setVariable('displayNavigation', false);
+        $view = new \Laminas\View\Model\ViewModel([
+            'site' => $site,
+            'page' => $page,
+            'displayNavigation' => false,
+        ]);
         $view->setTemplate('ebook/template/site-page');
         $contentView = clone $view;
         $contentView->setTemplate('omeka/site/page/content');
@@ -639,9 +622,9 @@ CSS;
         $view->addChild($contentView, 'content');
         $output = $this->viewRenderer->render($view);
 
-        $title = $siteNavigationLink->getLabel($flatPage['data'], $site) ?: $translate('[Untitled]'); // @translate
+        $title = $siteNavigationLink->getLabel($flatPage['data'], $site) ?: $this->translate->__invoke('[Untitled]'); // @translate
         $filename = sprintf('site_page_%d.xhtml', ++$automaticId);
-        $ebook->addChapter(
+        $this->ebook->addChapter(
             $title,
             $filename,
             $this->contentStart . $output . $this->contentEnd,
@@ -652,8 +635,6 @@ CSS;
     protected function processItemSets(): void
     {
         $data = $this->data;
-        $ebook = $this->ebook;
-        $translate = $this->translate;
 
         // TODO Manage possible memory overload.
         $selectAll = $data['batch_action'] === 'all';
@@ -667,24 +648,24 @@ CSS;
             $itemSet = reset($resources);
             $itemSetIds[] = $itemSet->id();
         } else {
-            $ebook->setCurrentLevel(1);
+            $this->ebook->setCurrentLevel(1);
             $content = $this->contentStart
-                . sprintf('<h1>%s</h1>', $translate('Item sets')) . PHP_EOL
+                . sprintf('<h1>%s</h1>', $this->translate->__invoke('Item sets')) . PHP_EOL
                 . $this->contentEnd;
-            $ebook->addChapter($translate('Item sets'), 'item_sets.xhtml', $content);
-            $ebook->subLevel();
+            $this->ebook->addChapter($this->translate->__invoke('Item sets'), 'item_sets.xhtml', $content);
+            $this->ebook->subLevel();
 
             foreach ($resources as $itemSet) {
                 $this->processItemSet($itemSet);
                 $itemSetIds[] = $itemSet->id();
             }
 
-            $ebook->setCurrentLevel(1);
+            $this->ebook->setCurrentLevel(1);
             $content = $this->contentStart
-                . sprintf('<h1>%s</h1>', $translate('Items')) . PHP_EOL
+                . sprintf('<h1>%s</h1>', $this->translate->__invoke('Items')) . PHP_EOL
                 . $this->contentEnd;
-            $ebook->addChapter($translate('Items'), 'items.xhtml', $content);
-            $ebook->subLevel();
+            $this->ebook->addChapter($this->translate->__invoke('Items'), 'items.xhtml', $content);
+            $this->ebook->subLevel();
         }
 
         $items = $this->api->search('items', ['item_set_id' => $itemSetIds])->getContent();
@@ -704,8 +685,6 @@ CSS;
 
         // TODO use a view model?
         $data = $this->data;
-        $ebook = $this->ebook;
-        $translate = $this->translate;
 
         $output = $this->viewRenderer->render('ebook/template/item-set', [
             'resource' => $itemSet,
@@ -713,9 +692,9 @@ CSS;
             'itemSet' => $itemSet,
             'data' => $data,
         ]);
-        $title = sprintf($translate('Item set #%d: %s'), $itemSet->id(), $itemSet->displayTitle());
+        $title = sprintf($this->translate->__invoke('Item set #%d: %s'), $itemSet->id(), $itemSet->displayTitle());
         $filename = sprintf('item_set_%d_%d.xhtml', ++$automaticId, $itemSet->id());
-        $ebook->addChapter(
+        $this->ebook->addChapter(
             $title,
             $filename,
             $this->contentStart . $output . $this->contentEnd,
@@ -726,20 +705,18 @@ CSS;
     protected function processItems(): void
     {
         $data = $this->data;
-        $ebook = $this->ebook;
-        $translate = $this->translate;
 
         // TODO Manage possible memory overload.
         $selectAll = $data['batch_action'] === 'all';
         /** @var \Omeka\Api\Representation\ItemRepresentation[] $resources */
         $resources = $this->fetchResources($data['resource_type'], $data['resource_ids'], $data['query'], $selectAll);
 
-        $ebook->setCurrentLevel(1);
+        $this->ebook->setCurrentLevel(1);
         $content = $this->contentStart
-            . sprintf('<h1>%s</h1>', $translate('Items')) . PHP_EOL
+            . sprintf('<h1>%s</h1>', $this->translate->__invoke('Items')) . PHP_EOL
             . $this->contentEnd;
-        $ebook->addChapter($translate('Items'), 'items.xhtml', $content);
-        $ebook->subLevel();
+        $this->ebook->addChapter($this->translate->__invoke('Items'), 'items.xhtml', $content);
+        $this->ebook->subLevel();
 
         foreach ($resources as $item) {
             $this->processItem($item);
@@ -781,7 +758,6 @@ CSS;
     protected function saveEbook()
     {
         $data = $this->data;
-        $ebook = $this->ebook;
 
         // Save a temporary file.
         // EPub adds an extension "epub" automatically, so the method saveBook
@@ -794,7 +770,7 @@ CSS;
             case 'application/epub+zip':
             case 'application/epub+zip; version=2.0':
             default:
-                $result = file_put_contents($filepath, $ebook->getBook());
+                $result = file_put_contents($filepath, $this->ebook->getBook());
                 break;
         }
 
@@ -1023,7 +999,7 @@ CSS;
             );
             return false;
         }
-        return bool;
+        return true;
     }
 
     /**
