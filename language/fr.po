@@ -3,65 +3,65 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-09 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2024-12-09 00:00+0000\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
+"Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/scripts/upgrade.php:34
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
-msgstr ""
+msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
 #: Module.php:131
 msgid "Create eBook"
-msgstr ""
+msgstr "Créer un ebook"
 
 #: Module.php:135
 msgid "EBook Creator"
-msgstr ""
+msgstr "Créateur d’ebook"
 
 #: src/Media/FileRenderer/Epub.php:53
 #, php-format
 msgid "This browser does not support %s (%s)."
-msgstr ""
+msgstr "Le navigateur ne gère pas %s (%s)."
 
 #: src/Media/FileRenderer/Epub.php:55
 #, php-format
 msgid "You may %sdownload it%s to view it offline."
-msgstr ""
+msgstr "Vous pouvez %sle télécharger %s pour le lire hors ligne."
 
 #: src/Mvc/Controller/Plugin/Ebook.php:266
 msgid "[No title]"
-msgstr ""
+msgstr "[Sans titre]"
 
 #: src/Mvc/Controller/Plugin/Ebook.php:746
 #, php-format
 msgid "Item #%d: %s"
-msgstr ""
+msgstr "Contenu #%d : %s"
 
 #: view/ebook/admin/ebook/create.phtml:24
 msgid "Create an ebook"
-msgstr ""
+msgstr "Créer un ebook"
 
 #: view/ebook/admin/ebook/create.phtml:31
 #: view/ebook/site-admin/ebook/create.phtml:18
 msgid "Build"
-msgstr ""
+msgstr "Construction"
 
 #: view/ebook/admin/ebook/create.phtml:40
 #, php-format
 msgid "You are creating an ebook with the following %d items:"
-msgstr ""
+msgstr "Vous créez un ebook avec les %d contenus suivants :"
 
 #: view/ebook/admin/ebook/create.phtml:48
 #, php-format
@@ -69,229 +69,247 @@ msgid ""
 "You are creating an ebook with %1$s items that belong to the following %2$d "
 "item sets:"
 msgstr ""
+"Vous créez un ebook avec %1$s contenus appartenant aux %2$d collections "
+"suivantes :"
 
 #: view/ebook/admin/ebook/create.phtml:58
 #, php-format
 msgid ""
 "You are creating an ebook with %1$s items that belong to %2$s item sets."
-msgstr ""
+msgstr "Vous créez un ebook avec %1$s contenus appartenant à %2$s collections."
 
 #: view/ebook/admin/ebook/create.phtml:64
 #, php-format
 msgid "You are creating an ebook with %s items."
-msgstr ""
+msgstr "Vous créez un ebook avec %s contenus."
 
 #: view/ebook/admin/ebook/create.phtml:70
 msgid "Info:"
-msgstr ""
+msgstr "Info :"
 
 #: view/ebook/admin/ebook/create.phtml:72
 msgid "Fill the form."
-msgstr ""
+msgstr "Remplir le formulaire."
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:15
 msgid "Ebooks"
-msgstr ""
+msgstr "Ebooks"
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:15
 msgid "Created ebooks"
-msgstr ""
+msgstr "Ebooks créés"
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:18
 msgid "List of all past created ebooks"
-msgstr ""
+msgstr "Liste des ebooks créés"
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:24
 msgid "Job"
-msgstr ""
+msgstr "Tâche"
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:28
 msgid "Ebook link"
-msgstr ""
+msgstr "Lien vers l’ebook"
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:37
 msgid "details"
-msgstr ""
+msgstr "détails"
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:44
 msgid "Download"
-msgstr ""
+msgstr "Télécharger"
 
 #: view/ebook/admin/ebook/created-ebooks.phtml:46
 msgid "Read it"
-msgstr ""
+msgstr "À lire"
 
 #: view/ebook/site-admin/ebook/create.phtml:13
 msgid "Create an ebook for the site"
-msgstr ""
+msgstr "Créer un ebook pour le site"
 
 #: view/ebook/template/cover.phtml:35
 msgid "Subjects"
-msgstr ""
+msgstr "Sujets"
 
 #: view/ebook/template/item-set.phtml:14
 #, php-format
 msgid "Item set #%d"
-msgstr ""
+msgstr "Collection #%d"
 
 #: view/ebook/template/item.phtml:21
 #, php-format
 msgid "Item #%d"
-msgstr ""
+msgstr "Contenu #%d"
 
 #: view/ebook/template/item.phtml:53
 msgid "Medias"
-msgstr ""
+msgstr "Médias"
 
 #: view/ebook/template/item.phtml:58
 #, php-format
 msgid "Media #%d"
-msgstr ""
+msgstr "Média #%d"
 
 #: src/Mvc/Controller/Plugin/Ebook.php:376
 #, php-format
 msgid "Generated from digital library: %s"
-msgstr ""
+msgstr "Généré avec la bibliothèque numérique : %s"
 
 #: src/Mvc/Controller/Plugin/Ebook.php:472
 msgid "The cover is not a managed image."
-msgstr ""
+msgstr "La couverture n’est pas une image gérée."
 
 #: src/Mvc/Controller/Plugin/Ebook.php:572
 msgid "The ebook has an unavailable page type: \"{type}\"."
-msgstr ""
+msgstr "L’ebook a un type de page indisponible : « {type} »."
 
 #: src/Mvc/Controller/Plugin/Ebook.php:581
 msgid "The ebook has an unavailable page: \"{page}\"."
-msgstr ""
+msgstr "L’ebook a une page indisponible : « {page} »."
 
 #: src/Mvc/Controller/Plugin/Ebook.php:595
 msgid "The module cannot manage type \"{type}\" currently."
-msgstr ""
+msgstr "Le module ne gère pas le type « {type} » actuellement."
 
 #: src/Mvc/Controller/Plugin/Ebook.php:779
 msgid "Ebook cannot be built: \"{title}\""
-msgstr ""
+msgstr "L’ebook ne peut pas être construit : « {title} »"
 
 #: src/Mvc/Controller/Plugin/Ebook.php:891
 msgid "Ebook cannot be created."
-msgstr ""
+msgstr "L’ebook ne peut pas être construit."
 
 #: src/Mvc/Controller/Plugin/Ebook.php:960
 msgid "Ebook cannot be saved in \"{destination}\" (temp file: \"{file}\")"
 msgstr ""
+"L’ebook ne peut pas être enregistré dans « {destination} » (fichier "
+"temporaire : « {file} »)"
 
 #: src/Mvc/Controller/Plugin/Ebook.php:989
 #: src/Mvc/Controller/Plugin/Ebook.php:997
 msgid "The destination folder \"{dir}\" is not writeable."
-msgstr ""
+msgstr "Le dossier de destination « {dir} » n’est pas accessible."
 
 #: src/Form/EbookForm.php:68
 msgid "Sort key of author"
-msgstr ""
+msgstr "Clé pour le tri de l’auteur"
 
 #: src/Form/EbookForm.php:69
 msgid ""
 "For better metadata, the author name should be formatted like \"Smith, "
 "John\"."
 msgstr ""
+"Pour de meilleures métadonnées, le nom de l’auteur doit être formaté comme "
+"« Dupond, Jean »."
 
 #: src/Form/EbookForm.php:82
 msgid "Comma-separated list of subjects, for better metadata."
 msgstr ""
+"Liste séparée par des virgules des sujets, pour de meilleures métadonnées."
 
 #: src/Form/EbookForm.php:116
 msgid "Publisher url"
-msgstr ""
+msgstr "Url de l’éditeur"
 
 #: src/Form/EbookForm.php:165
 msgid "The resource template allows to order your metadata."
-msgstr ""
+msgstr "Le modèle de ressource permet de trier les métadonnées."
 
 #: src/Form/EbookForm.php:179
 msgid "resource_templates"
-msgstr ""
+msgstr "modèles de ressource"
 
 #: src/Form/EbookForm.php:199
 msgid "Cover image"
-msgstr ""
+msgstr "Image de couverture"
 
 #: src/Form/EbookForm.php:210
 msgid "Output format"
-msgstr ""
+msgstr "Format de sortie"
 
 #: src/Form/EbookForm.php:212
 msgid "ePub (v2)"
-msgstr ""
+msgstr "ePub (v2)"
 
 #: src/Form/EbookForm.php:213
 msgid "ePub (v3)"
-msgstr ""
+msgstr "ePub (v3)"
 
 #: src/Form/EbookForm.php:230
 msgid "HTML format"
-msgstr ""
+msgstr "Format HTML"
 
 #: src/Form/EbookForm.php:232
 msgid "XHTML (standard)"
-msgstr ""
+msgstr "XHTML (standard)"
 
 #: src/Form/EbookForm.php:233
 msgid "HTML 5 (recent viewers and readers)"
-msgstr ""
+msgstr "HTML 5 (visionneuses et lecteurs récents)"
 
 #: src/Form/EbookForm.php:247
 msgid "Output"
-msgstr ""
+msgstr "Sortie"
 
 #: src/Form/EbookForm.php:249
 msgid "Temporary file to download"
-msgstr ""
+msgstr "Fichier temporaire à télécharger"
 
 #: src/Form/EbookForm.php:250
 msgid "New item with attached file"
-msgstr ""
+msgstr "Nouveau contenu avec un fichier attaché"
 
 #: src/Form/EbookForm.php:254
 msgid "Asset to download"
-msgstr ""
+msgstr "Fichier à télécharger"
 
 #: src/Controller/Admin/EbookController.php:89
 msgid ""
 "Ebook successfully created. {link}Download it{link_end} or {link_2}read "
 "it{link_end}. {message}"
 msgstr ""
+"L’ebook a été créé avec succès. {link}Téléchargez-le{link_end} ou {link_2}"
+"lisez-le{link_end}. {message}"
 
 #: src/Controller/Admin/EbookController.php:174
 msgid "You can create an ebook only from items, item sets and media."
 msgstr ""
+"Vous créez un ebook avec seulement les contenus, collections et médias."
 
 #: src/Controller/Admin/EbookController.php:223
 msgid "You must select at least one item set with items to create an Ebook."
 msgstr ""
+"Vous devez choisir au moins une collection avec des contenus pour créer un "
+"ebook."
 
 #: src/Controller/Admin/EbookController.php:237
 msgid "You must select at least one item to create an ebook."
-msgstr ""
+msgstr "Vous devez choisir au moins un contenu pour créer un ebook."
 
 #: src/Controller/Admin/EbookController.php:244
 msgid "You must select at least one resource to create an ebook."
-msgstr ""
+msgstr "Vous devez choisir au moins une ressource pour créer un ebook."
 
 #: src/Controller/Admin/EbookController.php:280
 msgid ""
 "Creating ebook in background ({link}job #{job_id}{link_end}, {link_log}"
 "logs{link_end})"
 msgstr ""
+"Création de l’ebook en arrière-plan ({link}tâche #{job_id}{link_end}, "
+"{link_log}journaux{link_end})"
 
 #: config/module.config.php:125
 msgid "Create ebook"
-msgstr ""
+msgstr "Créer un ebook"
 
 #: config/module.config.php:126
 msgid "Create ebook with all"
-msgstr ""
+msgstr "Créer un ebook avec tout"
 
 #: config/module.config.php:127
 msgid "Create ebook with selected"
-msgstr ""
+msgstr "Créer un ebook avec une sélection"
+
+#, php-format
+#~ msgid "Creating ebook in background (%sjob #%d%s)."
+#~ msgstr "Créer un ebook en arrière-plan (%stâche #%d%s)"
