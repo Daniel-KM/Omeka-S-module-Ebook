@@ -33,19 +33,20 @@
  */
 namespace Ebook;
 
-if (!class_exists(\Generic\AbstractModule::class)) {
-    require file_exists(dirname(__DIR__) . '/Generic/AbstractModule.php')
-        ? dirname(__DIR__) . '/Generic/AbstractModule.php'
-        : __DIR__ . '/src/Generic/AbstractModule.php';
+if (!class_exists(\Common\TraitModule::class)) {
+    require_once dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
-use Generic\AbstractModule;
+use Common\TraitModule;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\ModuleManager\ModuleManager;
+use Omeka\Module\AbstractModule;
 
 class Module extends AbstractModule
 {
+    use TraitModule;
+
     const NAMESPACE = __NAMESPACE__;
 
     /**

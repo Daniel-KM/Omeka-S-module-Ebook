@@ -22,9 +22,6 @@ return [
         'invokables' => [
             Thumbnail::class => View\Helper\Thumbnail::class,
         ],
-        'factories' => [
-            'defaultSiteSlug' => Service\ViewHelper\DefaultSiteSlugFactory::class,
-        ],
     ],
     'form_elements' => [
         'factories' => [

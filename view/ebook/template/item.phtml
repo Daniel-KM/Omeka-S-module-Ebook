@@ -8,8 +8,10 @@
  * @var array $data
  */
 
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$defaultSite = $plugins->get('defaultSite');
+
 $embedMedia = !empty($data['item_media_embed']);
 /** @var \Omeka\Api\Representation\MediaRepresentation[] $medias */
 $medias = $item->media();
@@ -51,7 +53,7 @@ $medias = $item->media();
         <h4><?= $translate('Medias') ?></h4>
         <?php foreach ($medias as $media): ?>
         <div class="value">
-            <a class="resource-link" href="<?= $media->siteUrl($this->defaultSiteSlug(), true) ?>">
+            <a class="resource-link" href="<?= $media->siteUrl($defaultSite('slug'), true) ?>">
                 <?php $title = $media->value('dcterms:title', ['type' => 'literal']); ?>
                 <?php $title = $title ? $title->value() : sprintf($translate('Media #%d'), $media->id()) ?>
                 <img src="<?= $media->thumbnailUrl('medium') ?>" alt="<?= $title ?>" />
