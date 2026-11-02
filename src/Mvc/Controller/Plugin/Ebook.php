@@ -829,11 +829,11 @@ CSS;
                 break;
 
             case 'item':
-                // Store the ebooks in a subfolder of "files/temp" to upload.
-                // Omeka doesn't allow to ingest a local path, so store ebook
-                // temporary inside "files/temp" to upload it by ingester "url".
-                $dirPath = $this->basePath . '/temp';
-                $storedFile = $this->saveFile($filepath, $dirPath, '', 'files/temp/');
+                // Omeka doesn't allow to ingest a local path, so store the ebook
+                // temporary inside "files/ebook" to upload it by ingester "url".
+                // The directory "files/temp" may be protected (EasyAdmin).
+                $dirPath = $this->basePath . '/ebook';
+                $storedFile = $this->saveFile($filepath, $dirPath, '', 'files/ebook/');
                 if (empty($storedFile)) {
                     return null;
                 }
@@ -918,8 +918,8 @@ CSS;
 
             case 'download':
             default:
-                $dirPath = $this->basePath . '/temp';
-                $storedFile = $this->saveFile($filepath, $dirPath, '', 'files/temp/');
+                $dirPath = $this->basePath . '/ebook';
+                $storedFile = $this->saveFile($filepath, $dirPath, '', 'files/ebook/');
                 if (empty($storedFile)) {
                     return;
                 }
