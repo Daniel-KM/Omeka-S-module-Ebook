@@ -149,8 +149,8 @@ class EbookController extends AbstractActionController
             ->from('ebook_creation', 'eb')
             ->leftJoin('eb', 'job', 'j', 'eb.job_id = j.id');
 
-        $stmt = $conn->executeQuery($qb, $qb->getParameters());
-        $ebooks = $stmt->fetchAll();
+        $stmt = $conn->executeQuery($qb->getSQL(), $qb->getParameters());
+        $ebooks = $stmt->fetchAllAssociative();
 
         return new ViewModel([
             'ebooks' => $ebooks,
