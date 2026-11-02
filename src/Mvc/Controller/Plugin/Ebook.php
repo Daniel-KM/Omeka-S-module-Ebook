@@ -1028,7 +1028,7 @@ CSS;
      * @param bool $selectAll
      * @return array|null
      */
-    protected function fetchResources($resourceType, array $resourceIds, array $query = null, $selectAll = false)
+    protected function fetchResources($resourceType, array $resourceIds, ?array $query = null, $selectAll = false)
     {
         if ($selectAll) {
             $resources = $this->api->search($resourceType, $query)->getContent();
