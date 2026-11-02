@@ -216,12 +216,26 @@ XHTML5;
         return $this->create($data);
     }
 
-    public function task(array $data, $job_id)
+    public function task(array $data, int $jobId): ?array
     {
+        $this->registerJob($jobId);
         $result = $this->create($data);
-        $resultUrl = $result['url'] ?? '';
-        $this->connection->executeQuery('UPDATE ebook_creation SET resource_data = "' . $resultUrl . '" WHERE `job_id` = "' . $job_id . '";');
+        $this->connection->executeStatement(
+            'UPDATE `ebook_creation` SET `resource_data` = ? WHERE `job_id` = ?',
+            [$result['url'] ?? '', $jobId]
+        );
         return $result;
+    }
+
+    /**
+     * Register a job, whatever the order of the controller and the job.
+     */
+    public function registerJob(int $jobId): void
+    {
+        $this->connection->executeStatement(
+            'INSERT INTO `ebook_creation` (`job_id`) SELECT ? FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM `ebook_creation` WHERE `job_id` = ?)',
+            [$jobId, $jobId]
+        );
     }
 
     protected function create(array $data)

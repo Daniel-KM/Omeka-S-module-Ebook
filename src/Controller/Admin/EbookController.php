@@ -292,9 +292,7 @@ class EbookController extends AbstractActionController
                 $message->setEscapeHtml(false);
                 $this->messenger()->addSuccess($message);
 
-                $sql = 'INSERT INTO `ebook_creation` (`job_id`) VALUES (' . $job->getId() . ');';
-
-                $this->connection->executeStatement($sql);
+                $this->plugin('ebook')->registerJob($job->getId());
 
                 return $this->redirect()->toRoute('admin/default', ['controller' => 'ebook', 'action' => 'created-ebooks'], true);
             }
