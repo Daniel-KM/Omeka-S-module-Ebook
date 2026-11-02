@@ -11,11 +11,11 @@ created with the pages of a site too. The aim of such a feature is to have a
 static fixed content, an externally usable document or an archival version of
 the database. Of course, the ebooks can be displayed in Omeka too.
 
-The ePubs are formatted with version 2.0 or 3.1 and pdf files with version 1.7
-or as pdf/a, so it can be read on any device, from the smartphone to the
-desktop, and of course by any e-reader that respects the standards.
+The ePubs are formatted with version 2.0 or 3.1, so they can be read on any
+device, from the smartphone to the desktop, and of course by any e-reader that
+respects the standards.
 
-Conversion into Pdf is not available currently.
+Conversion into pdf is not available currently.
 
 
 Installation
@@ -26,7 +26,8 @@ install the module, or use and init the source.
 
 See general end user documentation for [installing a module].
 
-This module requires the module [Common], that should be installed first.
+This module requires the module [Common] version 3.4.95 or later, that should
+be installed first.
 
 * From the zip
 
@@ -44,6 +45,14 @@ composer install --no-dev
 
 Then install it like any other Omeka module and follow the config instructions.
 
+* For test
+
+The module includes a test suite. Run it from the root of Omeka:
+
+```sh
+vendor/bin/phpunit -c modules/Ebook/phpunit.xml --testdox
+```
+
 
 Usage
 -----
@@ -60,6 +69,14 @@ the top button `Batch actions`, and `Create ebook from selected` or `Create eboo
 then fill the form.
 
 Ebooks are displayed automatically by Omeka.
+
+The temporary ebooks to download are stored in the directory `files/ebook/`,
+that can be cleaned regularly. They may contain private data, so this directory
+is protected (Apache only) and the ebooks are sent by the admin interface. With
+Nginx or another server, the directory should be denied in its configuration.
+
+The media type `application/epub+zip` and the extension `epub` are added to the
+allowed ones during install.
 
 
 TODO
@@ -125,7 +142,7 @@ This module uses the following components:
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2017-2024 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2017-2026 (see [Daniel-KM] on GitLab)
 * Stixfonts: see above
 * Copyright [Martin Fenner] 2011 (epub css)
 * Copyright [Fred Chasen] 2017-2018 ([epubjs-reader])
@@ -135,10 +152,12 @@ This module was built first for the French [Université Paris-Diderot].
 
 [eBook]: https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook
 [Omeka S]: https://omeka.org/s
+[installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
+[Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
 [ePub]: http://idpf.org/epub
 [pdf]: https://www.adobe.com/devnet/pdf/pdf_reference.html
 [Ebook.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/releases
-[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/work_items
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
