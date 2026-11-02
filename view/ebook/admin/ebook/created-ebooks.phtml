@@ -40,10 +40,11 @@ $this->htmlElement('body')->appendAttribute('class', 'ebook created-ebooks');
             <td><?= $ebook['started'] ?></td>
             <td><?= $ebook['ended'] ?></td>
             <td>
-                <?php if ($ebook['resource_data']): ?>
-                    <?= $hyperlink($translate('Download'), $this->basePath() . '/' . $ebook['resource_data']) ?>
+                <?php if ($ebook['resource_data']):
+                    $url = preg_match('~^https?://~', $ebook['resource_data']) ? $ebook['resource_data'] : $this->basePath() . '/' . $ebook['resource_data']; ?>
+                    <?= $hyperlink($translate('Download'), $url) ?>
                 /
-                    <?= $hyperlink($translate('Read it'), $urlRead . $this->basePath() . '/' . $ebook['resource_data'], ['target' => '_blank']) ?>
+                    <?= $hyperlink($translate('Read it'), $urlRead . $url, ['target' => '_blank']) ?>
                 <?php endif; ?>
             </td>
         </tr>
