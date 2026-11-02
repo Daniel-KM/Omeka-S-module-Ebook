@@ -29,6 +29,7 @@
 
 namespace Ebook\Mvc\Controller\Plugin;
 
+use Common\Stdlib\DirectoryManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Laminas\I18n\View\Helper\Translate;
@@ -78,6 +79,11 @@ class Ebook extends AbstractPlugin
      * @var Connection
      */
     protected $connection;
+
+    /**
+     * @var DirectoryManager
+     */
+    protected $directoryManager;
 
     /**
      * @var EntityManager
@@ -178,6 +184,7 @@ XHTML5;
     public function __construct(
         Api $api,
         Connection $connection,
+        DirectoryManager $directoryManager,
         EntityManager $entityManager,
         Logger $logger,
         NavigationLinkManager $navigationLinkManager,
@@ -192,6 +199,7 @@ XHTML5;
     ) {
         $this->api = $api;
         $this->connection = $connection;
+        $this->directoryManager = $directoryManager;
         $this->entityManager = $entityManager;
         $this->logger = $logger;
         $this->navigationLinkManager = $navigationLinkManager;
@@ -918,8 +926,10 @@ CSS;
 
             case 'download':
             default:
+                // The ebook may contain private data, so the directory is
+                // protected and the file is sent by the controller.
                 $dirPath = $this->basePath . '/ebook';
-                $storedFile = $this->saveFile($filepath, $dirPath, '', 'files/ebook/');
+                $storedFile = $this->saveFile($filepath, $dirPath, '', 'admin/ebook/download/', true);
                 if (empty($storedFile)) {
                     return;
                 }
@@ -941,28 +951,21 @@ CSS;
      * @param string $destinationDir Should be a subfolder of "/files".
      * @param string $base
      * @param string $baseUrl
+     * @param bool $protect Deny direct web access to the directory.
      * @return array|null
      */
-    protected function saveFile($source, $destinationDir, $base = '', $baseUrl = '')
+    protected function saveFile($source, $destinationDir, $base = '', $baseUrl = '', bool $protect = false)
     {
         $data = $this->data;
 
-        if (!$this->checkDir($destinationDir)) {
+        if (!$this->directoryManager->checkDestinationDir($destinationDir, $protect)) {
             return null;
         }
-
-        $mapMediaTypesToExtensions = [
-            'application/epub+zip; version=2.0' => 'epub',
-            'application/epub+zip' => 'epub',
-            'application/pdf' => 'pdf',
-            'text/html' => 'html',
-            'application/vnd.oasis.opendocument.text' => 'odt',
-        ];
 
         // Find a unique meaningful filename instead of a hash.
         $name = strtolower(substr($this->slugify($data['dcterms:title']), 0, 20));
         $name = date('Y-m-d_His') . '_' . $name;
-        $extension = $mapMediaTypesToExtensions[$data['dcterms:format']];
+        $extension = $this->extension();
 
         $i = 0;
         do {
@@ -990,31 +993,16 @@ CSS;
         ];
     }
 
-    /**
-     * Check or create the destination folder.
-     *
-     * @param string $dirPath
-     * @return bool
-     */
-    protected function checkDir($dirPath)
+    protected function extension(): string
     {
-        if (!file_exists($dirPath)) {
-            if (!is_writeable($this->basePath)) {
-                $this->logger->err(
-                    'The destination folder "{dir}" is not writeable.', // @translate
-                    ['dir' => $dirPath]
-                );
-                return false;
-            }
-            @mkdir($dirPath, 0755, true);
-        } elseif (!is_dir($dirPath) || !is_writeable($dirPath)) {
-            $this->logger->err(
-                'The destination folder "{dir}" is not writeable.', // @translate
-                ['dir' => $dirPath]
-            );
-            return false;
-        }
-        return true;
+        $mapMediaTypesToExtensions = [
+            'application/epub+zip; version=2.0' => 'epub',
+            'application/epub+zip' => 'epub',
+            'application/pdf' => 'pdf',
+            'text/html' => 'html',
+            'application/vnd.oasis.opendocument.text' => 'odt',
+        ];
+        return $mapMediaTypesToExtensions[$this->data['dcterms:format']];
     }
 
     /**

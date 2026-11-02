@@ -85,6 +85,19 @@ return [
                                     ],
                                 ],
                             ],
+                            'download' => [
+                                'type' => \Laminas\Router\Http\Segment::class,
+                                'options' => [
+                                    'route' => '/download/:file',
+                                    'constraints' => [
+                                        'file' => '[\w.-]+',
+                                    ],
+                                    'defaults' => [
+                                        'controller' => Controller\Admin\EbookController::class,
+                                        'action' => 'download',
+                                    ],
+                                ],
+                            ],
                             'created-ebooks' => [
                                 'type' => \Laminas\Router\Http\Literal::class,
                                 'options' => [

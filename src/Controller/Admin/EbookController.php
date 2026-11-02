@@ -17,11 +17,26 @@ class EbookController extends AbstractActionController
     protected $connection;
 
     /**
-     * @param Connection $connection
+     * @var string
      */
-    public function __construct(Connection $connection)
+    protected $basePath;
+
+    public function __construct(Connection $connection, string $basePath)
     {
         $this->connection = $connection;
+        $this->basePath = $basePath;
+    }
+
+    /**
+     * Send a created ebook, stored in a protected directory.
+     */
+    public function downloadAction()
+    {
+        $dirPath = $this->basePath . '/ebook';
+        $file = basename((string) $this->params('file'));
+        return $this->sendFilePrivate($dirPath . '/' . $file, $dirPath, [
+            'content_type' => 'application/epub+zip',
+        ]) ?: $this->notFoundAction();
     }
 
     /**

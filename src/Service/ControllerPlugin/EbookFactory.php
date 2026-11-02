@@ -19,6 +19,7 @@ class EbookFactory implements FactoryInterface
         return new Ebook(
             $plugins->get('api'),
             $services->get('Omeka\Connection'),
+            $services->get('Common\DirectoryManager'),
             $services->get('Omeka\EntityManager'),
             $services->get('Omeka\Logger'),
             $services->get('Omeka\Site\NavigationLinkManager'),
