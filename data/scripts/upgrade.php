@@ -34,21 +34,53 @@ if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActi
         $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
         'Common', '3.4.95'
     );
-    throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+    $messenger->addError($message);
+    throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $translate('Missing requirement. Unable to upgrade.')); // @translate
 }
 
 if (version_compare($oldVersion, '3.0.2', '<')) {
     $sql = <<<'SQL'
-CREATE TABLE ebook_creation (
-    id INT AUTO_INCREMENT NOT NULL,
-    job_id INT NOT NULL,
-    resource_data VARCHAR(255) DEFAULT NULL,
-    PRIMARY KEY(id)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-SQL;
+        CREATE TABLE IF NOT EXISTS ebook_creation (
+            id INT AUTO_INCREMENT NOT NULL,
+            job_id INT NOT NULL,
+            resource_data VARCHAR(255) DEFAULT NULL,
+            PRIMARY KEY(id)
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+        SQL;
     $connection->executeStatement($sql);
 }
 
 if (version_compare($oldVersion, '3.0.3', '<')) {
     $settings->delete('ebook_pdftk');
+}
+
+if (version_compare($oldVersion, '3.4.11', '<')) {
+    $this->updateWhitelist();
+
+    // The ebooks may contain private data, so move them from the temp directory
+    // to a protected one.
+    $config = $services->get('Config');
+    $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+    $dirPath = $services->get('Common\DirectoryManager')->checkDestinationDir($basePath . '/ebook', true);
+    $count = 0;
+    foreach ($dirPath ? glob($basePath . '/temp/*.epub') : [] as $filepath) {
+        $filename = basename($filepath);
+        if (!preg_match('~^\d{4}-\d{2}-\d{2}_\d{6}_[\w.-]*\.epub$~', $filename)
+            || !@rename($filepath, $dirPath . '/' . $filename)
+        ) {
+            continue;
+        }
+        $connection->executeStatement(
+            'UPDATE `ebook_creation` SET `resource_data` = ? WHERE `resource_data` = ?',
+            ['admin/ebook/download/' . $filename, 'files/temp/' . $filename]
+        );
+        ++$count;
+    }
+    if ($count) {
+        $message = new PsrMessage(
+            '{count} ebooks were moved to the protected directory "files/ebook".', // @translate
+            ['count' => $count]
+        );
+        $messenger->addSuccess($message);
+    }
 }
