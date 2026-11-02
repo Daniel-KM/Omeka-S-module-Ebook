@@ -59,6 +59,27 @@ class Module extends AbstractModule
         require_once __DIR__ . '/vendor/autoload.php';
     }
 
+    protected function postInstall(): void
+    {
+        $this->updateWhitelist();
+    }
+
+    /**
+     * Allow to store ebooks as media.
+     */
+    protected function updateWhitelist(): void
+    {
+        $settings = $this->getServiceLocator()->get('Omeka\Settings');
+        foreach (['media_type_whitelist' => 'application/epub+zip', 'extension_whitelist' => 'epub'] as $key => $value) {
+            $whitelist = $settings->get($key, []);
+            if (!in_array($value, $whitelist)) {
+                $whitelist[] = $value;
+                sort($whitelist);
+                $settings->set($key, $whitelist);
+            }
+        }
+    }
+
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
         $sharedEventManager->attach(
