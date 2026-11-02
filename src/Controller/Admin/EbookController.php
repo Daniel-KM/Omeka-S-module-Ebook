@@ -174,7 +174,7 @@ class EbookController extends AbstractActionController
         // Set default values to simplify checks.
         $params += array_fill_keys(['resource_type', 'resource_ids', 'query', 'batch_action', 'ebook_all'], null);
 
-        $resourceType = $params['resource_type'];
+        $resourceType = $params['ebook_resource_type'] ?? $params['resource_type'];
         $resourceTypeMap = [
             'item' => 'items',
             'item-set' => 'item_sets',

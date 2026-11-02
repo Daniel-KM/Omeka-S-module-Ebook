@@ -136,8 +136,27 @@ class Module extends AbstractModule
 
     public function handleAdminViewBrowseResource(Event $event): void
     {
+        $controllersToResourceTypes = [
+            'item' => 'items',
+            'item-set' => 'item_sets',
+            'Omeka\Controller\Admin\Item' => 'items',
+            'Omeka\Controller\Admin\ItemSet' => 'item_sets',
+        ];
+        $controller = $this->getServiceLocator()->get('Application')
+            ->getMvcEvent()->getRouteMatch()->getParam('controller');
+        if (!isset($controllersToResourceTypes[$controller])) {
+            return;
+        }
+
+        // The browse url may be "/admin/item" or "/admin/item/browse", so the
+        // url and the resource type are not deduced from it.
         $view = $event->getTarget();
+        $config = [
+            'resourceType' => $controllersToResourceTypes[$controller],
+            'urlCreate' => $view->url('admin/ebook'),
+        ];
         $view->headScript()
+            ->appendScript('var ebook = ' . json_encode($config, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) . ';')
             ->appendFile($view->assetUrl('js/ebook-admin.js', 'Ebook'), 'text/javascript', ['defer' => 'defer']);
     }
 
