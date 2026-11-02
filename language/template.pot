@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-09 00:00+0000\n"
+"POT-Creation-Date: 2026-11-02 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/scripts/upgrade.php:34
+#: data/scripts/upgrade.php:34 Module.php:91
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: Module.php:131
+#: data/scripts/upgrade.php:38
+msgid "Missing requirement. Unable to upgrade."
+msgstr ""
+
+#: Module.php:197
 msgid "Create eBook"
 msgstr ""
 
-#: Module.php:135
+#: Module.php:201
 msgid "EBook Creator"
 msgstr ""
 
@@ -40,11 +44,15 @@ msgstr ""
 msgid "You may %sdownload it%s to view it offline."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:266
+#: src/Media/Ingester/Ebook.php:42
+msgid "Used only for the internal process of ebook creation."
+msgstr ""
+
+#: src/Mvc/Controller/Plugin/Ebook.php:288
 msgid "[No title]"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:746
+#: src/Mvc/Controller/Plugin/Ebook.php:771
 #, php-format
 msgid "Item #%d: %s"
 msgstr ""
@@ -113,11 +121,11 @@ msgstr ""
 msgid "details"
 msgstr ""
 
-#: view/ebook/admin/ebook/created-ebooks.phtml:44
+#: view/ebook/admin/ebook/created-ebooks.phtml:45
 msgid "Download"
 msgstr ""
 
-#: view/ebook/admin/ebook/created-ebooks.phtml:46
+#: view/ebook/admin/ebook/created-ebooks.phtml:47
 msgid "Read it"
 msgstr ""
 
@@ -148,42 +156,46 @@ msgstr ""
 msgid "Media #%d"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:376
+#: data/scripts/upgrade.php:81
+msgid "{count} ebooks were moved to the protected directory \"files/ebook\"."
+msgstr ""
+
+#: src/Mvc/Controller/Plugin/Ebook.php:398
 #, php-format
 msgid "Generated from digital library: %s"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:472
+#: src/Mvc/Controller/Plugin/Ebook.php:494
 msgid "The cover is not a managed image."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:572
+#: src/Mvc/Controller/Plugin/Ebook.php:597
 msgid "The ebook has an unavailable page type: \"{type}\"."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:581
+#: src/Mvc/Controller/Plugin/Ebook.php:606
 msgid "The ebook has an unavailable page: \"{page}\"."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:595
+#: src/Mvc/Controller/Plugin/Ebook.php:620
 msgid "The module cannot manage type \"{type}\" currently."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:779
+#: src/Mvc/Controller/Plugin/Ebook.php:804
 msgid "Ebook cannot be built: \"{title}\""
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:891
-msgid "Ebook cannot be created."
-msgstr ""
-
-#: src/Mvc/Controller/Plugin/Ebook.php:960
+#: src/Mvc/Controller/Plugin/Ebook.php:845
+#: src/Mvc/Controller/Plugin/Ebook.php:985
 msgid "Ebook cannot be saved in \"{destination}\" (temp file: \"{file}\")"
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/Ebook.php:989
-#: src/Mvc/Controller/Plugin/Ebook.php:997
-msgid "The destination folder \"{dir}\" is not writeable."
+#: src/Mvc/Controller/Plugin/Ebook.php:911
+msgid "Ebook cannot be created."
+msgstr ""
+
+#: src/Job/Create.php:15
+msgid "The ebook cannot be created. See logs for details."
 msgstr ""
 
 #: src/Form/EbookForm.php:68
@@ -244,54 +256,68 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: src/Form/EbookForm.php:249
-msgid "Temporary file to download"
+#: src/Form/EbookForm.php:248
+msgid ""
+"An asset is public: it should not be used for an ebook with private "
+"resources."
 msgstr ""
 
 #: src/Form/EbookForm.php:250
+msgid "Temporary file to download"
+msgstr ""
+
+#: src/Form/EbookForm.php:251
 msgid "New item with attached file"
 msgstr ""
 
-#: src/Form/EbookForm.php:254
+#: src/Form/EbookForm.php:255
 msgid "Asset to download"
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:89
+#: src/Media/Ingester/Ebook.php:16
+msgid "Ebook"
+msgstr ""
+
+#: src/Media/Ingester/Ebook.php:28
+msgid "The ebook is not a temp file."
+msgstr ""
+
+#: src/Controller/Admin/EbookController.php:103
 msgid ""
 "Ebook successfully created. {link}Download it{link_end} or {link_2}read "
 "it{link_end}. {message}"
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:174
-msgid "You can create an ebook only from items, item sets and media."
-msgstr ""
-
-#: src/Controller/Admin/EbookController.php:223
-msgid "You must select at least one item set with items to create an Ebook."
+#: src/Controller/Admin/EbookController.php:188
+msgid "You can create an ebook only from items and item sets."
 msgstr ""
 
 #: src/Controller/Admin/EbookController.php:237
+msgid "You must select at least one item set with items to create an Ebook."
+msgstr ""
+
+#: src/Controller/Admin/EbookController.php:251
 msgid "You must select at least one item to create an ebook."
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:244
+#: src/Controller/Admin/EbookController.php:258
 msgid "You must select at least one resource to create an ebook."
 msgstr ""
 
-#: src/Controller/Admin/EbookController.php:280
+#: src/Controller/Admin/EbookController.php:293
 msgid ""
 "Creating ebook in background ({link}job #{job_id}{link_end}, {link_log}"
 "logs{link_end})"
 msgstr ""
 
-#: config/module.config.php:125
+#: config/module.config.php:144
 msgid "Create ebook"
 msgstr ""
 
-#: config/module.config.php:126
+#: config/module.config.php:145
 msgid "Create ebook with all"
 msgstr ""
 
-#: config/module.config.php:127
+#: config/module.config.php:146
 msgid "Create ebook with selected"
 msgstr ""
