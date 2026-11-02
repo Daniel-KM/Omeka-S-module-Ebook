@@ -93,22 +93,12 @@ class Module extends AbstractModule
             [$this, 'handleAdminViewBrowseResource']
         );
         $sharedEventManager->attach(
-            'Omeka\Controller\Admin\Media',
-            'view.browse.before',
-            [$this, 'handleAdminViewBrowseResource']
-        );
-        $sharedEventManager->attach(
             'Omeka\Controller\Admin\ItemSet',
             'view.show.sidebar',
             [$this, 'handleAdminViewShowSidebar']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
-            'view.show.sidebar',
-            [$this, 'handleAdminViewShowSidebar']
-        );
-        $sharedEventManager->attach(
-            'Omeka\Controller\Admin\Media',
             'view.show.sidebar',
             [$this, 'handleAdminViewShowSidebar']
         );

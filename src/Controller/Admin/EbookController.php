@@ -185,7 +185,7 @@ class EbookController extends AbstractActionController
             // 'medias' => 'media',
         ];
         if (!isset($resourceTypeMap[$resourceType])) {
-            $this->messenger()->addError('You can create an ebook only from items, item sets and media.'); // @translate
+            $this->messenger()->addError('You can create an ebook only from items and item sets.'); // @translate
             return $this->redirect()->toRoute('admin');
         }
 
