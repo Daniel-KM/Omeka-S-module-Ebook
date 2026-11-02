@@ -964,22 +964,31 @@ CSS;
         $name = date('Y-m-d_His') . '_' . $name;
         $extension = $this->extension();
 
+        // The filename is reserved with an exclusive creation, so concurrent
+        // builds of the same ebook never overwrite each other.
         $i = 0;
         do {
             $filename = $name . ($i ? '-' . $i : '') . '.' . $extension;
             $destination = $destinationDir . '/' . $filename;
-            if (!file_exists($destination)) {
-                $result = @rename($source, $destination);
-                if (!$result) {
-                    $this->logger->err(
-                        'Ebook cannot be saved in "{destination}" (temp file: "{file}")', // @translate
-                        ['destination' => $destination, 'file' => $source]
-                    );
-                    return null;
-                }
-                $storageId = $base . $name . ($i ? '-' . $i : '');
-                break;
+            $handle = @fopen($destination, 'x');
+            if (!$handle && file_exists($destination)) {
+                continue;
             }
+            if ($handle) {
+                fclose($handle);
+            }
+            if (!$handle || !@rename($source, $destination)) {
+                if ($handle) {
+                    @unlink($destination);
+                }
+                $this->logger->err(
+                    'Ebook cannot be saved in "{destination}" (temp file: "{file}")', // @translate
+                    ['destination' => $destination, 'file' => $source]
+                );
+                return null;
+            }
+            $storageId = $base . $name . ($i ? '-' . $i : '');
+            break;
         } while (++$i);
 
         return [
