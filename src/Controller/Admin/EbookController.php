@@ -67,7 +67,6 @@ class EbookController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $data['site'] = $site;
-                $data['url_top'] = rtrim($this->url()->fromRoute('top', [], ['force_canonical' => true]), '/') . '/';
 
                 $result = $this->ebook($data);
 
@@ -283,7 +282,6 @@ class EbookController extends AbstractActionController
                 $data['resource_type'] = $resource;
                 $data['resource_ids'] = $resourceIds;
                 $data['query'] = $query;
-                $data['url_top'] = rtrim($this->url()->fromRoute('top', [], ['force_canonical' => true]), '/') . '/';
 
                 $dispatcher = $this->jobDispatcher();
 

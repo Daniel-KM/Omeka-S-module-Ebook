@@ -18,6 +18,12 @@ return [
             'application/epub+zip' => 'epub',
         ],
     ],
+    'media_ingesters' => [
+        'invokables' => [
+            // This is an internal ingester.
+            'ebook' => Media\Ingester\Ebook::class,
+        ],
+    ],
     'view_helpers' => [
         'invokables' => [
             Thumbnail::class => View\Helper\Thumbnail::class,

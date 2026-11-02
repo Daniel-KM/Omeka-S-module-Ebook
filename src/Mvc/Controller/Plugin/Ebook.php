@@ -837,15 +837,17 @@ CSS;
                 break;
 
             case 'item':
-                // Omeka doesn't allow to ingest a local path, so store the ebook
-                // temporary inside "files/ebook" to upload it by ingester "url".
-                // The directory "files/temp" may be protected (EasyAdmin).
-                $dirPath = $this->basePath . '/ebook';
-                $storedFile = $this->saveFile($filepath, $dirPath, '', 'files/ebook/');
-                if (empty($storedFile)) {
+                // The ebook is ingested locally, without a request to the server.
+                $tempFile = $this->tempFileFactory->build();
+                if (!@rename($filepath, $tempFile->getTempPath())) {
+                    $tempFile->delete();
+                    $this->logger->err(
+                        'Ebook cannot be saved in "{destination}" (temp file: "{file}")', // @translate
+                        ['destination' => $tempFile->getTempPath(), 'file' => $filepath]
+                    );
                     return null;
                 }
-                $tempPath = $dirPath . DIRECTORY_SEPARATOR . $storedFile['filename'];
+                $tempFile->setSourceName($this->slugify($data['dcterms:title']) . '.' . $this->extension());
 
                 $itemData = [];
                 $itemData['o:resource_template'] = ['o:id' => $data['o:resource_template']];
@@ -854,8 +856,8 @@ CSS;
                 $itemData['o:item_set'] = [];
                 $itemData['o:media'][] = [
                     'o:is_public' => 1,
-                    'ingest_url' => $data['url_top'] . $storedFile['url'],
-                    'o:ingester' => 'url',
+                    'o:ingester' => 'ebook',
+                    'ingest_tempfile' => $tempFile,
                 ];
                 foreach ([
                     'dcterms:title' => 1,
@@ -898,16 +900,11 @@ CSS;
                     }
                 }
 
-                // TODO Add epub in global settings.
-                $settings = $this->settings;
-                $disableFileValidation = $settings->get('disable_file_validation');
-                $settings->set('disable_file_validation', '1');
-
-                $response = $this->api->create('items', $itemData, []);
-
-                // In all cases, the temp file is removed.
-                $settings->set('disable_file_validation', $disableFileValidation);
-                @unlink($tempPath);
+                try {
+                    $response = $this->api->create('items', $itemData, []);
+                } finally {
+                    $tempFile->delete();
+                }
 
                 if (!$response) {
                     $this->logger->err(
