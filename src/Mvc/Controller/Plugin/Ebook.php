@@ -505,6 +505,9 @@ CSS;
     {
         $this->ebook->rootLevel();
         $this->ebook->buildTOC();
+        // The references are kept in the landmarks: in the toc, their group has
+        // no link, that breaks the toc of epub.js.
+        $this->ebook->setisReferencesAddedToToc(false);
         // Only used in case we need to debug EPub.
         if ($this->ebook->isLogging) {
             $epuplog = $this->ebook->getLog();
