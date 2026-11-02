@@ -39,7 +39,7 @@ $medias = $item->media();
     <div class="property">
         <?php $itemSets = $item->itemSets(); ?>
         <?php if (count($itemSets)): ?>
-        <h4><?= $translate('Item sets') ?></h4>
+        <h3><?= $translate('Item sets') ?></h3>
         <?php foreach ($item->itemSets() as $itemSet): ?>
         <div class="value">
             <?= $itemSet->displayTitle() ?>
@@ -50,7 +50,7 @@ $medias = $item->media();
 
     <?php if (!$embedMedia && $medias): ?>
     <div class="media-list">
-        <h4><?= $translate('Medias') ?></h4>
+        <h3><?= $translate('Medias') ?></h3>
         <?php foreach ($medias as $media): ?>
         <div class="value">
             <a class="resource-link" href="<?= $media->siteUrl($defaultSite('slug'), true) ?>">
