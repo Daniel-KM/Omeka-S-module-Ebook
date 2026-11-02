@@ -15,12 +15,5 @@ $translate = $this->plugin('translate');
 
     <?= $resource->displayValues(['viewName' => 'ebook/template/resource-values']) ?>
 
-    <?php
-    $subjectValues = $resource->displaySubjectValues();
-    if ($subjectValues): ?>
-    <div id="item-linked">
-        <h3><?= $translate('Linked resources') ?></h3>
-        <?= $subjectValues; ?>
-    </div>
-    <?php endif; ?>
+    <?= $this->partial('ebook/template/linked-resources', ['resource' => $resource]) ?>
 </div>
