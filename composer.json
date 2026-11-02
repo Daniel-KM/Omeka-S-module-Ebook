@@ -31,9 +31,7 @@
     },
     "require": {
         "sempia/external-assets": "^1.3",
-        "gmo/iso-639": "^1.0",
-        "grandt/phpepub": "dev-master",
-        "vanilla/htmlawed": "~1.0"
+        "grandt/phpepub": "dev-master"
     },
     "repositories": [
         {

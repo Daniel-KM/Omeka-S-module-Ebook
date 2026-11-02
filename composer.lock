@@ -4,48 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad10c7f89d2d88da43a4348873e5e48a",
+    "content-hash": "3a20e07620f58bfa52a856614ee3feee",
     "packages": [
-        {
-            "name": "gmo/iso-639",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/gmo/iso-639.git",
-                "reference": "c6f7f1233459dbe1833245ae47cdd075b0849ab0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/gmo/iso-639/zipball/c6f7f1233459dbe1833245ae47cdd075b0849ab0",
-                "reference": "c6f7f1233459dbe1833245ae47cdd075b0849ab0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Gmo\\Iso639\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Convert between ISO-639 codes",
-            "keywords": [
-                "639",
-                "iso",
-                "iso-639",
-                "language"
-            ],
-            "support": {
-                "issues": "https://github.com/gmo/iso-639/issues",
-                "source": "https://github.com/gmo/iso-639/tree/v1.0.0"
-            },
-            "time": "2015-07-17T00:18:37+00:00"
-        },
         {
             "name": "grandt/binstring",
             "version": "1.0.0",
@@ -496,49 +456,6 @@
                 "source": "https://gitlab.com/Sempia/composer-plugin-external-assets/-/tree/1.3.0"
             },
             "time": "2026-10-05T00:00:00+00:00"
-        },
-        {
-            "name": "vanilla/htmlawed",
-            "version": "v1.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vanilla/htmlawed.git",
-                "reference": "7c717dc95b62a69d8c6757ea61410d080891496b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vanilla/htmlawed/zipball/7c717dc95b62a69d8c6757ea61410d080891496b",
-                "reference": "7c717dc95b62a69d8c6757ea61410d080891496b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "tburry/pquery": "~1.0.1"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/Htmlawed.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Todd Burry",
-                    "email": "todd@vanillaforums.com"
-                }
-            ],
-            "description": "A composer wrapper for the htmLawed library to purify & filter HTML. Tested with PHPUnit and PhantomJS!",
-            "support": {
-                "issues": "https://github.com/vanilla/htmlawed/issues",
-                "source": "https://github.com/vanilla/htmlawed/tree/master"
-            },
-            "time": "2016-01-18T19:42:40+00:00"
         }
     ],
     "packages-dev": [],
@@ -551,5 +468,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.11.0"
 }
