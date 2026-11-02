@@ -877,7 +877,7 @@ CSS;
                     // 'output' => ,
                 ] as $term => $termId) {
                     switch ($term) {
-                        case'dcterms:publisher':
+                        case 'dcterms:publisher':
                             $value = $data[$term] . ($data['publisher_url'] ? ' (' . $data['publisher_url'] . ')' : '');
                             break;
                         default:
@@ -1058,7 +1058,8 @@ CSS;
     protected function slugify($input)
     {
         if (extension_loaded('intl')) {
-            $transliterator = \Transliterator::createFromRules(':: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;');
+            static $transliterator;
+            $transliterator ??= \Transliterator::createFromRules(':: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;');
             $slug = $transliterator->transliterate($input);
         } elseif (extension_loaded('iconv')) {
             $slug = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $input);
