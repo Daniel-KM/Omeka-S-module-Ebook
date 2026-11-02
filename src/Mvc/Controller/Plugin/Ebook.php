@@ -881,13 +881,11 @@ CSS;
                         if (strlen($val) === 0) {
                             continue;
                         }
-                        $itemData[$term] = [
-                            [
-                                'property_id' => $termId,
-                                'type' => 'literal',
-                                '@language' => null,
-                                '@value' => $val,
-                            ],
+                        $itemData[$term][] = [
+                            'property_id' => $termId,
+                            'type' => 'literal',
+                            '@language' => null,
+                            '@value' => $val,
                         ];
                     }
                 }
