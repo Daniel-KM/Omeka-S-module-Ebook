@@ -35,7 +35,7 @@ foreach ($page->blocks() as $block) {
         // $content = $doc->saveXML('inner body');
 
         // Fix weird copy-paste from Windows and Apple for html blocks.
-        $content = str_replace(["\r\n", "\n\r", "\r"], ["\n", "\n", "\n"], $content);
+        $content = strtr($content, ["\r\n" => "\n", "\n\r" => "\n", "\r" => "\n"])
         $content = html_entity_decode($content, ENT_COMPAT | ENT_HTML5, 'UTF-8');
         $content = trim($content);
 
