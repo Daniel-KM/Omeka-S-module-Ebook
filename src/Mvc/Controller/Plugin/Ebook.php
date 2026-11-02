@@ -794,7 +794,7 @@ CSS;
         if (empty($result)) {
             $this->logger->err(
                 'Ebook cannot be built: "{title}"', // @translate
-                ['titel' => $data['dcterms:title']]
+                ['title' => $data['dcterms:title']]
             );
             return null;
         }
