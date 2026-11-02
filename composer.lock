@@ -4,17 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0138c35179a0f4de7ef206274e2ddd69",
+    "content-hash": "ad10c7f89d2d88da43a4348873e5e48a",
     "packages": [
-        {
-            "name": "futurepress/epubjs-reader",
-            "version": "0.3",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/futurepress/epubjs-reader/archive/refs/heads/master.zip"
-            },
-            "type": "omeka-module-asset"
-        },
         {
             "name": "gmo/iso-639",
             "version": "v1.0.0",
@@ -447,6 +438,64 @@
                 "source": "https://github.com/Grandt/PHPZip/tree/master"
             },
             "time": "2015-11-16T16:30:51+00:00"
+        },
+        {
+            "name": "sempia/external-assets",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/Sempia/composer-plugin-external-assets.git",
+                "reference": "518363a07733d28dbac4dc340b1e7ad379ec0fda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/Sempia%2Fcomposer-plugin-external-assets/repository/archive.zip?sha=518363a07733d28dbac4dc340b1e7ad379ec0fda",
+                "reference": "518363a07733d28dbac4dc340b1e7ad379ec0fda",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.0",
+                "php": ">=7.2.5"
+            },
+            "require-dev": {
+                "composer/composer": "^2.0",
+                "phpunit/phpunit": "^8.5 || ^9.6"
+            },
+            "bin": [
+                "bin/external-assets"
+            ],
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Sempia\\ExternalAssets\\ExternalAssetsPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sempia\\ExternalAssets\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CECILL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Berthereau",
+                    "email": "Daniel.fr@Berthereau.net"
+                }
+            ],
+            "description": "Composer plugin to download external assets (JS, CSS, fonts, images) for any PHP project",
+            "homepage": "https://gitlab.com/sempia/composer-plugin-external-assets",
+            "keywords": [
+                "assets",
+                "composer-plugin",
+                "download",
+                "external"
+            ],
+            "support": {
+                "issues": "https://gitlab.com/Sempia/composer-plugin-external-assets/-/issues",
+                "source": "https://gitlab.com/Sempia/composer-plugin-external-assets/-/tree/1.3.0"
+            },
+            "time": "2026-10-05T00:00:00+00:00"
         },
         {
             "name": "vanilla/htmlawed",

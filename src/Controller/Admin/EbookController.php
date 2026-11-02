@@ -98,7 +98,7 @@ class EbookController extends AbstractActionController
                     }
 
                     $assetUrl = $viewHelpers->get('assetUrl');
-                    $urlRead = $assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=' . $url;
+                    $urlRead = $assetUrl('vendor/epubjs-reader/reader/index.html', 'Ebook') . '&bookPath=' . $url;
                     $message = new PsrMessage(
                         'Ebook successfully created. {link}Download it{link_end} or {link_2}read it{link_end}. {message}', // @translate
                         [
@@ -142,7 +142,7 @@ class EbookController extends AbstractActionController
         $conn = $this->connection;
 
         $assetUrl = $this->viewHelpers()->get('assetUrl');
-        $urlRead = $assetUrl('vendor/epubjs-reader/index.html', 'Ebook') . '&bookPath=';
+        $urlRead = $assetUrl('vendor/epubjs-reader/reader/index.html', 'Ebook') . '&bookPath=';
 
         $qb = $conn->createQueryBuilder()
             ->select('eb.job_id', 'eb.resource_data', 'j.status', 'j.started', 'j.ended')

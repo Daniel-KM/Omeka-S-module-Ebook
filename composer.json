@@ -30,7 +30,7 @@
         "daniel-km/omeka-s-module-common": "*"
     },
     "require": {
-        "futurepress/epubjs-reader": "0.3",
+        "sempia/external-assets": "^1.3",
         "gmo/iso-639": "^1.0",
         "grandt/phpepub": "dev-master",
         "vanilla/htmlawed": "~1.0"
@@ -39,18 +39,6 @@
         {
             "type": "git",
             "url": "https://gitlab.com/Daniel-KM/PHPePub"
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "futurepress/epubjs-reader",
-                "version": "0.3",
-                "type": "omeka-module-asset",
-                "dist": {
-                    "type": "zip",
-                    "url": "https://github.com/futurepress/epubjs-reader/archive/refs/heads/master.zip"
-                }
-            }
         }
     ],
     "autoload": {
@@ -63,16 +51,28 @@
             "EbookTest\\": "tests/EbookTest/"
         }
     },
-    "scripts": {
-        "post-install-cmd": "@build",
-        "post-update-cmd": "@build",
-        "build": [
-            "mv asset/vendor/epubjs-reader/reader asset/vendor/reader",
-            "rm -rf asset/vendor/epubjs-reader",
-            "mv asset/vendor/reader asset/vendor/epubjs-reader"
-        ]
-    },
     "extra": {
-        "installer-name": "Ebook"
+        "installer-name": "Ebook",
+        "external-assets": {
+            "asset/vendor/epubjs-reader/": {
+                "url": "https://github.com/futurepress/epubjs-reader/archive/2caeb74d8ec422a4fcb7e79498ca806f120228ff.tar.gz",
+                "exclude": [
+                    "Gruntfile.js",
+                    "README.md",
+                    "libs",
+                    "package.json",
+                    "package-lock.json",
+                    "src",
+                    "tools",
+                    "reader/humans.txt",
+                    "reader/robots.txt"
+                ]
+            }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "sempia/external-assets": true
+        }
     }
 }
