@@ -3,7 +3,7 @@
 namespace Ebook\Service\Form;
 
 use Ebook\Form\EbookForm;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class EbookFormFactory implements FactoryInterface
