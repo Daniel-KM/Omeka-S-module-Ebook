@@ -1,33 +1,39 @@
 {
     "name": "daniel-km/omeka-s-module-ebook",
-    "description": "eBook creator (module for Omeka S)",
-    "type": "library",
+    "type": "omeka-s-module",
+    "description": "Module for Omeka S: Merge selected resources into an ePub or a pdf file for publishing, report, or archiving purpose.",
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "export",
+        "ebook",
+        "ePub",
+        "pdf",
+        "publishing",
+        "report",
+        "archiving"
+    ],
     "license": "CECILL-2.1",
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook",
     "authors": [
         {
             "name": "Daniel Berthereau",
             "email": "Daniel.packagist@Berthereau.net"
         }
     ],
-    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook",
     "support": {
-        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/issues",
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-Ebook/-/work_items",
         "forum": "https://forum.omeka.org/"
     },
-    "keywords": [
-        "Omeka S",
-        "Omeka S module",
-        "ebook",
-        "epub",
-        "pdf",
-        "publishing",
-        "report",
-        "archiving"
-    ],
-    "autoload": {
-        "psr-4": {
-            "Ebook\\": "src/"
-        }
+    "_require (not set until Omeka S merges PR #2432)": {
+        "omeka/omeka-s": "^4.0",
+        "daniel-km/omeka-s-module-common": "*"
+    },
+    "require": {
+        "futurepress/epubjs-reader": "0.3",
+        "gmo/iso-639": "^1.0",
+        "grandt/phpepub": "dev-master",
+        "vanilla/htmlawed": "~1.0"
     },
     "repositories": [
         {
@@ -41,29 +47,23 @@
                 "version": "0.3",
                 "type": "omeka-module-asset",
                 "dist": {
-                     "type": "zip",
-                     "url": "https://github.com/futurepress/epubjs-reader/archive/refs/heads/master.zip"
+                    "type": "zip",
+                    "url": "https://github.com/futurepress/epubjs-reader/archive/refs/heads/master.zip"
                 }
             }
         }
     ],
-    "require": {
-        "futurepress/epubjs-reader": "0.3",
-        "gmo/iso-639": "^1.0",
-        "grandt/phpepub": "dev-master",
-        "oomphinc/composer-installers-extender": "^2.0",
-        "vanilla/htmlawed": "~1.0"
-    },
-    "extra": {
-        "installer-types": ["omeka-module-asset"],
-        "installer-paths": {
-            "asset/vendor/{$name}/": [
-                "type:omeka-module-asset",
-                "futurepress/epubjs-reader"
-            ]
+    "autoload": {
+        "psr-4": {
+            "Ebook\\": "src/"
         }
     },
-   "scripts": {
+    "autoload-dev": {
+        "psr-4": {
+            "EbookTest\\": "tests/EbookTest/"
+        }
+    },
+    "scripts": {
         "post-install-cmd": "@build",
         "post-update-cmd": "@build",
         "build": [
@@ -72,10 +72,7 @@
             "mv asset/vendor/reader asset/vendor/epubjs-reader"
         ]
     },
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true,
-            "oomphinc/composer-installers-extender": true
-        }
+    "extra": {
+        "installer-name": "Ebook"
     }
 }
