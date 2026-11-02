@@ -245,6 +245,7 @@ class EbookForm extends Form
             'type' => Element\Select::class,
             'options' => [
                 'label' => 'Output', // @translate
+                'info' => 'An asset is public: it should not be used for an ebook with private resources.', // @translate
                 'value_options' => [
                     'download' => 'Temporary file to download', // @translate
                     'item' => 'New item with attached file', // @translate
